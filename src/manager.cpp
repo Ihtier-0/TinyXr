@@ -7,7 +7,11 @@
 #include "utils.h"
 
 bool Manager::init() {
-  if (createInstance()) {
+  if (!createInstance()) {
+    return false;
+  }
+
+  if (!initializeSystem()) {
     return false;
   }
 
@@ -86,11 +90,15 @@ void Manager::logInstanceInfo() {
   xrGetInstanceProperties(mContext.instance, &instanceProperties);
 
   std::cout << "Instance RuntimeName=" << instanceProperties.runtimeName
-            << " RuntimeVersion="
-            << toString(instanceProperties.runtimeVersion);
+            << " RuntimeVersion=" << toString(instanceProperties.runtimeVersion)
+            << std::endl;
 }
 
 bool Manager::createInstance() {
+  if (mContext.instance != XR_NULL_HANDLE) {
+    return false;
+  }
+
   logLayersAndExtensions();
 
   mExtensionsInfo =
@@ -108,5 +116,21 @@ bool Manager::createInstance() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-///
+/// System
 ////////////////////////////////////////////////////////////////////////////////
+
+bool Manager::initializeSystem() {
+  if (mContext.instance == XR_NULL_HANDLE ||
+      mContext.system != XR_NULL_SYSTEM_ID) {
+    return false;
+  }
+
+  auto systemInfo = valid<XrSystemGetInfo>();
+  systemInfo.formFactor = mFormFactor;
+  xrGetSystem(mContext.instance, &systemInfo, &mContext.system);
+
+  std::cout << "Using system " << mContext.system << " for form factor "
+            << toString(mFormFactor) << std::endl;
+
+  return true;
+}

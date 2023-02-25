@@ -25,6 +25,7 @@ std::string toString(const XrVersion &version) {
   }
 
 TO_STRING_DEFINITION(XrResult)
+TO_STRING_DEFINITION(XrFormFactor)
 
 #undef TO_STRING_DEFINITION
 #undef TO_STRING_CASE

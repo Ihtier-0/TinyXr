@@ -24,10 +24,19 @@ private:
 
   bool createInstance();
 
+  // System
+  bool initializeSystem();
+
+  //
+
   Context mContext;
 
+  // Instance
   std::shared_ptr<ExtensionsInfo> mExtensionsInfo = nullptr;
   std::shared_ptr<ExtensionsFunction> mExtensionsFunction = nullptr;
+
+  // System
+  XrFormFactor mFormFactor = XrFormFactor::XR_FORM_FACTOR_HEAD_MOUNTED_DISPLAY;
 };
 
 #endif // MANAGER_H
