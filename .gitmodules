@@ -1,3 +1,6 @@
 [submodule "lib/OpenXR-SDK"]
 	path = lib/OpenXR-SDK
 	url = git@github.com:KhronosGroup/OpenXR-SDK.git
+[submodule "lib/cpptoml"]
+	path = lib/cpptoml
+	url = git@github.com:skystrife/cpptoml.git
