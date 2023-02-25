@@ -166,3 +166,9 @@ compile_commands.json
 *creator.user*
 
 *_qmlcache.qrc
+
+##########
+# TinyXr #
+##########
+
+include/tinyxr.h

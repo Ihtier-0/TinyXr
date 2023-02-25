@@ -27,6 +27,9 @@ TO_STRING_DECLARATION(XrFormFactor)
 /// valid
 ////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * return an XrStruct with the correct type and all other fields set to zero.
+ */
 template <class T> T valid() {
 #define TO_MAP_VALUE(xrStruct, type) {typeid(xrStruct), type},
 
@@ -68,7 +71,11 @@ bool twoCall(const XrFunction<T> &function, const std::string &functionName,
     return false;
   }
 
-  result.resize(input, valid<T>());
+  if constexpr (std::is_class<T>::value) {
+    result.resize(input, valid<T>());
+  } else {
+    result.resize(input);
+  }
 
   xrResult = function(input, &input, result.data());
 
@@ -80,6 +87,9 @@ bool twoCall(const XrFunction<T> &function, const std::string &functionName,
   return true;
 }
 
+/**
+ * @brief simplify the OpenXR two-call idiom.
+ */
 #define TWO_CALL(function, result)                                             \
   (twoCall<decltype(result)::value_type>((function), (#function), (result)))
 

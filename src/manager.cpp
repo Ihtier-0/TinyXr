@@ -4,7 +4,10 @@
 
 #include "extensions.h"
 #include "openxr.h"
+#include "tinyxr.h"
 #include "utils.h"
+
+Manager::Manager(const Config &config) : mConfig(config) {}
 
 bool Manager::init() {
   if (!createInstance()) {
@@ -14,6 +17,8 @@ bool Manager::init() {
   if (!initializeSystem()) {
     return false;
   }
+
+  mBlendMode = getPreferredBlendMode();
 
   return true;
 }
@@ -72,9 +77,13 @@ bool Manager::createInstanceInternal() {
   }
 
   XrInstanceCreateInfo createInfo = valid<XrInstanceCreateInfo>();
-  createInfo.next = nullptr;
   createInfo.enabledExtensionCount =
       static_cast<uint32_t>(mExtensionsInfo->extensions.size());
+  createInfo.applicationInfo.engineVersion =
+      static_cast<uint32_t>(XR_MAKE_VERSION(
+          TINYXR_VERSION_MAJOR, TINYXR_VERSION_MINOR, TINYXR_VERSION_PATCH));
+  std::memcpy(createInfo.applicationInfo.engineName, TINYXR_STRING,
+              std::strlen(TINYXR_STRING));
   createInfo.enabledExtensionNames = mExtensionsInfo->extensions.data();
 
   strcpy(createInfo.applicationInfo.applicationName, "TinyXr");
@@ -133,4 +142,25 @@ bool Manager::initializeSystem() {
             << toString(mFormFactor) << std::endl;
 
   return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// BlendMode
+////////////////////////////////////////////////////////////////////////////////
+
+XrEnvironmentBlendMode Manager::getPreferredBlendMode() const {
+  std::vector<XrEnvironmentBlendMode> blendModes;
+
+  TWO_CALL(std::bind(xrEnumerateEnvironmentBlendModes, mContext.instance,
+                     mContext.system, mViewType, std::placeholders::_1,
+                     std::placeholders::_2, std::placeholders::_3),
+           blendModes);
+
+  for (const auto &blendMode : blendModes) {
+    if (mAcceptableBlendModes.count(blendMode)) {
+      return blendMode;
+    }
+  }
+
+  return XrEnvironmentBlendMode::XR_ENVIRONMENT_BLEND_MODE_MAX_ENUM;
 }

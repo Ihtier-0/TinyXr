@@ -2,14 +2,25 @@ cmake_minimum_required(VERSION 3.0)
 
 project(TinyXr VERSION 0.1.0.0 LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_CXX_EXTENSIONS OFF)
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/tinyxr.h.in
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/tinyxr.h
+)
 
-file(GLOB_RECURSE SRCS src/*.cpp)
-file(GLOB_RECURSE HDRS src/*.h)
+file(GLOB_RECURSE SRCS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
+file(GLOB_RECURSE HDRS ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h)
 
-add_executable(TinyXr ${SRCS} ${HDRS})
+add_library(TinyXr SHARED ${SRCS} ${HDRS})
+target_include_directories(
+  TinyXr
+  PUBLIC
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
+set_property(TARGET TinyXr PROPERTY CXX_STANDARD 17)
+set_property(TARGET TinyXr PROPERTY CXX_STANDARD_REQUIRED True)
+set_property(TARGET TinyXr PROPERTY CXX_EXTENSIONS OFF)
 
 target_compile_options(
   TinyXr
@@ -36,9 +47,12 @@ target_compile_options(
 #  -Wsign-promo // disabled for XR_VERSION_MAJOR
 )
 
-target_link_libraries(TinyXr PRIVATE openxr_loader)
-
-find_package(Qt5 REQUIRED COMPONENTS Widgets)
-target_link_libraries(TinyXr PRIVATE Qt5::Widgets)
+target_link_libraries(
+  TinyXr
+  PUBLIC
+  openxr_loader
+  cpptoml
+)
 
 add_subdirectory(lib)
+add_subdirectory(examples)
