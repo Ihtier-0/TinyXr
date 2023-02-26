@@ -1,13 +1,29 @@
 #include "utils.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-/// toString
+/// toString/formString
 ////////////////////////////////////////////////////////////////////////////////
 
 std::string toString(const XrVersion &version) {
   return std::to_string(XR_VERSION_MAJOR(version)) + "." +
          std::to_string(XR_VERSION_MINOR(version)) + "." +
          std::to_string(XR_VERSION_PATCH(version));
+}
+
+XrVersion fromString(const std::string &string) {
+  std::vector<std::string> splitString = split(string, '.');
+
+  if (splitString.size() != 3) {
+    return {};
+  }
+
+  try {
+    return XR_MAKE_VERSION(std::stoull(splitString[0]),
+                           std::stoull(splitString[1]),
+                           std::stoull(splitString[2]));
+  } catch (...) {
+    return {};
+  }
 }
 
 #define TO_STRING(name) #name
@@ -30,3 +46,22 @@ TO_STRING_DEFINITION(XrFormFactor)
 #undef TO_STRING_DEFINITION
 #undef TO_STRING_CASE
 #undef TO_STRING
+
+////////////////////////////////////////////////////////////////////////////////
+/// split (fuck you, cpp)
+////////////////////////////////////////////////////////////////////////////////
+
+// based on: https://www.techiedelight.com/split-string-cpp-using-delimiter/
+std::vector<std::string> split(const std::string &str, const char &delim) {
+  std::vector<std::string> result;
+
+  size_t start;
+  size_t end = 0;
+
+  while ((start = str.find_first_not_of(delim, end)) != std::string::npos) {
+    end = str.find(delim, start);
+    result.push_back(str.substr(start, end - start));
+  }
+
+  return result;
+}

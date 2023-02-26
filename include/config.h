@@ -10,6 +10,17 @@ class Config {
 public:
   Config(const std::string &filename);
 
+  template <class T>
+  T getValue(const std::string &key, const T &defaultValue = T()) const {
+    return mTable->get_qualified_as<T>(key).value_or(defaultValue);
+  }
+
+  template <class T>
+  std::vector<T> getArray(const std::string &key,
+                          const std::vector<T> &defaultValue = {}) const {
+    return mTable->get_qualified_array_of<T>(key).value_or(defaultValue);
+  }
+
   bool valid();
 
 private:

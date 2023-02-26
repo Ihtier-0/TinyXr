@@ -77,17 +77,29 @@ bool Manager::createInstanceInternal() {
   }
 
   XrInstanceCreateInfo createInfo = valid<XrInstanceCreateInfo>();
-  createInfo.enabledExtensionCount =
-      static_cast<uint32_t>(mExtensionsInfo->extensions.size());
+  // applicationInfo
   createInfo.applicationInfo.engineVersion =
       static_cast<uint32_t>(XR_MAKE_VERSION(
           TINYXR_VERSION_MAJOR, TINYXR_VERSION_MINOR, TINYXR_VERSION_PATCH));
   std::memcpy(createInfo.applicationInfo.engineName, TINYXR_STRING,
               std::strlen(TINYXR_STRING));
-  createInfo.enabledExtensionNames = mExtensionsInfo->extensions.data();
-
-  strcpy(createInfo.applicationInfo.applicationName, "TinyXr");
   createInfo.applicationInfo.apiVersion = XR_CURRENT_API_VERSION;
+
+  const auto applicationName =
+      mConfig.getValue<std::string>("ApplicationInfo.applicationName");
+  const auto applicationVersion = fromString(
+      mConfig.getValue<std::string>("ApplicationInfo.applicationVersion"));
+
+  if (applicationName.size() <= XR_MAX_APPLICATION_NAME_SIZE) {
+    std::memcpy(createInfo.applicationInfo.applicationName,
+                applicationName.c_str(), applicationName.size() * sizeof(char));
+  }
+  createInfo.applicationInfo.applicationVersion =
+      static_cast<uint32_t>(applicationVersion);
+
+  createInfo.enabledExtensionNames = mExtensionsInfo->extensions.data();
+  createInfo.enabledExtensionCount =
+      static_cast<uint32_t>(mExtensionsInfo->extensions.size());
 
   xrCreateInstance(&createInfo, &mContext.instance);
 
@@ -110,8 +122,15 @@ bool Manager::createInstance() {
 
   logLayersAndExtensions();
 
-  mExtensionsInfo =
-      std::make_shared<ExtensionsInfo>(std::vector<const char *>());
+  // It may seem stupid, but it gets the job done. ¯\_(ツ)_/¯
+  const std::vector<std::string> userRequestExtensions =
+      mConfig.getArray<std::string>("userRequestExtensions");
+  std::vector<const char *> userRequestExtensionsCstr;
+  for (const auto &userRequestExtension : userRequestExtensions) {
+    userRequestExtensionsCstr.push_back(userRequestExtension.data());
+  }
+  // TODO! Fix the lifetime problem
+  mExtensionsInfo = std::make_shared<ExtensionsInfo>(userRequestExtensionsCstr);
 
   if (!createInstanceInternal()) {
     return false;

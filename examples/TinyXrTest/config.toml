@@ -1,0 +1,7 @@
+# String array
+userRequestExtensions = []
+
+[ApplicationInfo]
+applicationName = "TinyXrTest"
+# Three numbers separated by dots
+applicationVersion = "0.1.0"

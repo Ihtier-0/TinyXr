@@ -12,14 +12,18 @@
 #include "openxr.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-/// toString
+/// toString/formString
 ////////////////////////////////////////////////////////////////////////////////
 
 #define TO_STRING_DECLARATION(type) std::string toString(const type &var);
+#define FROM_STRING_DECLARATION(type)                                          \
+  type fromString(const std::string &string);
 
 TO_STRING_DECLARATION(XrVersion)
 TO_STRING_DECLARATION(XrResult)
 TO_STRING_DECLARATION(XrFormFactor)
+
+FROM_STRING_DECLARATION(XrVersion)
 
 #undef TO_STRING_DECLARATION
 
@@ -92,5 +96,11 @@ bool twoCall(const XrFunction<T> &function, const std::string &functionName,
  */
 #define TWO_CALL(function, result)                                             \
   (twoCall<decltype(result)::value_type>((function), (#function), (result)))
+
+////////////////////////////////////////////////////////////////////////////////
+/// split (fuck you, cpp)
+////////////////////////////////////////////////////////////////////////////////
+
+std::vector<std::string> split(const std::string &str, const char &delim);
 
 #endif // UTILS_H

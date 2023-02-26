@@ -196,6 +196,10 @@
 
 #define DEFINE_EXT_INFO(name, available) bool name = false;
 struct ExtensionsInfo {
+  /**
+   * The lifetime of userRequestExtensions and ExtensionsInfo should be the
+   * same.
+   */
   ExtensionsInfo(const std::vector<const char *> &userRequestExtensions);
 
   bool graphicExtension;
