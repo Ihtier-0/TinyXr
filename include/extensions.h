@@ -200,7 +200,7 @@ struct ExtensionsInfo {
    * The lifetime of userRequestExtensions and ExtensionsInfo should be the
    * same.
    */
-  ExtensionsInfo(const std::vector<const char *> &userRequestExtensions);
+  ExtensionsInfo(const std::vector<std::string> &userRequestExtensions);
 
   bool graphicExtension;
   bool timeExtension;
@@ -210,7 +210,7 @@ struct ExtensionsInfo {
   FOR_EACH_EXT_LINUX(DEFINE_EXT_INFO)
   FOR_EACH_EXT_DEBUG(DEFINE_EXT_INFO)
 
-  std::vector<const char *> extensions;
+  std::vector<std::string> extensions;
 };
 #undef DEFINE_EXT_INFO
 

@@ -97,7 +97,15 @@ bool Manager::createInstanceInternal() {
   createInfo.applicationInfo.applicationVersion =
       static_cast<uint32_t>(applicationVersion);
 
-  createInfo.enabledExtensionNames = mExtensionsInfo->extensions.data();
+  // It may seem stupid, but it gets the job done. ¯\_(ツ)_/¯
+  std::vector<const char *> extensionsCstr;
+  extensionsCstr.reserve(mExtensionsInfo->extensions.size());
+
+  for (const auto &extension : mExtensionsInfo->extensions) {
+    extensionsCstr.push_back(extension.c_str());
+  }
+
+  createInfo.enabledExtensionNames = extensionsCstr.data();
   createInfo.enabledExtensionCount =
       static_cast<uint32_t>(mExtensionsInfo->extensions.size());
 
@@ -122,15 +130,9 @@ bool Manager::createInstance() {
 
   logLayersAndExtensions();
 
-  // It may seem stupid, but it gets the job done. ¯\_(ツ)_/¯
   const std::vector<std::string> userRequestExtensions =
       mConfig.getArray<std::string>("userRequestExtensions");
-  std::vector<const char *> userRequestExtensionsCstr;
-  for (const auto &userRequestExtension : userRequestExtensions) {
-    userRequestExtensionsCstr.push_back(userRequestExtension.data());
-  }
-  // TODO! Fix the lifetime problem
-  mExtensionsInfo = std::make_shared<ExtensionsInfo>(userRequestExtensionsCstr);
+  mExtensionsInfo = std::make_shared<ExtensionsInfo>(userRequestExtensions);
 
   if (!createInstanceInternal()) {
     return false;

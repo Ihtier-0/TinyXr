@@ -3,7 +3,7 @@
 #include "utils.h"
 
 ExtensionsInfo::ExtensionsInfo(
-    const std::vector<const char *> &userRequestExtensions) {
+    const std::vector<std::string> &userRequestExtensions) {
 #define CHECK_EXT(name, available)                                             \
   else if (available && strcmp("XR_" #name, extension.extensionName) == 0) {   \
     name = true;                                                               \
@@ -31,7 +31,7 @@ ExtensionsInfo::ExtensionsInfo(
     FOR_EACH_EXT_DEBUG(CHECK_EXT)
     else {
       for (const auto &userExtension : userRequestExtensions) {
-        if (strcmp(userExtension, extension.extensionName) == 0) {
+        if (userExtension == extension.extensionName) {
           extensions.push_back(userExtension);
           break;
         }
