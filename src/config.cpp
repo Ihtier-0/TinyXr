@@ -1,6 +1,6 @@
 #include "config.h"
 
-#include <iostream>
+#include "logger.h"
 
 Config::Config(const std::string &filename) {
   try {
@@ -8,8 +8,8 @@ Config::Config(const std::string &filename) {
   } catch (cpptoml::parse_exception e) {
     mTable.reset();
 
-    std::cout << "Exception " << e.what() << std::endl
-              << "While read toml config from: " << filename << std::endl;
+    LOG_WARNING("Exception " + std::string(e.what()) + '\n' +
+                "While read toml config from: " + filename);
   }
 }
 

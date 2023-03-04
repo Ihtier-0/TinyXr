@@ -3,12 +3,12 @@
 
 #include <cstring>
 #include <functional>
-#include <iostream>
 #include <string>
 #include <typeindex>
 #include <unordered_map>
 #include <vector>
 
+#include "logger.h"
 #include "openxr.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -79,8 +79,8 @@ bool twoCall(const XrFunction<T> &function, const std::string &functionName,
   xrResult = function(0, &input, nullptr);
 
   if (XR_FAILED(xrResult)) {
-    std::cout << functionName
-              << " first call failed: " << XrResultToString(xrResult);
+    LOG_WARNING(functionName +
+                " first call failed: " + XrResultToString(xrResult));
     return false;
   }
 
@@ -93,8 +93,8 @@ bool twoCall(const XrFunction<T> &function, const std::string &functionName,
   xrResult = function(input, &input, result.data());
 
   if (XR_FAILED(xrResult)) {
-    std::cout << functionName
-              << " second call failed: " << XrResultToString(xrResult);
+    LOG_WARNING(functionName +
+                " second call failed: " + XrResultToString(xrResult));
     return false;
   }
 

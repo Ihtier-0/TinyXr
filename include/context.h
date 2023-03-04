@@ -6,6 +6,7 @@
 struct Context {
   XrInstance instance = XR_NULL_HANDLE;
   XrSystemId system = XR_NULL_SYSTEM_ID;
+  XrDebugUtilsMessengerEXT debug = XR_NULL_HANDLE;
 };
 
 #endif // CONTEXT_H

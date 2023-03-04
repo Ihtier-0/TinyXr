@@ -30,6 +30,9 @@ private:
 
   bool createInstance();
 
+  // Debug
+  bool initializeDebug();
+
   // System
   bool initializeSystem();
 

@@ -1,12 +1,23 @@
+[Logger]
+# one of:
+# Trace
+# Debug
+# Info
+# Warning
+# Error
+# Fatal
+level = "Debug"
+
+[xr]
 # String array
 userRequestExtensions = []
 
-[ApplicationInfo]
+[xr.ApplicationInfo]
 applicationName = "TinyXrTest"
 # Three numbers separated by dots
 applicationVersion = "0.1.0"
 
-[System]
+[xr.System]
 # XR_FORM_FACTOR_HEAD_MOUNTED_DISPLAY
 # or
 # XR_FORM_FACTOR_HANDHELD_DISPLAY

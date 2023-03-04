@@ -1,6 +1,7 @@
 #include "favor_high_performance_gpu.h"
 
 #include "config.h"
+#include "logger.h"
 #include "manager.h"
 
 int main(int, char *[]) {
@@ -8,6 +9,9 @@ int main(int, char *[]) {
   if (!config.valid()) {
     return EXIT_FAILURE;
   }
+
+  Logger::setLevel(
+      Logger::LevelFromString(config.getValue<std::string>("Logger.level")));
 
   Manager manager(config);
   if (!manager.init()) {
