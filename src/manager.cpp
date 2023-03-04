@@ -7,6 +7,10 @@
 #include "tinyxr.h"
 #include "utils.h"
 
+////////////////////////////////////////////////////////////////////////////////
+/// Manager
+////////////////////////////////////////////////////////////////////////////////
+
 Manager::Manager(const Config &config) : mConfig(config) {}
 
 bool Manager::init() {
@@ -63,8 +67,8 @@ void Manager::logLayersAndExtensions() {
     std::cout << "Available Layers: " << layers.size() << std::endl;
     for (const XrApiLayerProperties &layer : layers) {
       std::cout << "  Name=" << layer.layerName
-                << " SpecVersion=" << toString(layer.specVersion)
-                << " LayerVersion=" << toString(layer.layerVersion)
+                << " SpecVersion=" << XrVersionToString(layer.specVersion)
+                << " LayerVersion=" << XrVersionToString(layer.layerVersion)
                 << " Description=" << layer.description << std::endl;
       logExtensions(layer.layerName, 4);
     }
@@ -87,7 +91,7 @@ bool Manager::createInstanceInternal() {
 
   const auto applicationName =
       mConfig.getValue<std::string>("ApplicationInfo.applicationName");
-  const auto applicationVersion = fromString(
+  const auto applicationVersion = XrVersionFromString(
       mConfig.getValue<std::string>("ApplicationInfo.applicationVersion"));
 
   if (applicationName.size() <= XR_MAX_APPLICATION_NAME_SIZE) {
@@ -119,7 +123,8 @@ void Manager::logInstanceInfo() {
   xrGetInstanceProperties(mContext.instance, &instanceProperties);
 
   std::cout << "Instance RuntimeName=" << instanceProperties.runtimeName
-            << " RuntimeVersion=" << toString(instanceProperties.runtimeVersion)
+            << " RuntimeVersion="
+            << XrVersionToString(instanceProperties.runtimeVersion)
             << std::endl;
 }
 
@@ -155,12 +160,19 @@ bool Manager::initializeSystem() {
     return false;
   }
 
+  mFormFactor = XrFormFactorFromString(
+      mConfig.getValue<std::string>("System.formFactor"));
+
+  if (mFormFactor == XR_MAX_ENUM) {
+    return false;
+  }
+
   auto systemInfo = valid<XrSystemGetInfo>();
   systemInfo.formFactor = mFormFactor;
   xrGetSystem(mContext.instance, &systemInfo, &mContext.system);
 
   std::cout << "Using system " << mContext.system << " for form factor "
-            << toString(mFormFactor) << std::endl;
+            << XrFormFactorToString(mFormFactor) << std::endl;
 
   return true;
 }

@@ -1,16 +1,41 @@
 #include "utils.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-/// toString/formString
+/// ToString
 ////////////////////////////////////////////////////////////////////////////////
 
-std::string toString(const XrVersion &version) {
+std::string XrVersionToString(const XrVersion &version) {
   return std::to_string(XR_VERSION_MAJOR(version)) + "." +
          std::to_string(XR_VERSION_MINOR(version)) + "." +
          std::to_string(XR_VERSION_PATCH(version));
 }
 
-XrVersion fromString(const std::string &string) {
+#define TO_STRING(name) #name
+
+#define TO_STRING_CASE(name, val)                                              \
+  case name:                                                                   \
+    return TO_STRING(name);
+
+#define TO_STRING_DEFINITION(type)                                             \
+  std::string type##ToString(const type &var) {                                \
+    switch (var) {                                                             \
+      XR_LIST_ENUM_##type(TO_STRING_CASE) default                              \
+          : return TO_STRING(Unknown##type);                                   \
+    }                                                                          \
+  }
+
+TO_STRING_DEFINITION(XrResult)
+TO_STRING_DEFINITION(XrFormFactor)
+
+#undef TO_STRING_DEFINITION
+#undef TO_STRING_CASE
+#undef TO_STRING
+
+////////////////////////////////////////////////////////////////////////////////
+/// FromString
+////////////////////////////////////////////////////////////////////////////////
+
+XrVersion XrVersionFromString(const std::string &string) {
   std::vector<std::string> splitString = split(string, '.');
 
   if (splitString.size() != 3) {
@@ -26,26 +51,21 @@ XrVersion fromString(const std::string &string) {
   }
 }
 
-#define TO_STRING(name) #name
-
-#define TO_STRING_CASE(name, val)                                              \
-  case name:                                                                   \
-    return TO_STRING(name);
-
-#define TO_STRING_DEFINITION(type)                                             \
-  std::string toString(const type &var) {                                      \
-    switch (var) {                                                             \
-      XR_LIST_ENUM_##type(TO_STRING_CASE) default                              \
-          : return TO_STRING(Unknown##type);                                   \
-    }                                                                          \
+#define FROM_STRING_IF(name, value)                                            \
+  if (#name == string) {                                                       \
+    return name;                                                               \
   }
 
-TO_STRING_DEFINITION(XrResult)
-TO_STRING_DEFINITION(XrFormFactor)
+#define FROM_STRING_DEFINITION(type)                                           \
+  type type##FromString(const std::string &string) {                           \
+    XR_LIST_ENUM_##type(FROM_STRING_IF) return static_cast<type>(XR_MAX_ENUM); \
+  }
 
-#undef TO_STRING_DEFINITION
-#undef TO_STRING_CASE
-#undef TO_STRING
+FROM_STRING_DEFINITION(XrFormFactor)
+
+#undef FROM_STRING_DEFINITION
+#undef FROM_STRING_IF
+#undef XR_MAX_ENUM
 
 ////////////////////////////////////////////////////////////////////////////////
 /// split (fuck you, cpp)

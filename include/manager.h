@@ -46,7 +46,7 @@ private:
   std::shared_ptr<ExtensionsFunction> mExtensionsFunction = nullptr;
 
   // System
-  XrFormFactor mFormFactor = XrFormFactor::XR_FORM_FACTOR_HEAD_MOUNTED_DISPLAY;
+  XrFormFactor mFormFactor = XrFormFactor::XR_FORM_FACTOR_MAX_ENUM;
 
   // ViewConfigurationType
   XrViewConfigurationType mViewType =

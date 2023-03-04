@@ -5,3 +5,9 @@ userRequestExtensions = []
 applicationName = "TinyXrTest"
 # Three numbers separated by dots
 applicationVersion = "0.1.0"
+
+[System]
+# XR_FORM_FACTOR_HEAD_MOUNTED_DISPLAY
+# or
+# XR_FORM_FACTOR_HANDHELD_DISPLAY
+formFactor = "XR_FORM_FACTOR_HEAD_MOUNTED_DISPLAY"

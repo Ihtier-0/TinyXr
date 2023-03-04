@@ -12,20 +12,28 @@
 #include "openxr.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-/// toString/formString
+/// ToString
 ////////////////////////////////////////////////////////////////////////////////
 
-#define TO_STRING_DECLARATION(type) std::string toString(const type &var);
-#define FROM_STRING_DECLARATION(type)                                          \
-  type fromString(const std::string &string);
+#define TO_STRING_DECLARATION(type) std::string type##ToString(const type &var);
 
 TO_STRING_DECLARATION(XrVersion)
 TO_STRING_DECLARATION(XrResult)
 TO_STRING_DECLARATION(XrFormFactor)
 
-FROM_STRING_DECLARATION(XrVersion)
-
 #undef TO_STRING_DECLARATION
+
+////////////////////////////////////////////////////////////////////////////////
+/// FromString
+////////////////////////////////////////////////////////////////////////////////
+
+#define FROM_STRING_DECLARATION(type)                                          \
+  type type##FromString(const std::string &string);
+
+FROM_STRING_DECLARATION(XrVersion)
+FROM_STRING_DECLARATION(XrFormFactor)
+
+#undef FROM_STRING_DECLARATION
 
 ////////////////////////////////////////////////////////////////////////////////
 /// valid
@@ -71,7 +79,8 @@ bool twoCall(const XrFunction<T> &function, const std::string &functionName,
   xrResult = function(0, &input, nullptr);
 
   if (XR_FAILED(xrResult)) {
-    std::cout << functionName << " first call failed: " << toString(xrResult);
+    std::cout << functionName
+              << " first call failed: " << XrResultToString(xrResult);
     return false;
   }
 
@@ -84,7 +93,8 @@ bool twoCall(const XrFunction<T> &function, const std::string &functionName,
   xrResult = function(input, &input, result.data());
 
   if (XR_FAILED(xrResult)) {
-    std::cout << functionName << " second call failed: " << toString(xrResult);
+    std::cout << functionName
+              << " second call failed: " << XrResultToString(xrResult);
     return false;
   }
 
