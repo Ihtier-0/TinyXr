@@ -14,6 +14,22 @@
 
 Manager::Manager(const Config &config) : mConfig(config) {}
 
+Manager::~Manager() {
+  // XrSystemId does not need to be destroyed
+  mContext.system = XR_NULL_SYSTEM_ID;
+
+#ifdef DEBUG
+  if (mContext.debug != XR_NULL_HANDLE) {
+    CHECK_XR(
+        mExtensionsFunction->xrDestroyDebugUtilsMessengerEXT(mContext.debug));
+  }
+#endif
+
+  if (mContext.instance != XR_NULL_HANDLE) {
+    CHECK_XR(xrDestroyInstance(mContext.instance));
+  }
+}
+
 bool Manager::init() {
   if (!createInstance()) {
     return false;

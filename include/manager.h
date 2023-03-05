@@ -17,6 +17,7 @@ struct ExtensionsFunction;
 class Manager {
 public:
   Manager(const Config &config);
+  ~Manager();
 
   bool init();
 
