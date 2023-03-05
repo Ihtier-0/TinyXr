@@ -24,17 +24,16 @@ public:
 private:
   // Instance
   void logLayersAndExtensions();
-
   bool createInstanceInternal();
-
   void logInstanceInfo();
-
   bool createInstance();
 
   // Debug
   bool initializeDebug();
 
   // System
+  bool initializeSystemInternal();
+  void getSystemProperties();
   bool initializeSystem();
 
   // BlendMode

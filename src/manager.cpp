@@ -249,17 +249,11 @@ bool Manager::initializeDebug() {
 
   return true;
 }
-
 ////////////////////////////////////////////////////////////////////////////////
 /// System
 ////////////////////////////////////////////////////////////////////////////////
 
-bool Manager::initializeSystem() {
-  if (mContext.instance == XR_NULL_HANDLE ||
-      mContext.system != XR_NULL_SYSTEM_ID) {
-    return false;
-  }
-
+bool Manager::initializeSystemInternal() {
   mFormFactor = XrFormFactorFromString(
       mConfig.getValue<std::string>("xr.System.formFactor"));
 
@@ -270,13 +264,56 @@ bool Manager::initializeSystem() {
   auto systemInfo = valid<XrSystemGetInfo>();
   systemInfo.formFactor = mFormFactor;
 
-  if (!CHECK_XR(
-          xrGetSystem(mContext.instance, &systemInfo, &mContext.system))) {
+  return CHECK_XR(
+      xrGetSystem(mContext.instance, &systemInfo, &mContext.system));
+}
+
+void Manager::getSystemProperties() {
+  auto properties = valid<XrSystemProperties>();
+  auto propertiesTracking = valid<XrSystemHandTrackingPropertiesEXT>();
+  auto propertiesEyeGaze = valid<XrSystemEyeGazeInteractionPropertiesEXT>();
+  properties.next = &propertiesTracking;
+  propertiesTracking.next = &propertiesEyeGaze;
+
+  if (!CHECK_XR(xrGetSystemProperties(mContext.instance, mContext.system,
+                                      &properties))) {
+    return;
+  }
+
+  LOG_INFO("Using system " + std::string(properties.systemName) +
+           " for form factor " + XrFormFactorToString(mFormFactor));
+
+  mContext.systemProperties.handTracking =
+      mExtensionsInfo->EXT_hand_tracking &&
+      propertiesTracking.supportsHandTracking;
+  mContext.systemProperties.depthLayer =
+      mExtensionsInfo->KHR_composition_layer_depth;
+  mContext.systemProperties.eyeTracking =
+      mExtensionsInfo->EXT_eye_gaze_interaction &&
+      propertiesEyeGaze.supportsEyeGazeInteraction;
+
+  if (mContext.systemProperties.handTracking) {
+    LOG_INFO("OpenXR hands tracking extension enabled!");
+  }
+  if (mContext.systemProperties.depthLayer) {
+    LOG_INFO("OpenXR depth layer extension enabled!");
+  }
+  if (mContext.systemProperties.eyeTracking) {
+    LOG_INFO("OpenXR eye tracking extension enabled!");
+  }
+}
+
+bool Manager::initializeSystem() {
+  if (mContext.instance == XR_NULL_HANDLE ||
+      mContext.system != XR_NULL_SYSTEM_ID) {
     return false;
   }
 
-  LOG_INFO("Using system " + std::to_string(mContext.system) +
-           " for form factor " + XrFormFactorToString(mFormFactor));
+  if (!initializeSystemInternal()) {
+    return false;
+  }
+
+  getSystemProperties();
 
   return true;
 }
