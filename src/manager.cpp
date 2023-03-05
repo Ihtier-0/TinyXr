@@ -120,14 +120,16 @@ bool Manager::createInstanceInternal() {
   createInfo.enabledExtensionCount =
       static_cast<uint32_t>(mExtensionsInfo->extensions.size());
 
-  xrCreateInstance(&createInfo, &mContext.instance);
-
-  return true;
+  return CHECK_XR(xrCreateInstance(&createInfo, &mContext.instance));
 }
 
 void Manager::logInstanceInfo() {
   auto instanceProperties = valid<XrInstanceProperties>();
-  xrGetInstanceProperties(mContext.instance, &instanceProperties);
+
+  if (CHECK_XR(
+          xrGetInstanceProperties(mContext.instance, &instanceProperties))) {
+    return;
+  }
 
   LOG_INFO("Instance RuntimeName=" +
            std::string(instanceProperties.runtimeName) + " RuntimeVersion=" +
@@ -224,8 +226,8 @@ bool Manager::initializeDebug() {
   };
 
   if (mExtensionsInfo->EXT_debug_utils) {
-    mExtensionsFunction->xrCreateDebugUtilsMessengerEXT(
-        mContext.instance, &debugInfo, &mContext.debug);
+    return CHECK_XR(mExtensionsFunction->xrCreateDebugUtilsMessengerEXT(
+        mContext.instance, &debugInfo, &mContext.debug));
   }
 #endif
 
@@ -251,7 +253,11 @@ bool Manager::initializeSystem() {
 
   auto systemInfo = valid<XrSystemGetInfo>();
   systemInfo.formFactor = mFormFactor;
-  xrGetSystem(mContext.instance, &systemInfo, &mContext.system);
+
+  if (!CHECK_XR(
+          xrGetSystem(mContext.instance, &systemInfo, &mContext.system))) {
+    return false;
+  }
 
   LOG_INFO("Using system " + std::to_string(mContext.system) +
            " for form factor " + XrFormFactorToString(mFormFactor));

@@ -108,6 +108,18 @@ bool twoCall(const XrFunction<T> &function, const std::string &functionName,
   (twoCall<decltype(result)::value_type>((function), (#function), (result)))
 
 ////////////////////////////////////////////////////////////////////////////////
+/// CHECK_XR
+////////////////////////////////////////////////////////////////////////////////
+
+bool checkXrResult(XrResult result, const std::string &command,
+                   const std::chrono::time_point<std::chrono::system_clock> now,
+                   const std::string &file, const int &line);
+
+#define CHECK_XR(command)                                                      \
+  checkXrResult(command, #command, std::chrono::system_clock::now(), __FILE__, \
+                __LINE__)
+
+////////////////////////////////////////////////////////////////////////////////
 /// split (fuck you, cpp)
 ////////////////////////////////////////////////////////////////////////////////
 

@@ -44,8 +44,9 @@ ExtensionsInfo::ExtensionsInfo(
 
 ExtensionsFunction::ExtensionsFunction(const Context &context) {
 #define GET_INSTANCE_PROC_ADDRESS(name)                                        \
-  xrGetInstanceProcAddr(context.instance, #name,                               \
-                        (PFN_xrVoidFunction *)((PFN_##name *)(&name)));
+  CHECK_XR(                                                                    \
+      xrGetInstanceProcAddr(context.instance, #name,                           \
+                            (PFN_xrVoidFunction *)((PFN_##name *)(&name))));
 
   if (context.instance == XR_NULL_HANDLE) {
     return;
