@@ -36,9 +36,6 @@ private:
   void getSystemProperties();
   bool initializeSystem();
 
-  // BlendMode
-  XrEnvironmentBlendMode getPreferredBlendMode() const;
-
   //
   Config mConfig;
 
@@ -50,18 +47,6 @@ private:
 
   // System
   XrFormFactor mFormFactor = XrFormFactor::XR_FORM_FACTOR_MAX_ENUM;
-
-  // ViewConfigurationType
-  XrViewConfigurationType mViewType =
-      XrViewConfigurationType::XR_VIEW_CONFIGURATION_TYPE_PRIMARY_STEREO;
-
-  // BlendMode
-  const std::set<XrEnvironmentBlendMode> mAcceptableBlendModes = {
-      XrEnvironmentBlendMode::XR_ENVIRONMENT_BLEND_MODE_OPAQUE,
-      XrEnvironmentBlendMode::XR_ENVIRONMENT_BLEND_MODE_ADDITIVE,
-      XrEnvironmentBlendMode::XR_ENVIRONMENT_BLEND_MODE_ALPHA_BLEND};
-  XrEnvironmentBlendMode mBlendMode =
-      XrEnvironmentBlendMode::XR_ENVIRONMENT_BLEND_MODE_OPAQUE;
 };
 
 #endif // MANAGER_H

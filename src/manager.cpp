@@ -43,8 +43,6 @@ bool Manager::init() {
     return false;
   }
 
-  mBlendMode = getPreferredBlendMode();
-
   return true;
 }
 
@@ -316,25 +314,4 @@ bool Manager::initializeSystem() {
   getSystemProperties();
 
   return true;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-/// BlendMode
-////////////////////////////////////////////////////////////////////////////////
-
-XrEnvironmentBlendMode Manager::getPreferredBlendMode() const {
-  std::vector<XrEnvironmentBlendMode> blendModes;
-
-  TWO_CALL(std::bind(xrEnumerateEnvironmentBlendModes, mContext.instance,
-                     mContext.system, mViewType, std::placeholders::_1,
-                     std::placeholders::_2, std::placeholders::_3),
-           blendModes);
-
-  for (const auto &blendMode : blendModes) {
-    if (mAcceptableBlendModes.count(blendMode)) {
-      return blendMode;
-    }
-  }
-
-  return XrEnvironmentBlendMode::XR_ENVIRONMENT_BLEND_MODE_MAX_ENUM;
 }
