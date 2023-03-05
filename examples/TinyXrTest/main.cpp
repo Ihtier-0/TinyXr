@@ -1,10 +1,14 @@
+#include <QApplication>
+
 #include "favor_high_performance_gpu.h"
 
 #include "config.h"
 #include "logger.h"
 #include "manager.h"
 
-int main(int, char *[]) {
+int main(int argc, char *argv[]) {
+  QApplication app(argc, argv);
+
   Config config("config.toml");
   if (!config.valid()) {
     return EXIT_FAILURE;

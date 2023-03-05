@@ -48,6 +48,10 @@
   #include <windows.h> // for HDC in openxr/openxr_platform.h
   #include <unknwn.h> // for IUnknown in openxr/openxr_platform.h
 
+  #include <QOffscreenSurface>
+  #include <QOpenGLContext>
+  // #include <QtPlatformHeaders/QWGLNativeContext>
+  #include <wingdi.h>
 #endif
 
 #endif // XR_OPENXR

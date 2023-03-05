@@ -37,8 +37,11 @@ target_compile_options(
 #  -Wsign-promo // disabled for XR_VERSION_MAJOR
 )
 
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
+
 target_link_libraries(
   TinyXrTest
   PRIVATE
   TinyXr
+  Qt5::Widgets # for a QOffscreenSurface, QApplication is needed
 )

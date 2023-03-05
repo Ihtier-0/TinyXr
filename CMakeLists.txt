@@ -47,11 +47,17 @@ target_compile_options(
 #  -Wsign-promo // disabled for XR_VERSION_MAJOR
 )
 
+find_package(Qt5 REQUIRED COMPONENTS Gui OpenGL)
+
 target_link_libraries(
   TinyXr
   PUBLIC
   openxr_loader
   cpptoml
+  Qt5::Gui # for QOpenGLContext
+  Qt5::OpenGL # for QWGLNativeContext
+  # TODO! Remove Opengl32
+  Opengl32 # for wglGetCurrentDC & wglGetCurrentContext
 )
 
 add_subdirectory(lib)

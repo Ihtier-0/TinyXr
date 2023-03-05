@@ -36,6 +36,9 @@ private:
   void getSystemProperties();
   bool initializeSystem();
 
+  // Session
+  bool createSession();
+
   //
   Config mConfig;
 
@@ -47,6 +50,10 @@ private:
 
   // System
   XrFormFactor mFormFactor = XrFormFactor::XR_FORM_FACTOR_MAX_ENUM;
+
+  // Session
+  QOpenGLContext mOpenGLContext;
+  QOffscreenSurface mSurface;
 };
 
 #endif // MANAGER_H

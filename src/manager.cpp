@@ -15,6 +15,10 @@
 Manager::Manager(const Config &config) : mConfig(config) {}
 
 Manager::~Manager() {
+  if (mContext.session != XR_NULL_HANDLE) {
+    CHECK_XR(xrDestroySession(mContext.session));
+  }
+
   // XrSystemId does not need to be destroyed
   mContext.system = XR_NULL_SYSTEM_ID;
 
@@ -40,6 +44,10 @@ bool Manager::init() {
   }
 
   if (!initializeSystem()) {
+    return false;
+  }
+
+  if (!createSession()) {
     return false;
   }
 
@@ -247,6 +255,7 @@ bool Manager::initializeDebug() {
 
   return true;
 }
+
 ////////////////////////////////////////////////////////////////////////////////
 /// System
 ////////////////////////////////////////////////////////////////////////////////
@@ -314,4 +323,75 @@ bool Manager::initializeSystem() {
   getSystemProperties();
 
   return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Session
+////////////////////////////////////////////////////////////////////////////////
+
+bool Manager::createSession() {
+  // only OpenGL now
+  auto requirement = valid<XrGraphicsRequirements>();
+  if (!CHECK_XR(mExtensionsFunction->xrGetGraphicsRequirementsKHR(
+          mContext.instance, mContext.system, &requirement))) {
+    return false;
+  }
+
+  auto sessionInfo = valid<XrSessionCreateInfo>();
+
+#if defined(XR_USE_PLATFORM_WIN32) && defined(XR_USE_GRAPHICS_API_OPENGL)
+  QSurfaceFormat format;
+  format.setSamples(4);
+  format.setProfile(QSurfaceFormat::CoreProfile);
+  format.setMajorVersion(XR_VERSION_MAJOR(requirement.minApiVersionSupported));
+  format.setMinorVersion(XR_VERSION_MINOR(requirement.minApiVersionSupported));
+  mSurface.setFormat(format);
+  mSurface.create();
+  mOpenGLContext.setFormat(format);
+  mOpenGLContext.setShareContext(QOpenGLContext::globalShareContext());
+  if (!mOpenGLContext.create()) {
+    LOG_FATAL("Unable to create OpenGL context");
+    return false;
+  }
+
+  if (!mOpenGLContext.makeCurrent(&mSurface)) {
+    LOG_FATAL("Unable to make current OpenGL context");
+    return false;
+  }
+
+  LOG_INFO(
+      "Use OpenGL " +
+      std::to_string(XR_VERSION_MAJOR(requirement.minApiVersionSupported)) +
+      "." +
+      std::to_string(XR_VERSION_MINOR(requirement.minApiVersionSupported)));
+
+  // not work
+  // const auto nativeHandle = mOpenGLContext.nativeHandle();
+  // const auto nativeContext = nativeHandle.value<QWGLNativeContext>();
+
+  // TODO! Remove the Qt dependency
+  // and
+  // use a library that explicitly provides HDC and HGLRC.
+  HDC dc = wglGetCurrentDC();
+  if (!dc) {
+    return false;
+  }
+  HGLRC glrc = wglGetCurrentContext();
+  if (!glrc) {
+    return false;
+  }
+
+  auto graphicsBinding = valid<XrGraphicsBinding>();
+  graphicsBinding.hDC = dc;
+  graphicsBinding.hGLRC = glrc;
+
+  sessionInfo.next = &graphicsBinding;
+  sessionInfo.systemId = mContext.system;
+#else
+  LOG_FATAL("TinyXr currently supports only Windows and OpenGL");
+  return false;
+#endif
+
+  return CHECK_XR(
+      xrCreateSession(mContext.instance, &sessionInfo, &mContext.session));
 }

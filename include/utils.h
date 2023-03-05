@@ -46,7 +46,7 @@ template <class T> T valid() {
 #define TO_MAP_VALUE(xrStruct, type) {typeid(xrStruct), type},
 
   static const std::unordered_map<std::type_index, XrStructureType> map = {
-      XR_LIST_STRUCTURE_TYPES_CORE(TO_MAP_VALUE)};
+      XR_LIST_STRUCTURE_TYPES(TO_MAP_VALUE)};
 
 #undef TO_MAP_VALUE
 
