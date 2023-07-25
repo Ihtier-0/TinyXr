@@ -1,0 +1,201 @@
+[
+  {
+    "__comment_godot_openxr": "configuration based on: https://github.com/GodotVR/godot_openxr/blob/master/src/openxr/OpenXRApi.cpp",
+    "__comment": "\"Name\" MUST be Well-Formed Path String (https://registry.khronos.org/OpenXR/specs/1.1/html/xrspec.html#semantic-paths-well-formed)",
+
+    "name": "tinyxr",
+    "localisedName": "Action Set Used by TinyXr",
+    "priority": 0,
+    "actions": [
+      {
+        "type": "XR_ACTION_TYPE_POSE_INPUT",
+        "name": "aimpose",
+        "localisedName": "Aim Pose",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "XR_ACTION_TYPE_POSE_INPUT",
+        "name": "grippose",
+        "localisedName": "Grip Pose",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "XR_ACTION_TYPE_POSE_INPUT",
+        "name": "palmpose",
+        "localisedName": "Palm Pose",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "XR_ACTION_TYPE_FLOAT_INPUT",
+        "name": "fronttrigger",
+        "localisedName": "Front trigger",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "XR_ACTION_TYPE_FLOAT_INPUT",
+        "name": "sidetrigger",
+        "localisedName": "Side trigger",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "XR_ACTION_TYPE_VECTOR2F_INPUT",
+        "name": "primary",
+        "localisedName": "Primary joystick/thumbstick/trackpad",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "XR_ACTION_TYPE_VECTOR2F_INPUT",
+        "name": "secondary",
+        "localisedName": "Secondary joystick/thumbstick/trackpad",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "XR_ACTION_TYPE_BOOLEAN_INPUT",
+        "name": "axbutton",
+        "localisedName": "A and X buttons",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "XR_ACTION_TYPE_BOOLEAN_INPUT",
+        "name": "bybutton",
+        "localisedName": "B, Y buttons",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "XR_ACTION_TYPE_BOOLEAN_INPUT",
+        "name": "axtouch",
+        "localisedName": "A and X touch",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "XR_ACTION_TYPE_BOOLEAN_INPUT",
+        "name": "bytouch",
+        "localisedName": "B, Y touch",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "XR_ACTION_TYPE_BOOLEAN_INPUT",
+        "name": "menubutton",
+        "localisedName": "Menu button",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "XR_ACTION_TYPE_BOOLEAN_INPUT",
+        "name": "selectbutton",
+        "localisedName": "Select button",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "XR_ACTION_TYPE_BOOLEAN_INPUT",
+        "name": "frontbutton",
+        "localisedName": "Front trigger as a button",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "XR_ACTION_TYPE_BOOLEAN_INPUT",
+        "name": "fronttouch",
+        "localisedName": "Finger on front trigger",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "XR_ACTION_TYPE_BOOLEAN_INPUT",
+        "name": "sidebutton",
+        "localisedName": "Side trigger as a button",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "XR_ACTION_TYPE_BOOLEAN_INPUT",
+        "name": "primarybutton",
+        "localisedName": "Primary joystick/thumbstick/trackpad click",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "XR_ACTION_TYPE_BOOLEAN_INPUT",
+        "name": "secondarybutton",
+        "localisedName": "Secondary joystick/thumbstick/trackpad click",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "XR_ACTION_TYPE_BOOLEAN_INPUT",
+        "name": "primarytouch",
+        "localisedName": "Primary joystick/thumbstick/trackpad touch",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "XR_ACTION_TYPE_BOOLEAN_INPUT",
+        "name": "secondarytouch",
+        "localisedName": "Secondary joystick/thumbstick/trackpad touch",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "XR_ACTION_TYPE_VIBRATION_OUTPUT",
+        "name": "haptic",
+        "localisedName": "Controller haptic vibration",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      }
+    ]
+  }
+]
