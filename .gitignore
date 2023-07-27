@@ -1,8 +1,15 @@
+##########
+# TinyXR #
+##########
+
 build
 install
 .vscode
+extdeps
 
-# c++
+#######
+# c++ #
+#######
 
 # Prerequisites
 *.d
@@ -37,7 +44,9 @@ install
 *.out
 *.app
 
-# c
+#####
+# c #
+#####
 
 # Prerequisites
 *.d
@@ -92,7 +101,9 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-# cmake
+#########
+# cmake #
+#########
 
 CMakeLists.txt.user
 CMakeCache.txt
@@ -106,7 +117,9 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 
-# qt
+######
+# qt #
+######
 
 # C++ objects and libs
 *.slo

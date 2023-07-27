@@ -44,9 +44,23 @@ set_property(TARGET TinyXr PROPERTY CXX_EXTENSIONS OFF)
 
 target_compile_definitions(TinyXr PRIVATE -DTINYXR_EXPORT)
 
-target_include_directories(TinyXr
+target_include_directories(
+  TinyXr
   PUBLIC
   ${PROJECT_SOURCE_DIR}/src/lib
+  ${OPENXR_INCLUDE_DIR}
+)
+
+target_include_directories(
+  TinyXr
+  PRIVATE
+  ${OPENXR_INCLUDE_DIR}
+)
+
+target_link_libraries(
+  TinyXr
+  PRIVATE
+  ${OPENXR_LIBRARY}
 )
 
 install(FILES ${core_headers} DESTINATION include/TinyXr/core)
