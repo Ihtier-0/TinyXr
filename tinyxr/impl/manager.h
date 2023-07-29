@@ -1,7 +1,7 @@
 #ifndef TINYXR_IMPL_MANAGER_H
 #define TINYXR_IMPL_MANAGER_H
 
-#include "TinyXr/core/tinyxr.h"
+#include "tinyxr/core/tinyxr.h"
 
 TINYXR_NAMESPACE_OPEN
 

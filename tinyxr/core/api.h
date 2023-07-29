@@ -1,7 +1,7 @@
 #ifndef TINYXR_CORE_API_H
 #define TINYXR_CORE_API_H
 
-#include "TinyXr/core/export.h"
+#include "tinyxr/core/export.h"
 
 // clang-format off
 

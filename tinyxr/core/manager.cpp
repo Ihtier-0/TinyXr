@@ -1,6 +1,6 @@
-#include "TinyXr/core/manager.h"
+#include "tinyxr/core/manager.h"
 
-#include "TinyXr/impl/manager.h"
+#include "tinyxr/impl/manager.h"
 
 TINYXR_NAMESPACE_OPEN
 

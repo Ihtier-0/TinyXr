@@ -1,8 +1,8 @@
 #ifndef TINYXR_CORE_MANAGER_H
 #define TINYXR_CORE_MANAGER_H
 
-#include "TinyXr/core/api.h"
-#include "TinyXr/core/tinyxr.h"
+#include "tinyxr/core/api.h"
+#include "tinyxr/core/tinyxr.h"
 
 #include <memory>
 

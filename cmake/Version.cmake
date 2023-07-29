@@ -5,9 +5,9 @@ set(TINYXR_VERSION_STRING
   "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}.${PROJECT_VERSION_TWEAK}")
 
 configure_file(
-  ${PROJECT_SOURCE_DIR}/src/lib/TinyXr/core/tinyxr.h.in
-  ${PROJECT_BINARY_DIR}/include/TinyXr/core/tinyxr.h)
-include_directories(${PROJECT_BINARY_DIR}/include)
+  ${PROJECT_SOURCE_DIR}/tinyxr/core/tinyxr.h.in
+  ${PROJECT_BINARY_DIR}/tinyxr/core/tinyxr.h)
+include_directories(${PROJECT_BINARY_DIR})
 install(
-  FILES ${PROJECT_BINARY_DIR}/include/TinyXr/core/tinyxr.h
-  DESTINATION include/TinyXr/core)
+  FILES ${PROJECT_BINARY_DIR}/tinyxr/core/tinyxr.h
+  DESTINATION include/tinyxr/core)

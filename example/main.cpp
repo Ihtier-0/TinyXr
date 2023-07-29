@@ -1,4 +1,4 @@
-#include "TinyXr/core/manager.h"
+#include "tinyxr/core/manager.h"
 
 int main(int argc, char* argv[])
 {

@@ -11,4 +11,5 @@ set(CMAKE_MODULE_PATH
 include(Version)
 include(Packages)
 
-add_subdirectory(src)
+add_subdirectory(tinyxr)
+add_subdirectory(example)
