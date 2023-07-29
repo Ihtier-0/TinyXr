@@ -11,9 +11,16 @@ TINYXR_NAMESPACE_OPEN
 class ManagerXRImpl;
 
 class TINYXR_API ManagerXr {
+  ManagerXr(const ManagerXr &) = delete;
+  ManagerXr(const ManagerXr &&) = delete;
+  ManagerXr &operator=(const ManagerXr &) = delete;
+  ManagerXr &operator=(const ManagerXr &&) = delete;
+
 public:
   ManagerXr();
   ~ManagerXr();
+
+  bool init();
 
 private:
   std::unique_ptr<ManagerXRImpl> m_impl;

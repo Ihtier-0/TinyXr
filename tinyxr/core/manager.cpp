@@ -6,6 +6,8 @@ TINYXR_NAMESPACE_OPEN
 
 ManagerXr::ManagerXr() { m_impl = std::make_unique<ManagerXRImpl>(); }
 
-ManagerXr::~ManagerXr() { }
+ManagerXr::~ManagerXr() {}
+
+bool ManagerXr::init() { return m_impl->init(); }
 
 TINYXR_NAMESPACE_CLOSE
