@@ -1,11 +1,11 @@
 #include "tinyxr/impl/manager.h"
 
-#include "tinyxr/core/tinyxr.h"
-#include "tinyxr/impl/openxr_utils.h"
-
 #include <algorithm>
 #include <iomanip>
 #include <string>
+
+#include "tinyxr/core/tinyxr.h"
+#include "tinyxr/impl/openxr_utils.h"
 
 TINYXR_NAMESPACE_OPEN
 

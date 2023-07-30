@@ -1,13 +1,13 @@
 #ifndef TINYXR_CORE_CONFIG_H
 #define TINYXR_CORE_CONFIG_H
 
-#include "tinyxr/core/api.h"
-#include "tinyxr/core/tinyxr.h"
-
 #include <cpptoml.h>
 
 #include <memory>
 #include <vector>
+
+#include "tinyxr/core/api.h"
+#include "tinyxr/core/tinyxr.h"
 
 TINYXR_NAMESPACE_OPEN
 

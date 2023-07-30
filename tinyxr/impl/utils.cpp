@@ -2,9 +2,8 @@
 
 TINYXR_NAMESPACE_OPEN
 
-std::vector<std::string> split(const std::string &str, const char &delim)
-{
-      std::vector<std::string> result;
+std::vector<std::string> split(const std::string &str, const char &delim) {
+  std::vector<std::string> result;
 
   size_t start;
   size_t end = 0;

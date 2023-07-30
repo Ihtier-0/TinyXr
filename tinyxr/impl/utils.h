@@ -3,8 +3,8 @@
 
 #include "tinyxr/core/tinyxr.h"
 
-#include <vector>
 #include <string>
+#include <vector>
 
 TINYXR_NAMESPACE_OPEN
 
