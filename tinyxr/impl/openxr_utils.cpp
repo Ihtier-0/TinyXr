@@ -1,6 +1,11 @@
 #include "tinyxr/impl/openxr_utils.h"
+#include "tinyxr/impl/utils.h"
 
 TINYXR_NAMESPACE_OPEN
+
+////////////////////////////////////////////////////////////////////////////////
+/// ToString
+////////////////////////////////////////////////////////////////////////////////
 
 std::string XrVersionToString(const XrVersion &version) {
   return std::to_string(XR_VERSION_MAJOR(version)) + "." +
@@ -27,5 +32,25 @@ TO_STRING_DEFINITION(XrResult)
 #undef TO_STRING_DEFINITION
 #undef TO_STRING_CASE
 #undef TO_STRING
+
+////////////////////////////////////////////////////////////////////////////////
+/// FromString
+////////////////////////////////////////////////////////////////////////////////
+
+XrVersion XrVersionFromString(const std::string &string) {
+  std::vector<std::string> splitString = split(string, '.');
+
+  if (splitString.size() != 3) {
+    return {};
+  }
+
+  try {
+    return XR_MAKE_VERSION(std::stoull(splitString[0]),
+                           std::stoull(splitString[1]),
+                           std::stoull(splitString[2]));
+  } catch (...) {
+    return {};
+  }
+}
 
 TINYXR_NAMESPACE_CLOSE

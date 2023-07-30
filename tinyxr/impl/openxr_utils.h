@@ -1,5 +1,5 @@
-#ifndef TINYXR_IMPL_UTILS_H
-#define TINYXR_IMPL_UTILS_H
+#ifndef TINYXR_IMPL_OPENXR_UTILS_H
+#define TINYXR_IMPL_OPENXR_UTILS_H
 
 #include "tinyxr/core/tinyxr.h"
 #include "tinyxr/impl/openxr.h"
@@ -23,6 +23,17 @@ TO_STRING_DECLARATION(XrVersion)
 TO_STRING_DECLARATION(XrResult)
 
 #undef TO_STRING_DECLARATION
+
+////////////////////////////////////////////////////////////////////////////////
+/// FromString
+////////////////////////////////////////////////////////////////////////////////
+
+#define FROM_STRING_DECLARATION(type)                                          \
+  type type##FromString(const std::string &string);
+
+FROM_STRING_DECLARATION(XrVersion)
+
+#undef FROM_STRING_DECLARATION
 
 ////////////////////////////////////////////////////////////////////////////////
 /// valid
@@ -98,4 +109,4 @@ bool twoCall(const XrFunction<T> &function, const std::string &functionName,
 
 TINYXR_NAMESPACE_CLOSE
 
-#endif // TINYXR_IMPL_UTILS_H
+#endif // TINYXR_IMPL_OPENXR_UTILS_H

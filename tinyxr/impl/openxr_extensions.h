@@ -2,10 +2,15 @@
 #define TINYXR_IMPL_OPENXR_EXTENSIONS_H
 
 #include "tinyxr/core/os.h"
+#include "tinyxr/core/tinyxr.h"
+
+#include <string>
+#include <vector>
 
 // clang-format on
 
-// based on: https://github.com/StereoKit/StereoKit/blob/master/StereoKitC/systems/platform/openxr_extensions.h
+// based on:
+// https://github.com/StereoKit/StereoKit/blob/master/StereoKitC/systems/platform/openxr_extensions.h
 #if defined(TINYXR_XR_OPENXR)
 
 #if defined(TINYXR_USE_GRAPHICS_API_D3D11)
@@ -21,8 +26,7 @@
 #define XrGraphicsBinding XrGraphicsBindingD3D11KHR
 #define XR_TYPE_GRAPHICS_BINDING XR_TYPE_GRAPHICS_BINDING_D3D11_KHR
 
-#elif defined(TINYXR_USE_PLATFORM_WIN32) &&                                    \
-    defined(TINYXR_USE_GRAPHICS_API_OPENGL)
+#elif defined(TINYXR_OS_WINDOWS) && defined(TINYXR_USE_GRAPHICS_API_OPENGL)
 #include <unknwn.h>
 #include <windows.h>
 #define XR_GFX_EXTENSION XR_KHR_OPENGL_ENABLE_EXTENSION_NAME
@@ -195,6 +199,26 @@
   _(xrConvertTimespecTimeToTimeKHR)                                            \
   _(xrConvertTimeToTimespecTimeKHR)
 #endif
+
+TINYXR_NAMESPACE_OPEN
+
+#define DEFINE_EXT_INFO(name, available) bool name = false;
+struct ExtensionsInfo {
+  ExtensionsInfo(const std::vector<std::string> &userRequestExtensions);
+
+  bool graphicExtension;
+  bool timeExtension;
+  FOR_EACH_EXT_ALL(DEFINE_EXT_INFO)
+  FOR_EACH_EXT_UWP(DEFINE_EXT_INFO)
+  FOR_EACH_EXT_ANDROID(DEFINE_EXT_INFO)
+  FOR_EACH_EXT_LINUX(DEFINE_EXT_INFO)
+  FOR_EACH_EXT_DEBUG(DEFINE_EXT_INFO)
+
+  std::vector<std::string> extensions;
+};
+#undef DEFINE_EXT_INFO
+
+TINYXR_NAMESPACE_CLOSE
 
 #endif
 

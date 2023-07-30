@@ -4,10 +4,12 @@
 
 TINYXR_NAMESPACE_OPEN
 
-ManagerXr::ManagerXr() { m_impl = std::make_unique<ManagerXRImpl>(); }
+ManagerXr::ManagerXr(const Config &confing) {
+  mImpl = std::make_unique<ManagerXRImpl>(confing);
+}
 
 ManagerXr::~ManagerXr() {}
 
-bool ManagerXr::init() { return m_impl->init(); }
+bool ManagerXr::init() { return mImpl->init(); }
 
 TINYXR_NAMESPACE_CLOSE

@@ -1,23 +1,91 @@
 #include "tinyxr/impl/manager.h"
 
+#include "tinyxr/core/tinyxr.h"
 #include "tinyxr/impl/openxr_utils.h"
 
 #include <algorithm>
 #include <iomanip>
+#include <string>
 
 TINYXR_NAMESPACE_OPEN
 
+ManagerXRImpl::ManagerXRImpl(const Config &confing)
+    : mConfig(confing), mExtensionsInfo(mConfig.getVector<std::string>(
+                            "xr.userRequestExtensions")) {}
+
 bool ManagerXRImpl::init() {
+  if (!mConfig.isValid()) {
+    std::cout << "Invalid config" << std::endl;
+    return false;
+  }
+
   if (!createInstance()) {
+    std::cout << "Unable to create XrInstance" << std::endl;
     return false;
   }
 
   return true;
 }
 
-bool ManagerXRImpl::logInstanceInfo() { return false; }
+bool ManagerXRImpl::logInstanceInfo() {
+  if (mContext.instance == XR_NULL_HANDLE) {
+    return false;
+  }
 
-bool ManagerXRImpl::createInstanceImpl() { return false; }
+  auto instanceProperties = valid<XrInstanceProperties>();
+  if (XR_FAILED(
+          xrGetInstanceProperties(mContext.instance, &instanceProperties))) {
+    return false;
+  }
+
+  std::cout << "Instance RuntimeName=" << instanceProperties.runtimeName
+            << " RuntimeVersion="
+            << XrVersionToString(instanceProperties.runtimeVersion)
+            << std::endl;
+
+  return true;
+}
+
+bool ManagerXRImpl::createInstanceImpl() {
+  if (mContext.instance != XR_NULL_HANDLE) {
+    return false;
+  }
+
+  std::vector<const char *> extensions;
+  extensions.reserve(mExtensionsInfo.extensions.size());
+  for (const auto &extension : mExtensionsInfo.extensions) {
+    extensions.push_back(extension.c_str());
+  }
+
+  auto createInfo = valid<XrInstanceCreateInfo>();
+  createInfo.enabledExtensionCount = (uint32_t)extensions.size();
+  createInfo.enabledExtensionNames = extensions.data();
+
+  // engine
+  createInfo.applicationInfo.engineVersion =
+      static_cast<uint32_t>(XR_MAKE_VERSION(
+          TINYXR_VERSION_MAJOR, TINYXR_VERSION_MINOR, TINYXR_VERSION_PATCH));
+  std::memcpy(createInfo.applicationInfo.engineName, TINYXR_STRING,
+              std::min<std::size_t>(std::strlen(TINYXR_STRING),
+                                    XR_MAX_ENGINE_NAME_SIZE));
+  createInfo.applicationInfo.apiVersion = XR_CURRENT_API_VERSION;
+
+  // application
+  const auto applicationName =
+      mConfig.getValue<std::string>("xr.ApplicationInfo.applicationName");
+  const auto applicationVersion = XrVersionFromString(
+      mConfig.getValue<std::string>("xr.ApplicationInfo.applicationVersion"));
+
+  std::memcpy(createInfo.applicationInfo.applicationName,
+              applicationName.c_str(),
+              std::min<std::size_t>(applicationName.size(),
+                                    XR_MAX_APPLICATION_NAME_SIZE));
+
+  createInfo.applicationInfo.applicationVersion =
+      static_cast<uint32_t>(applicationVersion);
+
+  return XR_SUCCEEDED(xrCreateInstance(&createInfo, &mContext.instance));
+}
 
 bool ManagerXRImpl::logLayersAndExtensions() {
   const auto logExtensions = [](const char *layerName, int indent) {

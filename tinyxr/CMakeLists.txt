@@ -1,10 +1,12 @@
 set(core_headers
   core/api.h
+  core/config.h
   core/export.h
   core/manager.h
   core/os.h)
 
 set(core_source
+  core/config.cpp
   core/manager.cpp)
 
 source_group("core" FILES ${core_headers} ${core_source})
@@ -17,12 +19,13 @@ set(impl_headers
   impl/openxr_definitions.h
   impl/openxr_utils.h
   impl/openxr.h
-  impl/platform.h)
+  impl/utils.h)
 
 set(impl_source
   impl/manager.cpp
   impl/openxr_extensions.cpp
-  impl/openxr_utils.cpp)
+  impl/openxr_utils.cpp
+  impl/utils.cpp)
 
 source_group("impl" FILES ${impl_headers} ${impl_source})
 
@@ -51,7 +54,8 @@ target_compile_definitions(
 target_include_directories(
   tinyxr
   PUBLIC
-  ${PROJECT_SOURCE_DIR})
+  ${PROJECT_SOURCE_DIR}
+  ${CPPTOML_INCLUDE_DIR})
 
 target_include_directories(
   tinyxr

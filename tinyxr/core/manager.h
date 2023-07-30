@@ -2,6 +2,7 @@
 #define TINYXR_CORE_MANAGER_H
 
 #include "tinyxr/core/api.h"
+#include "tinyxr/core/config.h"
 #include "tinyxr/core/tinyxr.h"
 
 #include <memory>
@@ -17,13 +18,13 @@ class TINYXR_API ManagerXr {
   ManagerXr &operator=(const ManagerXr &&) = delete;
 
 public:
-  ManagerXr();
+  ManagerXr(const Config &confing);
   ~ManagerXr();
 
   bool init();
 
 private:
-  std::unique_ptr<ManagerXRImpl> m_impl;
+  std::unique_ptr<ManagerXRImpl> mImpl;
 };
 
 TINYXR_NAMESPACE_CLOSE

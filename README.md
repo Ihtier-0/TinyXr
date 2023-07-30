@@ -17,6 +17,7 @@ Currently, TinyXr is only being tested on Oculus Quest 2.
 ## Dependencies
 
 - [OpenXR](https://www.khronos.org/openxr/)
+- [cpptoml](https://github.com/skystrife/cpptoml)
 
 ## Reference project
 

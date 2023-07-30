@@ -4,10 +4,16 @@
 
 int main(int argc, char *argv[]) {
   try {
-    TXR_NS::ManagerXr manager;
+    TXR_NS::Config config("default.toml");
+    if (!config.isValid()) {
+      std::cout << "invalid config" << std::endl;
+      return EXIT_FAILURE;
+    }
 
+    TXR_NS::ManagerXr manager(config);
     if (!manager.init()) {
       std::cout << "Unable to init TXR_NS::ManagerXr" << std::endl;
+      return EXIT_FAILURE;
     }
 
     return EXIT_SUCCESS;

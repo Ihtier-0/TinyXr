@@ -1,0 +1,9 @@
+[xr]
+# std::vector<std::string>
+userRequestExtensions = []
+
+[xr.ApplicationInfo]
+# std::string
+applicationName = "TinyXrTest"
+# std::string (Three numbers separated by dots)
+applicationVersion = "0.1.0"
