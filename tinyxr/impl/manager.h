@@ -28,6 +28,9 @@ private:
   bool logLayersAndExtensions();
   bool createInstance();
 
+  // System
+  bool getSystem();
+
   Config mConfig;
 
   ExtensionsInfo mExtensionsInfo;

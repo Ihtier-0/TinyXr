@@ -28,6 +28,7 @@ std::string XrVersionToString(const XrVersion &version) {
   }
 
 TO_STRING_DEFINITION(XrResult)
+TO_STRING_DEFINITION(XrFormFactor)
 
 #undef TO_STRING_DEFINITION
 #undef TO_STRING_CASE
@@ -52,5 +53,20 @@ XrVersion XrVersionFromString(const std::string &string) {
     return {};
   }
 }
+
+#define FROM_STRING_IF(name, value)                                            \
+  if (#name == string) {                                                       \
+    return name;                                                               \
+  }
+
+#define FROM_STRING_DEFINITION(type)                                           \
+  type type##FromString(const std::string &string) {                           \
+    XR_LIST_ENUM_##type(FROM_STRING_IF) return static_cast<type>(XR_MAX_ENUM); \
+  }
+
+FROM_STRING_DEFINITION(XrFormFactor)
+
+#undef FROM_STRING_DEFINITION
+#undef FROM_STRING_IF
 
 TINYXR_NAMESPACE_CLOSE

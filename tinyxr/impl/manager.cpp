@@ -9,6 +9,10 @@
 
 TINYXR_NAMESPACE_OPEN
 
+////////////////////////////////////////////////////////////////////////////////
+/// ManagerXRImpl
+////////////////////////////////////////////////////////////////////////////////
+
 ManagerXRImpl::ManagerXRImpl(const Config &confing)
     : mConfig(confing), mExtensionsInfo(mConfig.getVector<std::string>(
                             "xr.userRequestExtensions")) {}
@@ -24,8 +28,17 @@ bool ManagerXRImpl::init() {
     return false;
   }
 
+  if (!getSystem()) {
+    std::cout << "Unable to get XrSystem" << std::endl;
+    return false;
+  }
+
   return true;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+/// Instance
+////////////////////////////////////////////////////////////////////////////////
 
 bool ManagerXRImpl::logInstanceInfo() {
   if (mContext.instance == XR_NULL_HANDLE) {
@@ -72,9 +85,9 @@ bool ManagerXRImpl::createInstanceImpl() {
 
   // application
   const auto applicationName =
-      mConfig.getValue<std::string>("xr.ApplicationInfo.applicationName");
+      mConfig.getValue<std::string>("xr.applicationInfo.applicationName");
   const auto applicationVersion = XrVersionFromString(
-      mConfig.getValue<std::string>("xr.ApplicationInfo.applicationVersion"));
+      mConfig.getValue<std::string>("xr.applicationInfo.applicationVersion"));
 
   std::memcpy(createInfo.applicationInfo.applicationName,
               applicationName.c_str(),
@@ -155,6 +168,31 @@ bool ManagerXRImpl::createInstance() {
   if (!logInstanceInfo()) {
     return false;
   }
+
+  return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// System
+////////////////////////////////////////////////////////////////////////////////
+
+bool ManagerXRImpl::getSystem() {
+  if (mContext.instance == XR_NULL_HANDLE) {
+    return false;
+  }
+
+  const auto formFactor = mConfig.getValue<std::string>("xr.system.FormFactor");
+
+  auto systemInfo = valid<XrSystemGetInfo>();
+  systemInfo.formFactor = XrFormFactorFromString(formFactor);
+
+  if (XR_FAILED(
+          xrGetSystem(mContext.instance, &systemInfo, &mContext.systemId))) {
+    return false;
+  }
+
+  std::cout << "Using system " << mContext.systemId << " for form factor "
+            << formFactor << std::endl;
 
   return true;
 }

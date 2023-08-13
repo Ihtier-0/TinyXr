@@ -2,8 +2,13 @@
 # std::vector<std::string>
 userRequestExtensions = []
 
-[xr.ApplicationInfo]
+[xr.applicationInfo]
 # std::string
 applicationName = "TinyXrTest"
 # std::string (Three numbers separated by dots)
 applicationVersion = "0.1.0"
+
+[xr.system]
+# XR_FORM_FACTOR_HEAD_MOUNTED_DISPLAY
+# XR_FORM_FACTOR_HANDHELD_DISPLAY
+FormFactor = "XR_FORM_FACTOR_HEAD_MOUNTED_DISPLAY"

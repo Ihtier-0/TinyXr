@@ -10,4 +10,6 @@
 #include <openxr/openxr_reflection_parent_structs.h>
 #include <openxr/openxr_reflection_structs.h>
 
+#define XR_MAX_ENUM 0x7FFFFFFF
+
 #endif // TINYXR_IMPL_OPENXR_H
