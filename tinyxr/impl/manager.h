@@ -31,9 +31,16 @@ private:
   // System
   bool getSystem();
 
+  // Session
+  bool initializeGraphicsDevice();
+  bool logEnvironmentBlendMode(const XrViewConfigurationType type);
+  bool logViewConfigurations();
+  bool createSession();
+
   Config mConfig;
 
   ExtensionsInfo mExtensionsInfo;
+  std::unique_ptr<ExtensionsFunction> mExtensionsFunction;
 
   Context mContext;
 };

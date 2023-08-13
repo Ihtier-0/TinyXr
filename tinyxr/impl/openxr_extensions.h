@@ -3,6 +3,7 @@
 
 #include "tinyxr/core/os.h"
 #include "tinyxr/core/tinyxr.h"
+#include "tinyxr/impl/openxr.h"
 
 #include <string>
 #include <vector>
@@ -217,6 +218,16 @@ struct ExtensionsInfo {
   std::vector<std::string> extensions;
 };
 #undef DEFINE_EXT_INFO
+
+struct ExtensionsFunction {
+  ExtensionsFunction(const XrInstance &instance);
+
+#define DEFINE_PROC_MEMBER(name) PFN_##name name = nullptr;
+  FOR_EACH_EXTENSION_FUNCTION(DEFINE_PROC_MEMBER)
+  FOR_EACH_PLATFORM_FUNCTION(DEFINE_PROC_MEMBER)
+  PFN_xrGetGraphicsRequirementsKHR xrGetGraphicsRequirementsKHR;
+#undef DEFINE_PROC_MEMBER
+};
 
 TINYXR_NAMESPACE_CLOSE
 

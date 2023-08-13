@@ -23,13 +23,41 @@ bool ManagerXRImpl::init() {
     return false;
   }
 
+  mContext.formFactor = XrFormFactorFromString(
+      mConfig.getValue<std::string>("xr.system.formFactor"));
+  if (mContext.formFactor == XR_FORM_FACTOR_MAX_ENUM) {
+    std::cout << "Invalid xr.system.formFactor" << std::endl;
+    return false;
+  }
+
+  mContext.environmentBlendMode = XrEnvironmentBlendModeFromString(
+      mConfig.getValue<std::string>("xr.userRequestEnvironmentBlendMode"));
+  if (mContext.environmentBlendMode == XR_ENVIRONMENT_BLEND_MODE_MAX_ENUM) {
+    std::cout << "Invalid xr.userRequestEnvironmentBlendMode" << std::endl;
+    return false;
+  }
+
+  mContext.viewConfigurationType = XrViewConfigurationTypeFromString(
+      mConfig.getValue<std::string>("xr.viewConfigType"));
+  if (mContext.viewConfigurationType == XR_VIEW_CONFIGURATION_TYPE_MAX_ENUM) {
+    std::cout << "Invalid xr.viewConfigType" << std::endl;
+    return false;
+  }
+
   if (!createInstance()) {
     std::cout << "Unable to create XrInstance" << std::endl;
     return false;
   }
 
+  mExtensionsFunction = std::make_unique<ExtensionsFunction>(mContext.instance);
+
   if (!getSystem()) {
     std::cout << "Unable to get XrSystem" << std::endl;
+    return false;
+  }
+
+  if (!createSession()) {
+    std::cout << "Unable to create XrSession" << std::endl;
     return false;
   }
 
@@ -157,6 +185,10 @@ bool ManagerXRImpl::logLayersAndExtensions() {
 }
 
 bool ManagerXRImpl::createInstance() {
+  if (mContext.instance != XR_NULL_HANDLE) {
+    return false;
+  }
+
   if (!logLayersAndExtensions()) {
     return false;
   }
@@ -177,14 +209,13 @@ bool ManagerXRImpl::createInstance() {
 ////////////////////////////////////////////////////////////////////////////////
 
 bool ManagerXRImpl::getSystem() {
-  if (mContext.instance == XR_NULL_HANDLE) {
+  if (mContext.instance == XR_NULL_HANDLE ||
+      mContext.systemId != XR_NULL_SYSTEM_ID) {
     return false;
   }
 
-  const auto formFactor = mConfig.getValue<std::string>("xr.system.FormFactor");
-
   auto systemInfo = valid<XrSystemGetInfo>();
-  systemInfo.formFactor = XrFormFactorFromString(formFactor);
+  systemInfo.formFactor = mContext.formFactor;
 
   if (XR_FAILED(
           xrGetSystem(mContext.instance, &systemInfo, &mContext.systemId))) {
@@ -192,7 +223,137 @@ bool ManagerXRImpl::getSystem() {
   }
 
   std::cout << "Using system " << mContext.systemId << " for form factor "
-            << formFactor << std::endl;
+            << mContext.formFactor << std::endl;
+
+  return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Session
+////////////////////////////////////////////////////////////////////////////////
+
+bool ManagerXRImpl::initializeGraphicsDevice() {
+  if (!mExtensionsInfo.graphicExtension ||
+      mExtensionsFunction->xrGetGraphicsRequirementsKHR == nullptr) {
+    return false;
+  }
+
+  auto requirements = valid<XrGraphicsRequirementsOpenGLKHR>();
+
+  if (XR_FAILED(mExtensionsFunction->xrGetGraphicsRequirementsKHR(
+          mContext.instance, mContext.systemId, &requirements))) {
+    return false;
+  }
+
+  // GLint major = 0;
+  // GLint minor = 0;
+  // glGetIntegerv(GL_MAJOR_VERSION, &major);
+  // glGetIntegerv(GL_MINOR_VERSION, &minor);
+
+  return false;
+}
+
+bool ManagerXRImpl::logEnvironmentBlendMode(
+    const XrViewConfigurationType type) {
+  if (mContext.instance == XR_NULL_HANDLE ||
+      mContext.systemId == XR_NULL_SYSTEM_ID) {
+    return false;
+  }
+
+  std::vector<XrEnvironmentBlendMode> modes;
+  if (!TWO_CALL(std::bind(xrEnumerateEnvironmentBlendModes, mContext.instance,
+                          mContext.systemId, type, std::placeholders::_1,
+                          std::placeholders::_2, std::placeholders::_3),
+                modes)) {
+    return false;
+  }
+
+  for (const auto mode : modes) {
+    std::cout << "Environment Blend Mode: "
+              << XrEnvironmentBlendModeToString(mode)
+              << (mode == mContext.environmentBlendMode ? " (Selected)" : "")
+              << std::endl;
+  }
+
+  return true;
+}
+
+bool ManagerXRImpl::logViewConfigurations() {
+  if (mContext.instance == XR_NULL_HANDLE ||
+      mContext.systemId == XR_NULL_SYSTEM_ID) {
+    return false;
+  }
+
+  std::vector<XrViewConfigurationType> types;
+  if (!TWO_CALL(std::bind(xrEnumerateViewConfigurations, mContext.instance,
+                          mContext.systemId, std::placeholders::_1,
+                          std::placeholders::_2, std::placeholders::_3),
+                types)) {
+    return false;
+  }
+
+  std::cout << "Available View Configuration Types: (" << types.size() << ")"
+            << std::endl;
+  for (const auto &type : types) {
+    std::cout << "  View Configuration Type: "
+              << XrViewConfigurationTypeToString(type)
+              << (type == mContext.viewConfigurationType ? " (Selected)" : "")
+              << std::endl;
+
+    auto properties = valid<XrViewConfigurationProperties>();
+    if (XR_FAILED(xrGetViewConfigurationProperties(
+            mContext.instance, mContext.systemId, type, &properties))) {
+      continue;
+    }
+
+    std::cout << "  View configuration FovMutable="
+              << (properties.fovMutable == XR_TRUE ? "True" : "False")
+              << std::endl;
+
+    std::vector<XrViewConfigurationView> views;
+    if (!TWO_CALL(std::bind(xrEnumerateViewConfigurationViews,
+                            mContext.instance, mContext.systemId, type,
+                            std::placeholders::_1, std::placeholders::_2,
+                            std::placeholders::_3),
+                  views)) {
+      continue;
+    }
+
+    for (uint32_t i = 0; i < views.size(); i++) {
+      const XrViewConfigurationView &view = views[i];
+
+      std::cout << "    View [" << i
+                << "]: Recommended Width=" << view.recommendedImageRectWidth
+                << " Height=" << view.recommendedImageRectHeight
+                << " SampleCount=" << view.recommendedSwapchainSampleCount
+                << std::endl;
+      std::cout << "    View [" << i
+                << "]: Maximum Width=" << view.maxImageRectWidth
+                << " Height=" << view.maxImageRectHeight
+                << " SampleCount=" << view.maxSwapchainSampleCount << std::endl;
+    }
+
+    if (!logEnvironmentBlendMode(type)) {
+      continue;
+    }
+  }
+
+  return true;
+}
+
+bool ManagerXRImpl::createSession() {
+  if (mContext.instance == XR_NULL_HANDLE ||
+      mContext.systemId == XR_NULL_SYSTEM_ID) {
+    return false;
+  }
+
+  if (!logViewConfigurations()) {
+    return false;
+  }
+
+  if (!initializeGraphicsDevice()) {
+    return false;
+  }
 
   return true;
 }

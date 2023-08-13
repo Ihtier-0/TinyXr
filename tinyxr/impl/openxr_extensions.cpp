@@ -4,6 +4,10 @@
 
 TINYXR_NAMESPACE_OPEN
 
+////////////////////////////////////////////////////////////////////////////////
+/// ExtensionsInfo
+////////////////////////////////////////////////////////////////////////////////
+
 ExtensionsInfo::ExtensionsInfo(
     const std::vector<std::string> &userRequestExtensions) {
 #define CHECK_EXT(name, available)                                             \
@@ -42,6 +46,28 @@ ExtensionsInfo::ExtensionsInfo(
   }
 
 #undef CHECK_EXT
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// ExtensionsFunction
+////////////////////////////////////////////////////////////////////////////////
+
+ExtensionsFunction::ExtensionsFunction(const XrInstance &instance) {
+#define GET_INSTANCE_PROC_ADDRESS(name)                                        \
+  xrGetInstanceProcAddr(instance, #name,                                       \
+                        (PFN_xrVoidFunction *)((PFN_##name *)(&name)));
+
+  if (instance == XR_NULL_HANDLE) {
+    return;
+  }
+
+  FOR_EACH_EXTENSION_FUNCTION(GET_INSTANCE_PROC_ADDRESS);
+  FOR_EACH_PLATFORM_FUNCTION(GET_INSTANCE_PROC_ADDRESS);
+  xrGetInstanceProcAddr(
+      instance, NAME_xrGetGraphicsRequirementsKHR,
+      reinterpret_cast<PFN_xrVoidFunction *>(&xrGetGraphicsRequirementsKHR));
+
+#undef GET_INSTANCE_PROC_ADDRESS
 }
 
 TINYXR_NAMESPACE_CLOSE
