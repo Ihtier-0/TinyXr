@@ -7,6 +7,13 @@
 #include "tinyxr/core/tinyxr.h"
 #include "tinyxr/impl/openxr_utils.h"
 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#define GLFW_EXPOSE_NATIVE_WIN32
+#define GLFW_EXPOSE_NATIVE_WGL
+#define GLFW_NATIVE_INCLUDE_NONE
+#include <GLFW/glfw3native.h>
+
 TINYXR_NAMESPACE_OPEN
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -232,25 +239,73 @@ bool ManagerXRImpl::getSystem() {
 /// Session
 ////////////////////////////////////////////////////////////////////////////////
 
+bool ManagerXRImpl::createSessionImpl() {
+  auto binding = valid<XrGraphicsBinding>();
+  binding.hDC = GetDC(glfwGetWin32Window(mGraphicsContext));
+  binding.hGLRC = glfwGetWGLContext(mGraphicsContext);
+
+  auto createInfo = valid<XrSessionCreateInfo>();
+  createInfo.next = &binding;
+  createInfo.systemId = mContext.systemId;
+  return XR_SUCCEEDED(
+      xrCreateSession(mContext.instance, &createInfo, &mContext.session));
+}
+
+bool ManagerXRImpl::initGraphicsApi(
+    const XrGraphicsRequirements &requirements) {
+  // TODO! support all graphics API
+  const auto major = XR_VERSION_MAJOR(requirements.minApiVersionSupported);
+  const auto minor = XR_VERSION_MINOR(requirements.minApiVersionSupported);
+
+  glfwInit();
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, major);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minor);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+  glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // Offscreen contexts
+  mGraphicsContext = glfwCreateWindow(10, 10, "TinyXrGlContext", NULL, NULL);
+  glfwMakeContextCurrent(mGraphicsContext);
+
+  if (glewInit() != GLEW_OK) {
+    std::cout << "Failed to initialize GLEW" << std::endl;
+    return false;
+  }
+
+  return true;
+}
+
 bool ManagerXRImpl::initializeGraphicsDevice() {
   if (!mExtensionsInfo.graphicExtension ||
       mExtensionsFunction->xrGetGraphicsRequirementsKHR == nullptr) {
     return false;
   }
 
-  auto requirements = valid<XrGraphicsRequirementsOpenGLKHR>();
+  auto requirements = valid<XrGraphicsRequirements>();
 
   if (XR_FAILED(mExtensionsFunction->xrGetGraphicsRequirementsKHR(
           mContext.instance, mContext.systemId, &requirements))) {
     return false;
   }
 
-  // GLint major = 0;
-  // GLint minor = 0;
-  // glGetIntegerv(GL_MAJOR_VERSION, &major);
-  // glGetIntegerv(GL_MINOR_VERSION, &minor);
+  if (!initGraphicsApi(requirements)) {
+    return false;
+  }
 
-  return false;
+  // TODO! support all graphics API
+  GLint major = 0;
+  GLint minor = 0;
+  glGetIntegerv(GL_MAJOR_VERSION, &major);
+  glGetIntegerv(GL_MINOR_VERSION, &minor);
+
+  const auto currentVersion = XR_MAKE_VERSION(major, minor, 0);
+  if (requirements.minApiVersionSupported > currentVersion) {
+    std::cout << "The current version of OpenGL is lower than what the OpenXR "
+                 "runtime requires."
+              << std::endl;
+    return false;
+  }
+
+  return true;
 }
 
 bool ManagerXRImpl::logEnvironmentBlendMode(
@@ -328,7 +383,7 @@ bool ManagerXRImpl::logViewConfigurations() {
                 << " SampleCount=" << view.recommendedSwapchainSampleCount
                 << std::endl;
       std::cout << "    View [" << i
-                << "]: Maximum Width=" << view.maxImageRectWidth
+                << "]: Maximum     Width=" << view.maxImageRectWidth
                 << " Height=" << view.maxImageRectHeight
                 << " SampleCount=" << view.maxSwapchainSampleCount << std::endl;
     }
@@ -352,6 +407,10 @@ bool ManagerXRImpl::createSession() {
   }
 
   if (!initializeGraphicsDevice()) {
+    return false;
+  }
+
+  if (!createSessionImpl()) {
     return false;
   }
 

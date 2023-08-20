@@ -60,12 +60,17 @@ target_include_directories(
 target_include_directories(
   tinyxr
   PRIVATE
-  ${OPENXR_INCLUDE_DIR})
+  ${OPENXR_INCLUDE_DIR}
+  ${GLEW_INCLUDE_DIR}
+  ${GLFW_INCLUDE_DIR})
 
 target_link_libraries(
   tinyxr
   PRIVATE
-  ${OPENXR_LIBRARY})
+  ${OPENXR_LIBRARY}
+  ${GLFW_LIBRARY}
+  ${GLEW_LIBRARY}
+  OpenGL::GL)
 
 install(FILES ${core_headers} DESTINATION include/tinyxr/core)
 

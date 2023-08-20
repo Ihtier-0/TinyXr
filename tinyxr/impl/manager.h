@@ -7,6 +7,8 @@
 #include "tinyxr/impl/context.h"
 #include "tinyxr/impl/openxr_extensions.h"
 
+struct GLFWwindow;
+
 TINYXR_NAMESPACE_OPEN
 
 class ManagerXRImpl {
@@ -32,6 +34,9 @@ private:
   bool getSystem();
 
   // Session
+  bool createSessionImpl();
+  bool initGraphicsApi(const XrGraphicsRequirements
+                           &requirements); // TODO! support all graphics API
   bool initializeGraphicsDevice();
   bool logEnvironmentBlendMode(const XrViewConfigurationType type);
   bool logViewConfigurations();
@@ -43,6 +48,9 @@ private:
   std::unique_ptr<ExtensionsFunction> mExtensionsFunction;
 
   Context mContext;
+
+  // TODO! support all graphics API
+  GLFWwindow *mGraphicsContext;
 };
 
 TINYXR_NAMESPACE_CLOSE
