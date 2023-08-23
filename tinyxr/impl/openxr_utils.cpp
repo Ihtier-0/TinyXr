@@ -31,6 +31,7 @@ TO_STRING_DEFINITION(XrResult)
 TO_STRING_DEFINITION(XrFormFactor)
 TO_STRING_DEFINITION(XrViewConfigurationType)
 TO_STRING_DEFINITION(XrEnvironmentBlendMode)
+TO_STRING_DEFINITION(XrReferenceSpaceType)
 
 #undef TO_STRING_DEFINITION
 #undef TO_STRING_CASE
@@ -69,6 +70,7 @@ XrVersion XrVersionFromString(const std::string &string) {
 FROM_STRING_DEFINITION(XrFormFactor)
 FROM_STRING_DEFINITION(XrViewConfigurationType)
 FROM_STRING_DEFINITION(XrEnvironmentBlendMode)
+FROM_STRING_DEFINITION(XrReferenceSpaceType)
 
 #undef FROM_STRING_DEFINITION
 #undef FROM_STRING_IF

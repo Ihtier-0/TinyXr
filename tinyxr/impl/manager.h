@@ -42,6 +42,14 @@ private:
   bool logViewConfigurations();
   bool createSession();
 
+  // Actions
+  bool createActions();
+
+  // Spaces
+  bool createReferenceSpacesImpl();
+  bool logReferenceSpaces();
+  bool createReferenceSpaces();
+
   Config mConfig;
 
   ExtensionsInfo mExtensionsInfo;

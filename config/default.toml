@@ -7,6 +7,10 @@ userRequestExtensions = []
 # XR_ENVIRONMENT_BLEND_MODE_ALPHA_BLEND
 userRequestEnvironmentBlendMode = "XR_ENVIRONMENT_BLEND_MODE_OPAQUE"
 
+# both configurations based on: // https://github.com/GodotVR/godot_openxr/blob/master/src/openxr/OpenXRApi.cpp
+actionSetsConfig = "./actionSets.json"
+interactionProfilesConfig = "./interactionProfiles.json"
+
 # XR_VIEW_CONFIGURATION_TYPE_PRIMARY_MONO
 # XR_VIEW_CONFIGURATION_TYPE_PRIMARY_STEREO
 # XR_VIEW_CONFIGURATION_TYPE_PRIMARY_QUAD_VARJO

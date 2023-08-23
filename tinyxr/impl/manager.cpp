@@ -7,6 +7,7 @@
 #include "tinyxr/core/tinyxr.h"
 #include "tinyxr/impl/openxr_utils.h"
 
+// TODO! support all graphics API
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #define GLFW_EXPOSE_NATIVE_WIN32
@@ -65,6 +66,16 @@ bool ManagerXRImpl::init() {
 
   if (!createSession()) {
     std::cout << "Unable to create XrSession" << std::endl;
+    return false;
+  }
+
+  if (!createActions()) {
+    std::cout << "Unable to create XrActions" << std::endl;
+    return false;
+  }
+
+  if (!createReferenceSpaces()) {
+    std::cout << "Unable to create XrSpaces" << std::endl;
     return false;
   }
 
@@ -411,6 +422,78 @@ bool ManagerXRImpl::createSession() {
   }
 
   if (!createSessionImpl()) {
+    return false;
+  }
+
+  return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Actions
+////////////////////////////////////////////////////////////////////////////////
+
+bool ManagerXRImpl::createActions() { return false; }
+
+////////////////////////////////////////////////////////////////////////////////
+/// Spaces
+////////////////////////////////////////////////////////////////////////////////
+
+bool ManagerXRImpl::createReferenceSpacesImpl() {
+  const auto createSpace = [this](const XrReferenceSpaceType type) {
+    XrSpace space;
+
+    auto createInfo = valid<XrReferenceSpaceCreateInfo>();
+    createInfo.referenceSpaceType = static_cast<XrReferenceSpaceType>(type);
+
+    const auto error =
+        xrCreateReferenceSpace(mContext.session, &createInfo, &space);
+    if (XR_FAILED(error)) {
+      std::cout << "Failed to create reference space "
+                << XrReferenceSpaceTypeToString(createInfo.referenceSpaceType)
+                << " with error " << XrResultToString(error) << std::endl;
+    }
+
+    mContext.referenceSpaces[createInfo.referenceSpaceType] = space;
+  };
+
+  const auto begin = static_cast<int>(XR_REFERENCE_SPACE_TYPE_VIEW);
+  const auto end = static_cast<int>(XR_REFERENCE_SPACE_TYPE_STAGE);
+
+  for (auto space = begin; space <= end; ++space) {
+    createSpace(static_cast<XrReferenceSpaceType>(space));
+  }
+
+  return !mContext.referenceSpaces.empty();
+}
+
+bool ManagerXRImpl::logReferenceSpaces() {
+  if (mContext.session == XR_NULL_HANDLE) {
+    return false;
+  }
+
+  std::vector<XrReferenceSpaceType> spaces;
+  if (!TWO_CALL(std::bind(xrEnumerateReferenceSpaces, mContext.session,
+                          std::placeholders::_1, std::placeholders::_2,
+                          std::placeholders::_3),
+                spaces)) {
+    return false;
+  }
+
+  std::cout << "Available reference spaces (" << spaces.size() << ')'
+            << std::endl;
+  for (const auto &space : spaces) {
+    std::cout << "  Name: " << XrReferenceSpaceTypeToString(space) << std::endl;
+  }
+
+  return true;
+}
+
+bool ManagerXRImpl::createReferenceSpaces() {
+  if (!logReferenceSpaces()) {
+    return false;
+  }
+
+  if (!createReferenceSpacesImpl()) {
     return false;
   }
 

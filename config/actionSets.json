@@ -1,0 +1,198 @@
+[
+  {
+    "name": "TinyXrSet",
+    "localised_name": "Action Set Used by TinyXr",
+    "priority": 0,
+    "actions": [
+      {
+        "type": "pose",
+        "name": "aim_pose",
+        "localised_name": "Aim Pose",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "pose",
+        "name": "grip_pose",
+        "localised_name": "Grip Pose",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "pose",
+        "name": "palm_pose",
+        "localised_name": "Palm Pose",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "float",
+        "name": "front_trigger",
+        "localised_name": "Front trigger",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "float",
+        "name": "side_trigger",
+        "localised_name": "Side trigger",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "vector2",
+        "name": "primary",
+        "localised_name": "Primary joystick/thumbstick/trackpad",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "vector2",
+        "name": "secondary",
+        "localised_name": "Secondary joystick/thumbstick/trackpad",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "ax_button",
+        "localised_name": "A and X buttons",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "by_button",
+        "localised_name": "B, Y buttons",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "ax_touch",
+        "localised_name": "A and X touch",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "by_touch",
+        "localised_name": "B, Y touch",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "menu_button",
+        "localised_name": "Menu button",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "select_button",
+        "localised_name": "Select button",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "front_button",
+        "localised_name": "Front trigger as a button",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "front_touch",
+        "localised_name": "Finger on front trigger",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "side_button",
+        "localised_name": "Side trigger as a button",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "primary_button",
+        "localised_name": "Primary joystick/thumbstick/trackpad click",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "secondary_button",
+        "localised_name": "Secondary joystick/thumbstick/trackpad click",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "primary_touch",
+        "localised_name": "Primary joystick/thumbstick/trackpad touch",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "bool",
+        "name": "secondary_touch",
+        "localised_name": "Secondary joystick/thumbstick/trackpad touch",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      },
+      {
+        "type": "vibration",
+        "name": "haptic",
+        "localised_name": "Controller haptic vibration",
+        "paths": [
+          "/user/hand/left",
+          "/user/hand/right"
+        ]
+      }
+    ]
+  }
+]

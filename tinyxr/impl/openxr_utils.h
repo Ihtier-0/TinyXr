@@ -3,6 +3,7 @@
 
 #include "tinyxr/core/tinyxr.h"
 #include "tinyxr/impl/openxr.h"
+#include "tinyxr/impl/openxr_math.h"
 
 #include <cstring>
 #include <functional>
@@ -24,6 +25,7 @@ TO_STRING_DECLARATION(XrResult)
 TO_STRING_DECLARATION(XrFormFactor)
 TO_STRING_DECLARATION(XrViewConfigurationType)
 TO_STRING_DECLARATION(XrEnvironmentBlendMode)
+TO_STRING_DECLARATION(XrReferenceSpaceType)
 
 #undef TO_STRING_DECLARATION
 
@@ -38,12 +40,21 @@ FROM_STRING_DECLARATION(XrVersion)
 FROM_STRING_DECLARATION(XrFormFactor)
 FROM_STRING_DECLARATION(XrViewConfigurationType)
 FROM_STRING_DECLARATION(XrEnvironmentBlendMode)
+FROM_STRING_DECLARATION(XrReferenceSpaceType)
 
 #undef FROM_STRING_DECLARATION
 
 ////////////////////////////////////////////////////////////////////////////////
 /// valid
 ////////////////////////////////////////////////////////////////////////////////
+
+template <class T> inline void validFields(T &t) {}
+
+template <>
+inline void validFields<XrReferenceSpaceCreateInfo>(
+    XrReferenceSpaceCreateInfo &createInfo) {
+  createInfo.poseInReferenceSpace = XrPosefIdentity();
+}
 
 /**
  * @return XrStruct with the correct type and all other fields set to zero.
@@ -61,6 +72,7 @@ template <class T> T valid() {
   T result;
   std::memset(&result, 0, sizeof(result));
   result.type = map.at(typeid(T));
+  validFields(result);
 
   return result;
 }

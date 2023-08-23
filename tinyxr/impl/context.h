@@ -1,7 +1,12 @@
 #ifndef TINYXR_IMPL_CONTEXT_H
 #define TINYXR_IMPL_CONTEXT_H
 
+#include "tinyxr/core/tinyxr.h"
+
+#include "tinyxr/impl/action_set.h"
 #include "tinyxr/impl/openxr.h"
+
+TINYXR_NAMESPACE_OPEN
 
 struct Context {
   XrFormFactor formFactor = XR_FORM_FACTOR_MAX_ENUM;
@@ -13,6 +18,12 @@ struct Context {
   XrInstance instance = XR_NULL_HANDLE;
   XrSystemId systemId = XR_NULL_SYSTEM_ID;
   XrSession session = XR_NULL_HANDLE;
+
+  ActionSets actionSets;
+
+  std::unordered_map<XrReferenceSpaceType, XrSpace> referenceSpaces;
 };
+
+TINYXR_NAMESPACE_CLOSE
 
 #endif // TINYXR_IMPL_CONTEXT_H
