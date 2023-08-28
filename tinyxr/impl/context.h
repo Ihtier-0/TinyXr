@@ -8,6 +8,8 @@
 
 TINYXR_NAMESPACE_OPEN
 
+using SpaceMap = std::unordered_map<XrReferenceSpaceType, XrSpace>;
+
 struct Context {
   XrFormFactor formFactor = XR_FORM_FACTOR_MAX_ENUM;
   XrEnvironmentBlendMode environmentBlendMode =
@@ -19,9 +21,11 @@ struct Context {
   XrSystemId systemId = XR_NULL_SYSTEM_ID;
   XrSession session = XR_NULL_HANDLE;
 
-  ActionSets actionSets;
+  ActionSetsMap actionSets;
 
-  std::unordered_map<XrReferenceSpaceType, XrSpace> referenceSpaces;
+  SpaceMap referenceSpaces;
+
+  SubactionPathMap subactionPaths;
 };
 
 TINYXR_NAMESPACE_CLOSE

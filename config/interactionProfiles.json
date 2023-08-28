@@ -1,49 +1,53 @@
 [
   {
+    "__comment_godot_openxr": "configuration based on: https://github.com/GodotVR/godot_openxr/blob/master/src/openxr/OpenXRApi.cpp",
+    
+    "__comment": "\"Name\" (\"set\" & \"action\") MUST be Well-Formed Path String (https://registry.khronos.org/OpenXR/specs/1.0/html/xrspec.html#well-formed-path-strings)",
+
     "path": "/interaction_profiles/khr/simple_controller",
     "bindings": [
       {
-        "set": "TinyXrSet",
-        "action": "aim_pose",
+        "set": "tinyxr",
+        "action": "aimpose",
         "paths": [
           "/user/hand/left/input/aim/pose",
           "/user/hand/right/input/aim/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "grip_pose",
+        "set": "tinyxr",
+        "action": "grippose",
         "paths": [
           "/user/hand/left/input/grip/pose",
           "/user/hand/right/input/grip/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "palm_pose",
+        "set": "tinyxr",
+        "action": "palmpose",
         "paths": [
           "/user/hand/left/input/palm_ext/pose",
           "/user/hand/right/input/palm_ext/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "menu_button",
+        "set": "tinyxr",
+        "action": "menubutton",
         "paths": [
           "/user/hand/left/input/menu/click",
           "/user/hand/right/input/menu/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "select_button",
+        "set": "tinyxr",
+        "action": "selectbutton",
         "paths": [
           "/user/hand/left/input/select/click",
           "/user/hand/right/input/select/click"
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "haptic",
         "paths": [
           "/user/hand/left/output/haptic",
@@ -56,55 +60,55 @@
     "path": "/interaction_profiles/htc/vive_controller",
     "bindings": [
       {
-        "set": "TinyXrSet",
-        "action": "aim_pose",
+        "set": "tinyxr",
+        "action": "aimpose",
         "paths": [
           "/user/hand/left/input/aim/pose",
           "/user/hand/right/input/aim/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "grip_pose",
+        "set": "tinyxr",
+        "action": "grippose",
         "paths": [
           "/user/hand/left/input/grip/pose",
           "/user/hand/right/input/grip/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "palm_pose",
+        "set": "tinyxr",
+        "action": "palmpose",
         "paths": [
           "/user/hand/left/input/palm_ext/pose",
           "/user/hand/right/input/palm_ext/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "select_button",
+        "set": "tinyxr",
+        "action": "selectbutton",
         "paths": [
           "/user/hand/left/input/system/click",
           "/user/hand/right/input/system/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_trigger",
+        "set": "tinyxr",
+        "action": "palmpose",
         "paths": [
           "/user/hand/left/input/trigger/value",
           "/user/hand/right/input/trigger/value"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "side_trigger",
+        "set": "tinyxr",
+        "action": "sidetrigger",
         "paths": [
           "/user/hand/left/input/squeeze/click",
           "/user/hand/right/input/squeeze/click"
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "primary",
         "paths": [
           "/user/hand/left/input/trackpad",
@@ -112,47 +116,47 @@
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_button",
+        "set": "tinyxr",
+        "action": "frontbutton",
         "paths": [
           "/user/hand/left/input/trigger/click",
           "/user/hand/right/input/trigger/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "side_button",
+        "set": "tinyxr",
+        "action": "sidebutton",
         "paths": [
           "/user/hand/left/input/squeeze/click",
           "/user/hand/right/input/squeeze/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "menu_button",
+        "set": "tinyxr",
+        "action": "menubutton",
         "paths": [
           "/user/hand/left/input/menu/click",
           "/user/hand/right/input/menu/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "primary_button",
+        "set": "tinyxr",
+        "action": "primarybutton",
         "paths": [
           "/user/hand/left/input/trackpad/click",
           "/user/hand/right/input/trackpad/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "primary_touch",
+        "set": "tinyxr",
+        "action": "primarytouch",
         "paths": [
           "/user/hand/left/input/trackpad/touch",
           "/user/hand/right/input/trackpad/touch"
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "haptic",
         "paths": [
           "/user/hand/left/output/haptic",
@@ -165,47 +169,47 @@
     "path": "/interaction_profiles/microsoft/motion_controller",
     "bindings": [
       {
-        "set": "TinyXrSet",
-        "action": "aim_pose",
+        "set": "tinyxr",
+        "action": "aimpose",
         "paths": [
           "/user/hand/left/input/aim/pose",
           "/user/hand/right/input/aim/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "grip_pose",
+        "set": "tinyxr",
+        "action": "grippose",
         "paths": [
           "/user/hand/left/input/grip/pose",
           "/user/hand/right/input/grip/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "palm_pose",
+        "set": "tinyxr",
+        "action": "palmpose",
         "paths": [
           "/user/hand/left/input/palm_ext/pose",
           "/user/hand/right/input/palm_ext/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_trigger",
+        "set": "tinyxr",
+        "action": "fronttrigger",
         "paths": [
           "/user/hand/left/input/trigger/value",
           "/user/hand/right/input/trigger/value"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "side_trigger",
+        "set": "tinyxr",
+        "action": "sidetrigger",
         "paths": [
           "/user/hand/left/input/squeeze/click",
           "/user/hand/right/input/squeeze/click"
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "primary",
         "paths": [
           "/user/hand/left/input/thumbstick",
@@ -213,7 +217,7 @@
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "secondary",
         "paths": [
           "/user/hand/left/input/trackpad",
@@ -221,55 +225,55 @@
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_button",
+        "set": "tinyxr",
+        "action": "frontbutton",
         "paths": [
           "/user/hand/left/input/trigger/value",
           "/user/hand/right/input/trigger/value"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "side_button",
+        "set": "tinyxr",
+        "action": "sidebutton",
         "paths": [
           "/user/hand/left/input/squeeze/click",
           "/user/hand/right/input/squeeze/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "menu_button",
+        "set": "tinyxr",
+        "action": "menubutton",
         "paths": [
           "/user/hand/left/input/menu/click",
           "/user/hand/right/input/menu/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "primary_button",
+        "set": "tinyxr",
+        "action": "primarybutton",
         "paths": [
           "/user/hand/left/input/thumbstick/click",
           "/user/hand/right/input/thumbstick/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "secondary_button",
+        "set": "tinyxr",
+        "action": "secondarybutton",
         "paths": [
           "/user/hand/left/input/trackpad/click",
           "/user/hand/right/input/trackpad/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "secondary_touch",
+        "set": "tinyxr",
+        "action": "secondarytouch",
         "paths": [
           "/user/hand/left/input/trackpad/touch",
           "/user/hand/right/input/trackpad/touch"
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "haptic",
         "paths": [
           "/user/hand/left/output/haptic",
@@ -282,47 +286,47 @@
     "path": "/interaction_profiles/samsung/odyssey_controller",
     "bindings": [
       {
-        "set": "TinyXrSet",
-        "action": "aim_pose",
+        "set": "tinyxr",
+        "action": "aimpose",
         "paths": [
           "/user/hand/left/input/aim/pose",
           "/user/hand/right/input/aim/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "grip_pose",
+        "set": "tinyxr",
+        "action": "grippose",
         "paths": [
           "/user/hand/left/input/grip/pose",
           "/user/hand/right/input/grip/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "palm_pose",
+        "set": "tinyxr",
+        "action": "palmpose",
         "paths": [
           "/user/hand/left/input/palm_ext/pose",
           "/user/hand/right/input/palm_ext/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_trigger",
+        "set": "tinyxr",
+        "action": "fronttrigger",
         "paths": [
           "/user/hand/left/input/trigger/value",
           "/user/hand/right/input/trigger/value"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "side_trigger",
+        "set": "tinyxr",
+        "action": "sidetrigger",
         "paths": [
           "/user/hand/left/input/squeeze/click",
           "/user/hand/right/input/squeeze/click"
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "primary",
         "paths": [
           "/user/hand/left/input/thumbstick",
@@ -330,7 +334,7 @@
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "secondary",
         "paths": [
           "/user/hand/left/input/trackpad",
@@ -338,55 +342,55 @@
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_button",
+        "set": "tinyxr",
+        "action": "frontbutton",
         "paths": [
           "/user/hand/left/input/trigger/value",
           "/user/hand/right/input/trigger/value"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "side_button",
+        "set": "tinyxr",
+        "action": "sidebutton",
         "paths": [
           "/user/hand/left/input/squeeze/click",
           "/user/hand/right/input/squeeze/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "menu_button",
+        "set": "tinyxr",
+        "action": "menubutton",
         "paths": [
           "/user/hand/left/input/menu/click",
           "/user/hand/right/input/menu/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "primary_button",
+        "set": "tinyxr",
+        "action": "primarybutton",
         "paths": [
           "/user/hand/left/input/thumbstick/click",
           "/user/hand/right/input/thumbstick/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "secondary_button",
+        "set": "tinyxr",
+        "action": "secondarybutton",
         "paths": [
           "/user/hand/left/input/trackpad/click",
           "/user/hand/right/input/trackpad/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "secondary_touch",
+        "set": "tinyxr",
+        "action": "secondarytouch",
         "paths": [
           "/user/hand/left/input/trackpad/touch",
           "/user/hand/right/input/trackpad/touch"
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "haptic",
         "paths": [
           "/user/hand/left/output/haptic",
@@ -399,47 +403,47 @@
     "path": "/interaction_profiles/hp/mixed_reality_controller",
     "bindings": [
       {
-        "set": "TinyXrSet",
-        "action": "aim_pose",
+        "set": "tinyxr",
+        "action": "aimpose",
         "paths": [
           "/user/hand/left/input/aim/pose",
           "/user/hand/right/input/aim/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "grip_pose",
+        "set": "tinyxr",
+        "action": "grippose",
         "paths": [
           "/user/hand/left/input/grip/pose",
           "/user/hand/right/input/grip/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "palm_pose",
+        "set": "tinyxr",
+        "action": "palmpose",
         "paths": [
           "/user/hand/left/input/palm_ext/pose",
           "/user/hand/right/input/palm_ext/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_trigger",
+        "set": "tinyxr",
+        "action": "fronttrigger",
         "paths": [
           "/user/hand/left/input/trigger/value",
           "/user/hand/right/input/trigger/value"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "side_trigger",
+        "set": "tinyxr",
+        "action": "sidetrigger",
         "paths": [
           "/user/hand/left/input/squeeze/value",
           "/user/hand/right/input/squeeze/value"
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "primary",
         "paths": [
           "/user/hand/left/input/thumbstick",
@@ -447,55 +451,55 @@
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_button",
+        "set": "tinyxr",
+        "action": "frontbutton",
         "paths": [
           "/user/hand/left/input/trigger/value",
           "/user/hand/right/input/trigger/value"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "side_button",
+        "set": "tinyxr",
+        "action": "sidebutton",
         "paths": [
           "/user/hand/left/input/squeeze/value",
           "/user/hand/right/input/squeeze/value"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "menu_button",
+        "set": "tinyxr",
+        "action": "menubutton",
         "paths": [
           "/user/hand/left/input/menu/click",
           "/user/hand/right/input/menu/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "primary_button",
+        "set": "tinyxr",
+        "action": "primarybutton",
         "paths": [
           "/user/hand/left/input/thumbstick/click",
           "/user/hand/right/input/thumbstick/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "ax_button",
+        "set": "tinyxr",
+        "action": "axbutton",
         "paths": [
           "/user/hand/left/input/x/click",
           "/user/hand/right/input/a/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "by_button",
+        "set": "tinyxr",
+        "action": "bybutton",
         "paths": [
           "/user/hand/left/input/y/click",
           "/user/hand/right/input/b/click"
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "haptic",
         "paths": [
           "/user/hand/left/output/haptic",
@@ -508,47 +512,47 @@
     "path": "/interaction_profiles/htc/vive_cosmos_controller",
     "bindings": [
       {
-        "set": "TinyXrSet",
-        "action": "aim_pose",
+        "set": "tinyxr",
+        "action": "aimpose",
         "paths": [
           "/user/hand/left/input/aim/pose",
           "/user/hand/right/input/aim/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "grip_pose",
+        "set": "tinyxr",
+        "action": "grippose",
         "paths": [
           "/user/hand/left/input/grip/pose",
           "/user/hand/right/input/grip/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "palm_pose",
+        "set": "tinyxr",
+        "action": "palmpose",
         "paths": [
           "/user/hand/left/input/palm_ext/pose",
           "/user/hand/right/input/palm_ext/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_trigger",
+        "set": "tinyxr",
+        "action": "fronttrigger",
         "paths": [
           "/user/hand/left/input/trigger/value",
           "/user/hand/right/input/trigger/value"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "side_trigger",
+        "set": "tinyxr",
+        "action": "sidetrigger",
         "paths": [
           "/user/hand/left/input/squeeze/click",
           "/user/hand/right/input/squeeze/click"
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "primary",
         "paths": [
           "/user/hand/left/input/thumbstick",
@@ -556,71 +560,71 @@
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_button",
+        "set": "tinyxr",
+        "action": "frontbutton",
         "paths": [
           "/user/hand/left/input/trigger/value",
           "/user/hand/right/input/trigger/value"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "side_button",
+        "set": "tinyxr",
+        "action": "sidebutton",
         "paths": [
           "/user/hand/left/input/squeeze/click",
           "/user/hand/right/input/squeeze/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "ax_button",
+        "set": "tinyxr",
+        "action": "axbutton",
         "paths": [
           "/user/hand/left/input/x/click",
           "/user/hand/right/input/a/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "by_button",
+        "set": "tinyxr",
+        "action": "bybutton",
         "paths": [
           "/user/hand/left/input/y/click",
           "/user/hand/right/input/b/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "menu_button",
+        "set": "tinyxr",
+        "action": "menubutton",
         "paths": [
           "/user/hand/left/input/menu/click",
           "/user/hand/right/input/system/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "primary_button",
+        "set": "tinyxr",
+        "action": "primarybutton",
         "paths": [
           "/user/hand/left/input/thumbstick/click",
           "/user/hand/right/input/thumbstick/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "primary_touch",
+        "set": "tinyxr",
+        "action": "primarytouch",
         "paths": [
           "/user/hand/left/input/thumbstick/touch",
           "/user/hand/right/input/thumbstick/touch"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "secondary_button",
+        "set": "tinyxr",
+        "action": "secondarybutton",
         "paths": [
           "/user/hand/left/input/shoulder/click",
           "/user/hand/right/input/shoulder/click"
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "haptic",
         "paths": [
           "/user/hand/left/output/haptic",
@@ -633,47 +637,47 @@
     "path": "/interaction_profiles/htc/vive_focus3_controller",
     "bindings": [
       {
-        "set": "TinyXrSet",
-        "action": "aim_pose",
+        "set": "tinyxr",
+        "action": "aimpose",
         "paths": [
           "/user/hand/left/input/aim/pose",
           "/user/hand/right/input/aim/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "grip_pose",
+        "set": "tinyxr",
+        "action": "grippose",
         "paths": [
           "/user/hand/left/input/grip/pose",
           "/user/hand/right/input/grip/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "palm_pose",
+        "set": "tinyxr",
+        "action": "palmpose",
         "paths": [
           "/user/hand/left/input/palm_ext/pose",
           "/user/hand/right/input/palm_ext/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_trigger",
+        "set": "tinyxr",
+        "action": "fronttrigger",
         "paths": [
           "/user/hand/left/input/trigger/value",
           "/user/hand/right/input/trigger/value"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "side_trigger",
+        "set": "tinyxr",
+        "action": "sidetrigger",
         "paths": [
           "/user/hand/left/input/squeeze/click",
           "/user/hand/right/input/squeeze/click"
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "primary",
         "paths": [
           "/user/hand/left/input/thumbstick",
@@ -681,79 +685,79 @@
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_button",
+        "set": "tinyxr",
+        "action": "frontbutton",
         "paths": [
           "/user/hand/left/input/trigger/value",
           "/user/hand/right/input/trigger/value"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_touch",
+        "set": "tinyxr",
+        "action": "fronttouch",
         "paths": [
           "/user/hand/left/input/trigger/touch",
           "/user/hand/right/input/trigger/touch"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "side_button",
+        "set": "tinyxr",
+        "action": "sidebutton",
         "paths": [
           "/user/hand/left/input/squeeze/click",
           "/user/hand/right/input/squeeze/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "ax_button",
+        "set": "tinyxr",
+        "action": "axbutton",
         "paths": [
           "/user/hand/left/input/x/click",
           "/user/hand/right/input/a/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "by_button",
+        "set": "tinyxr",
+        "action": "bybutton",
         "paths": [
           "/user/hand/left/input/y/click",
           "/user/hand/right/input/b/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "menu_button",
+        "set": "tinyxr",
+        "action": "menubutton",
         "paths": [
           "/user/hand/left/input/menu/click",
           "/user/hand/right/input/system/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "primary_button",
+        "set": "tinyxr",
+        "action": "primarybutton",
         "paths": [
           "/user/hand/left/input/thumbstick/click",
           "/user/hand/right/input/thumbstick/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "primary_touch",
+        "set": "tinyxr",
+        "action": "primarytouch",
         "paths": [
           "/user/hand/left/input/thumbstick/touch",
           "/user/hand/right/input/thumbstick/touch"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "secondary_touch",
+        "set": "tinyxr",
+        "action": "secondarytouch",
         "paths": [
           "/user/hand/left/input/thumbrest/touch",
           "/user/hand/right/input/thumbrest/touch"
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "haptic",
         "paths": [
           "/user/hand/left/output/haptic",
@@ -766,47 +770,47 @@
     "path": "/interaction_profiles/huawei/controller",
     "bindings": [
       {
-        "set": "TinyXrSet",
-        "action": "aim_pose",
+        "set": "tinyxr",
+        "action": "aimpose",
         "paths": [
           "/user/hand/left/input/aim/pose",
           "/user/hand/right/input/aim/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "grip_pose",
+        "set": "tinyxr",
+        "action": "grippose",
         "paths": [
           "/user/hand/left/input/grip/pose",
           "/user/hand/right/input/grip/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "palm_pose",
+        "set": "tinyxr",
+        "action": "palmpose",
         "paths": [
           "/user/hand/left/input/palm_ext/pose",
           "/user/hand/right/input/palm_ext/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_trigger",
+        "set": "tinyxr",
+        "action": "fronttrigger",
         "paths": [
           "/user/hand/left/input/trigger/value",
           "/user/hand/right/input/trigger/value"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_button",
+        "set": "tinyxr",
+        "action": "frontbutton",
         "paths": [
           "/user/hand/left/input/trigger/click",
           "/user/hand/right/input/trigger/click"
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "primary",
         "paths": [
           "/user/hand/left/input/trackpad",
@@ -814,23 +818,23 @@
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "primary_button",
+        "set": "tinyxr",
+        "action": "primarybutton",
         "paths": [
           "/user/hand/left/input/trackpad/click",
           "/user/hand/right/input/trackpad/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "primary_touch",
+        "set": "tinyxr",
+        "action": "primarytouch",
         "paths": [
           "/user/hand/left/input/trackpad/touch",
           "/user/hand/right/input/trackpad/touch"
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "haptic",
         "paths": [
           "/user/hand/left/output/haptic",
@@ -843,47 +847,47 @@
     "path": "/interaction_profiles/oculus/touch_controller",
     "bindings": [
       {
-        "set": "TinyXrSet",
-        "action": "aim_pose",
+        "set": "tinyxr",
+        "action": "aimpose",
         "paths": [
           "/user/hand/left/input/aim/pose",
           "/user/hand/right/input/aim/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "grip_pose",
+        "set": "tinyxr",
+        "action": "grippose",
         "paths": [
           "/user/hand/left/input/grip/pose",
           "/user/hand/right/input/grip/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "palm_pose",
+        "set": "tinyxr",
+        "action": "palmpose",
         "paths": [
           "/user/hand/left/input/palm_ext/pose",
           "/user/hand/right/input/palm_ext/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_trigger",
+        "set": "tinyxr",
+        "action": "fronttrigger",
         "paths": [
           "/user/hand/left/input/trigger/value",
           "/user/hand/right/input/trigger/value"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "side_trigger",
+        "set": "tinyxr",
+        "action": "sidetrigger",
         "paths": [
           "/user/hand/left/input/squeeze/value",
           "/user/hand/right/input/squeeze/value"
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "primary",
         "paths": [
           "/user/hand/left/input/thumbstick",
@@ -891,86 +895,86 @@
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "ax_button",
+        "set": "tinyxr",
+        "action": "axbutton",
         "paths": [
           "/user/hand/left/input/x/click",
           "/user/hand/right/input/a/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "by_button",
+        "set": "tinyxr",
+        "action": "bybutton",
         "paths": [
           "/user/hand/left/input/y/click",
           "/user/hand/right/input/b/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "ax_touch",
+        "set": "tinyxr",
+        "action": "axtouch",
         "paths": [
           "/user/hand/left/input/x/touch",
           "/user/hand/right/input/a/touch"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "by_touch",
+        "set": "tinyxr",
+        "action": "bytouch",
         "paths": [
           "/user/hand/left/input/y/touch",
           "/user/hand/right/input/b/touch"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_button",
+        "set": "tinyxr",
+        "action": "frontbutton",
         "paths": [
           "/user/hand/left/input/trigger/value",
           "/user/hand/right/input/trigger/value"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_touch",
+        "set": "tinyxr",
+        "action": "fronttouch",
         "paths": [
           "/user/hand/left/input/trigger/touch",
           "/user/hand/right/input/trigger/touch"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "side_button",
+        "set": "tinyxr",
+        "action": "sidebutton",
         "paths": [
           "/user/hand/left/input/squeeze/value",
           "/user/hand/right/input/squeeze/value"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "menu_button",
+        "set": "tinyxr",
+        "action": "menubutton",
         "paths": [
           "/user/hand/left/input/menu/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "primary_button",
+        "set": "tinyxr",
+        "action": "primarybutton",
         "paths": [
           "/user/hand/left/input/thumbstick/click",
           "/user/hand/right/input/thumbstick/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "primary_touch",
+        "set": "tinyxr",
+        "action": "primarytouch",
         "paths": [
           "/user/hand/left/input/thumbstick/touch",
           "/user/hand/right/input/thumbstick/touch"
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "haptic",
         "paths": [
           "/user/hand/left/output/haptic",
@@ -983,47 +987,47 @@
     "path": "/interaction_profiles/valve/index_controller",
     "bindings": [
       {
-        "set": "TinyXrSet",
-        "action": "aim_pose",
+        "set": "tinyxr",
+        "action": "aimpose",
         "paths": [
           "/user/hand/left/input/aim/pose",
           "/user/hand/right/input/aim/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "grip_pose",
+        "set": "tinyxr",
+        "action": "grippose",
         "paths": [
           "/user/hand/left/input/grip/pose",
           "/user/hand/right/input/grip/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "palm_pose",
+        "set": "tinyxr",
+        "action": "palmpose",
         "paths": [
           "/user/hand/left/input/palm_ext/pose",
           "/user/hand/right/input/palm_ext/pose"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_trigger",
+        "set": "tinyxr",
+        "action": "fronttrigger",
         "paths": [
           "/user/hand/left/input/trigger/value",
           "/user/hand/right/input/trigger/value"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "side_trigger",
+        "set": "tinyxr",
+        "action": "sidetrigger",
         "paths": [
           "/user/hand/left/input/squeeze/value",
           "/user/hand/right/input/squeeze/value"
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "primary",
         "paths": [
           "/user/hand/left/input/thumbstick",
@@ -1031,7 +1035,7 @@
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "secondary",
         "paths": [
           "/user/hand/left/input/trackpad",
@@ -1039,103 +1043,103 @@
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "ax_button",
+        "set": "tinyxr",
+        "action": "axbutton",
         "paths": [
           "/user/hand/left/input/a/click",
           "/user/hand/right/input/a/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "by_button",
+        "set": "tinyxr",
+        "action": "bybutton",
         "paths": [
           "/user/hand/left/input/b/click",
           "/user/hand/right/input/b/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "ax_touch",
+        "set": "tinyxr",
+        "action": "axtouch",
         "paths": [
           "/user/hand/left/input/a/touch",
           "/user/hand/right/input/a/touch"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "by_touch",
+        "set": "tinyxr",
+        "action": "bytouch",
         "paths": [
           "/user/hand/left/input/b/touch",
           "/user/hand/right/input/b/touch"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_button",
+        "set": "tinyxr",
+        "action": "frontbutton",
         "paths": [
           "/user/hand/left/input/trigger/click",
           "/user/hand/right/input/trigger/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "front_touch",
+        "set": "tinyxr",
+        "action": "fronttouch",
         "paths": [
           "/user/hand/left/input/trigger/touch",
           "/user/hand/right/input/trigger/touch"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "side_button",
+        "set": "tinyxr",
+        "action": "sidebutton",
         "paths": [
           "/user/hand/left/input/squeeze/value",
           "/user/hand/right/input/squeeze/value"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "menu_button",
+        "set": "tinyxr",
+        "action": "menubutton",
         "paths": [
           "/user/hand/left/input/system/click",
           "/user/hand/right/input/system/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "primary_button",
+        "set": "tinyxr",
+        "action": "primarybutton",
         "paths": [
           "/user/hand/left/input/thumbstick/click",
           "/user/hand/right/input/thumbstick/click"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "secondary_button",
+        "set": "tinyxr",
+        "action": "secondarybutton",
         "paths": [
           "/user/hand/left/input/trackpad/force",
           "/user/hand/right/input/trackpad/force"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "primary_touch",
+        "set": "tinyxr",
+        "action": "primarytouch",
         "paths": [
           "/user/hand/left/input/thumbstick/touch",
           "/user/hand/right/input/thumbstick/touch"
         ]
       },
       {
-        "set": "TinyXrSet",
-        "action": "secondary_touch",
+        "set": "tinyxr",
+        "action": "secondarytouch",
         "paths": [
           "/user/hand/left/input/trackpad/touch",
           "/user/hand/right/input/trackpad/touch"
         ]
       },
       {
-        "set": "TinyXrSet",
+        "set": "tinyxr",
         "action": "haptic",
         "paths": [
           "/user/hand/left/output/haptic",

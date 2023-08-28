@@ -15,6 +15,8 @@
 #define GLFW_NATIVE_INCLUDE_NONE
 #include <GLFW/glfw3native.h>
 
+#include <json/json.h>
+
 TINYXR_NAMESPACE_OPEN
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -432,7 +434,138 @@ bool ManagerXRImpl::createSession() {
 /// Actions
 ////////////////////////////////////////////////////////////////////////////////
 
-bool ManagerXRImpl::createActions() { return false; }
+bool ManagerXRImpl::createActions() {
+  const auto actionSetsConfig =
+      mConfig.getValue<std::string>("xr.actionSetsConfig");
+
+  std::ifstream actionSetsFile(actionSetsConfig);
+  if (actionSetsFile.bad()) {
+    return false;
+  }
+
+  Json::Value actionSetsRoot;
+
+  Json::CharReaderBuilder builder;
+  Json::String errs;
+
+  if (!parseFromStream(builder, actionSetsFile, &actionSetsRoot, &errs)) {
+    std::cout << "xr.actionSetsConfig parse error: " << errs << std::endl;
+    return false;
+  }
+
+  if (!actionSetsRoot.isArray() || actionSetsRoot.empty()) {
+    return false;
+  }
+
+  for (const auto actionSet : actionSetsRoot) {
+    auto setInfo = valid<XrActionSetCreateInfo>();
+
+    if (!actionSet.isObject()) {
+      continue;
+    }
+
+    const auto setName = actionSet["name"];
+    const auto setNameStr = setName.asString();
+    if (setNameStr.empty()) {
+      continue;
+    }
+
+    const auto localisedName = actionSet["localisedName"];
+    const auto localisedNameStr = localisedName.asString();
+    if (localisedNameStr.empty()) {
+      continue;
+    }
+
+    std::memcpy(setInfo.actionSetName, setNameStr.c_str(),
+                std::min<std::size_t>(setNameStr.size() + 1,
+                                      XR_MAX_ACTION_SET_NAME_SIZE));
+    std::memcpy(setInfo.localizedActionSetName, localisedNameStr.c_str(),
+                std::min<std::size_t>(localisedNameStr.size() + 1,
+                                      XR_MAX_ACTION_SET_NAME_SIZE));
+
+    XrActionSet set = XR_NULL_HANDLE;
+    if (XR_FAILED(xrCreateActionSet(mContext.instance, &setInfo, &set))) {
+      continue;
+    }
+
+    mContext.actionSets[setNameStr].set = set;
+
+    const auto actions = actionSet["actions"];
+    if (!actions.isArray() || actions.empty()) {
+      continue;
+    }
+
+    for (const auto action : actions) {
+      auto actionInfo = valid<XrActionCreateInfo>();
+
+      const auto type = action["type"];
+      const auto typeStr = type.asString();
+      actionInfo.actionType = XrActionTypeFromString(typeStr);
+      if (actionInfo.actionType == XrActionType::XR_ACTION_TYPE_MAX_ENUM) {
+        continue;
+      }
+
+      const auto name = action["name"];
+      const auto nameStr = name.asString();
+      if (nameStr.empty()) {
+        continue;
+      }
+
+      const auto localisedName = action["localisedName"];
+      const auto localisedNameStr = localisedName.asString();
+      if (localisedNameStr.empty()) {
+        continue;
+      }
+
+      std::memcpy(
+          actionInfo.actionName, nameStr.c_str(),
+          std::min<std::size_t>(nameStr.size(), XR_MAX_ACTION_NAME_SIZE));
+      std::memcpy(actionInfo.localizedActionName, localisedNameStr.c_str(),
+                  std::min<std::size_t>(localisedNameStr.size(),
+                                        XR_MAX_LOCALIZED_ACTION_NAME_SIZE));
+
+      const auto paths = action["paths"];
+      if (!paths.isArray() || paths.empty()) {
+        continue;
+      }
+
+      Action action;
+      std::vector<XrPath> subactionPaths;
+
+      for (const auto path : paths) {
+        const auto pathStr = path.asString();
+
+        if (mContext.subactionPaths.find(pathStr) ==
+            mContext.subactionPaths.end()) {
+          XrPath xrPath;
+          if (XR_FAILED(xrStringToPath(mContext.instance, pathStr.c_str(),
+                                       &xrPath))) {
+            continue;
+          }
+
+          mContext.subactionPaths[pathStr].path = xrPath;
+          mContext.subactionPaths[pathStr].side = SideFromPath(pathStr);
+        }
+
+        action.subactionPaths[pathStr] = mContext.subactionPaths[pathStr];
+        subactionPaths.push_back(mContext.subactionPaths[pathStr].path);
+      }
+
+      actionInfo.countSubactionPaths = subactionPaths.size();
+      actionInfo.subactionPaths = subactionPaths.data();
+
+      XrAction xrAction;
+      if (XR_FAILED(xrCreateAction(set, &actionInfo, &xrAction))) {
+        continue;
+      }
+
+      action.action = xrAction;
+      mContext.actionSets[setNameStr].actions[nameStr] = action;
+    }
+  }
+
+  return true;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Spaces
