@@ -43,6 +43,7 @@ private:
   bool createSession();
 
   // Actions
+  bool suggestInteractionProfiles();
   bool createActions();
 
   // Spaces

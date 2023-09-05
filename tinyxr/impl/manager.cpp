@@ -434,6 +434,112 @@ bool ManagerXRImpl::createSession() {
 /// Actions
 ////////////////////////////////////////////////////////////////////////////////
 
+bool ManagerXRImpl::suggestInteractionProfiles() {
+  const auto interactionProfilesConfig =
+      mConfig.getValue<std::string>("xr.interactionProfilesConfig");
+
+  std::ifstream interactionProfilesFile(interactionProfilesConfig);
+  if (interactionProfilesFile.bad()) {
+    return false;
+  }
+
+  Json::Value interactionProfilesRoot;
+
+  Json::CharReaderBuilder builder;
+  Json::String errs;
+
+  if (!parseFromStream(builder, interactionProfilesFile,
+                       &interactionProfilesRoot, &errs)) {
+    std::cout << "xr.interactionProfilesConfig parse error: " << errs
+              << std::endl;
+    return false;
+  }
+
+  if (!interactionProfilesRoot.isArray() || interactionProfilesRoot.empty()) {
+    return false;
+  }
+
+  for (const auto interactionProfile : interactionProfilesRoot) {
+    if (!interactionProfile.isObject()) {
+      continue;
+    }
+
+    const auto path = interactionProfile["path"];
+    const auto pathStr = path.asString();
+    if (pathStr.empty()) {
+      continue;
+    }
+
+    XrPath interactionProfilePath = XR_NULL_PATH;
+    if (XR_FAILED(xrStringToPath(mContext.instance, pathStr.data(),
+                                 &interactionProfilePath))) {
+      continue;
+    }
+
+    const auto bindings = interactionProfile["bindings"];
+    if (!bindings.isArray() || bindings.empty()) {
+      continue;
+    }
+
+    std::vector<XrActionSuggestedBinding> xrBindings;
+    for (const auto binding : bindings) {
+      const auto set = binding["set"];
+      const auto setStr = set.asString();
+      if (setStr.empty()) {
+        continue;
+      }
+
+      const auto findSet = mContext.actionSets.find(setStr);
+      if (findSet == mContext.actionSets.end()) {
+        continue;
+      }
+
+      const auto action = binding["action"];
+      const auto actionStr = action.asString();
+      if (actionStr.empty()) {
+        continue;
+      }
+
+      const auto findAction = findSet->second.actions.find(actionStr);
+      if (findAction == findSet->second.actions.end()) {
+        continue;
+      }
+
+      const auto paths = binding["paths"];
+      if (!paths.isArray() || paths.empty()) {
+        continue;
+      }
+
+      for (const auto path : paths) {
+        const auto pathStr = path.asString();
+        if (pathStr.empty()) {
+          continue;
+        }
+
+        XrPath xrBindingPath = XR_NULL_PATH;
+        if (XR_FAILED(xrStringToPath(mContext.instance, pathStr.data(),
+                                     &xrBindingPath))) {
+          continue;
+        }
+
+        xrBindings.push_back({findAction->second.action, xrBindingPath});
+      }
+    }
+
+    auto suggestedBindings = valid<XrInteractionProfileSuggestedBinding>();
+    suggestedBindings.interactionProfile = interactionProfilePath;
+    suggestedBindings.countSuggestedBindings = xrBindings.size();
+    suggestedBindings.suggestedBindings = xrBindings.data();
+
+    if (XR_FAILED(xrSuggestInteractionProfileBindings(mContext.instance,
+                                                      &suggestedBindings))) {
+      continue;
+    }
+  }
+
+  return true;
+}
+
 bool ManagerXRImpl::createActions() {
   const auto actionSetsConfig =
       mConfig.getValue<std::string>("xr.actionSetsConfig");
@@ -564,7 +670,7 @@ bool ManagerXRImpl::createActions() {
     }
   }
 
-  return true;
+  return suggestInteractionProfiles();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
