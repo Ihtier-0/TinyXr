@@ -5,6 +5,7 @@
 
 #include "tinyxr/impl/action_set.h"
 #include "tinyxr/impl/openxr.h"
+#include "tinyxr/impl/openxr_extensions.h"
 
 TINYXR_NAMESPACE_OPEN
 
@@ -26,6 +27,13 @@ struct Context {
   SpaceMap referenceSpaces;
 
   SubactionPathMap subactionPaths;
+
+  int64_t colorSwapchainFormat;
+
+  std::vector<XrViewConfigurationView> configurationViews;
+  std::vector<XrSwapchain> swapchains;
+  std::vector<XrSwapchainImage> imageBuffer;
+  std::map<XrSwapchain, XrSwapchainImageBaseHeader *> swapchainImages;
 };
 
 TINYXR_NAMESPACE_CLOSE

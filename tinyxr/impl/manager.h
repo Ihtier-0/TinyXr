@@ -51,6 +51,14 @@ private:
   bool logReferenceSpaces();
   bool createReferenceSpaces();
 
+  // Swapchains
+  XrSwapchainImageBaseHeader *allocateSwapchainImages(uint32_t capacity);
+  int64_t
+  selectColorSwapchainFormat(const std::vector<int64_t> &swapchainFormats);
+  bool createSwapchainsImpl();
+  bool logSystemProperties();
+  bool createSwapchains();
+
   Config mConfig;
 
   ExtensionsInfo mExtensionsInfo;

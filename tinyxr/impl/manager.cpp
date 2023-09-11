@@ -81,6 +81,11 @@ bool ManagerXRImpl::init() {
     return false;
   }
 
+  if (!createSwapchains()) {
+    std::cout << "Unable to create XrSwapchains" << std::endl;
+    return false;
+  }
+
   return true;
 }
 
@@ -733,6 +738,151 @@ bool ManagerXRImpl::createReferenceSpaces() {
   }
 
   if (!createReferenceSpacesImpl()) {
+    return false;
+  }
+
+  return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// Spaces
+////////////////////////////////////////////////////////////////////////////////
+
+XrSwapchainImageBaseHeader *
+ManagerXRImpl::allocateSwapchainImages(uint32_t capacity) {
+  const auto size = mContext.imageBuffer.size();
+  const auto new_size = size + capacity;
+  mContext.imageBuffer.resize(new_size, valid<XrSwapchainImage>());
+  return reinterpret_cast<XrSwapchainImageBaseHeader *>(
+      mContext.imageBuffer.data() + size);
+}
+
+int64_t ManagerXRImpl::selectColorSwapchainFormat(
+    const std::vector<int64_t> &swapchainFormats) {
+  constexpr int64_t SupportedColorSwapchainFormats[] = {
+      GL_RGB10_A2,
+      GL_RGBA16F,
+      GL_RGBA8,
+      GL_RGBA8_SNORM,
+  };
+
+  auto swapchainFormatIt =
+      std::find_first_of(swapchainFormats.begin(), swapchainFormats.end(),
+                         std::begin(SupportedColorSwapchainFormats),
+                         std::end(SupportedColorSwapchainFormats));
+  if (swapchainFormatIt == swapchainFormats.end()) {
+    return swapchainFormats.front();
+  }
+
+  return *swapchainFormatIt;
+}
+
+bool ManagerXRImpl::createSwapchainsImpl() {
+  if (mContext.viewConfigurationType == XR_MAX_ENUM) {
+    return false;
+  }
+
+  if (!TWO_CALL(std::bind(xrEnumerateViewConfigurationViews, mContext.instance,
+                          mContext.systemId, mContext.viewConfigurationType,
+                          std::placeholders::_1, std::placeholders::_2,
+                          std::placeholders::_3),
+                mContext.configurationViews)) {
+    return false;
+  }
+
+  std::vector<int64_t> swapchainFormats;
+  if (!TWO_CALL(std::bind(xrEnumerateSwapchainFormats, mContext.session,
+                          std::placeholders::_1, std::placeholders::_2,
+                          std::placeholders::_3),
+                swapchainFormats)) {
+    return false;
+  }
+
+  mContext.colorSwapchainFormat = selectColorSwapchainFormat(swapchainFormats);
+
+  const auto size = mContext.configurationViews.size();
+  mContext.swapchains.reserve(size);
+
+  for (int i = 0; i < size; ++i) {
+    const XrViewConfigurationView &cv = mContext.configurationViews[i];
+    std::cout << "Creating swapchain for view " << i
+              << " with dimensions Width=" << cv.recommendedImageRectWidth
+              << " Height=" << cv.recommendedImageRectHeight
+              << " SampleCount=" << cv.recommendedSwapchainSampleCount
+              << std::endl;
+
+    auto createInfo = valid<XrSwapchainCreateInfo>();
+    createInfo.arraySize = 1;
+    createInfo.format = mContext.colorSwapchainFormat;
+    createInfo.width = cv.recommendedImageRectWidth;
+    createInfo.height = cv.recommendedImageRectHeight;
+    createInfo.mipCount = 1;
+    createInfo.faceCount = 1;
+    createInfo.sampleCount = 1;
+    createInfo.usageFlags = XR_SWAPCHAIN_USAGE_SAMPLED_BIT |
+                            XR_SWAPCHAIN_USAGE_COLOR_ATTACHMENT_BIT;
+
+    XrSwapchain swapchain = XR_NULL_HANDLE;
+    if (XR_FAILED(
+            xrCreateSwapchain(mContext.session, &createInfo, &swapchain))) {
+      continue;
+    }
+
+    mContext.swapchains.push_back(swapchain);
+
+    uint32_t imageCount;
+    if (XR_FAILED(
+            xrEnumerateSwapchainImages(swapchain, 0, &imageCount, nullptr))) {
+      continue;
+    }
+    XrSwapchainImageBaseHeader *swapchainImages =
+        allocateSwapchainImages(imageCount);
+    if (XR_FAILED(xrEnumerateSwapchainImages(swapchain, imageCount, &imageCount,
+                                             swapchainImages))) {
+      continue;
+    }
+
+    mContext.swapchainImages[swapchain] = swapchainImages;
+  }
+
+  return true;
+}
+
+bool ManagerXRImpl::logSystemProperties() {
+  auto systemProperties = valid<XrSystemProperties>();
+  if (XR_FAILED(xrGetSystemProperties(mContext.instance, mContext.systemId,
+                                      &systemProperties))) {
+    return false;
+  }
+
+  std::cout << "System Properties: Name= " << systemProperties.systemName
+            << "VendorId= " << systemProperties.vendorId << std::endl;
+  std::cout << "System Graphics Properties: MaxWidth= "
+            << systemProperties.graphicsProperties.maxSwapchainImageWidth
+            << "MaxHeight= "
+            << systemProperties.graphicsProperties.maxSwapchainImageHeight
+            << "MaxLayers= "
+            << systemProperties.graphicsProperties.maxLayerCount << std::endl;
+  std::cout << "System Tracking Properties: OrientationTracking= "
+            << (systemProperties.trackingProperties.orientationTracking ==
+                        XR_TRUE
+                    ? "True"
+                    : "False")
+            << "PositionTracking="
+            << (systemProperties.trackingProperties.positionTracking == XR_TRUE
+                    ? "True"
+                    : "False")
+            << std::endl;
+
+  return true;
+}
+
+bool ManagerXRImpl::createSwapchains() {
+  if (!logSystemProperties()) {
+    return false;
+  }
+
+  if (!createSwapchainsImpl()) {
     return false;
   }
 
