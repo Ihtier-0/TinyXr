@@ -23,6 +23,10 @@ public:
 
   bool init();
 
+  // RenderLoop
+  bool pollEvents();
+  bool pollActions();
+
 private:
   // Instance
   bool logInstanceInfo();
@@ -58,6 +62,15 @@ private:
   bool createSwapchainsImpl();
   bool logSystemProperties();
   bool createSwapchains();
+
+  // RenderLoop
+
+  // Events
+  void handleSessionStateChangedEvent(
+      const XrEventDataSessionStateChanged &stateChangedEvent);
+  const XrEventDataBaseHeader *tryReadNextEvent();
+
+  // Actions
 
   Config mConfig;
 

@@ -745,7 +745,7 @@ bool ManagerXRImpl::createReferenceSpaces() {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/// Spaces
+/// Swapchains
 ////////////////////////////////////////////////////////////////////////////////
 
 XrSwapchainImageBaseHeader *
@@ -888,5 +888,107 @@ bool ManagerXRImpl::createSwapchains() {
 
   return true;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+/// RenderLoop
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
+/// RenderLoop::Events
+////////////////////////////////////////////////////////////////////////////////
+
+void ManagerXRImpl::handleSessionStateChangedEvent(
+    const XrEventDataSessionStateChanged &stateChangedEvent) {
+  const XrSessionState oldState = mContext.sessionState;
+  mContext.sessionState = stateChangedEvent.state;
+
+  std::cout << "XrEventDataSessionStateChanged: state "
+            << XrSessionStateToString(oldState) << " -> "
+            << XrSessionStateToString(mContext.sessionState)
+            << " session=" << stateChangedEvent.session
+            << " time=" << stateChangedEvent.time << std::endl;
+
+  if ((stateChangedEvent.session != XR_NULL_HANDLE) &&
+      (stateChangedEvent.session != mContext.session)) {
+    std::cout << "XrEventDataSessionStateChanged for unknown session"
+              << std::endl;
+    return;
+  }
+
+  switch (mContext.sessionState) {
+  case XR_SESSION_STATE_READY: {
+    auto sessionBeginInfo = valid<XrSessionBeginInfo>();
+    sessionBeginInfo.primaryViewConfigurationType =
+        mContext.viewConfigurationType;
+    mContext.sessionRunning =
+        XR_SUCCEEDED(xrBeginSession(mContext.session, &sessionBeginInfo));
+    break;
+  }
+  case XR_SESSION_STATE_STOPPING: {
+    mContext.sessionRunning = false;
+    xrEndSession(mContext.session);
+    break;
+  }
+  case XR_SESSION_STATE_EXITING: {
+    mContext.exitRenderLoop = true;
+    mContext.requestRestart = false;
+    break;
+  }
+  case XR_SESSION_STATE_LOSS_PENDING: {
+    mContext.exitRenderLoop = true;
+    mContext.requestRestart = true;
+    break;
+  }
+  }
+}
+
+const XrEventDataBaseHeader *ManagerXRImpl::tryReadNextEvent() {
+  mContext.eventDataBuffer = valid<XrEventDataBuffer>();
+
+  const XrResult result =
+      xrPollEvent(mContext.instance, &mContext.eventDataBuffer);
+
+  return result == XR_EVENT_UNAVAILABLE
+             ? nullptr
+             : reinterpret_cast<XrEventDataBaseHeader *>(
+                   &mContext.eventDataBuffer);
+}
+
+bool ManagerXRImpl::pollEvents() {
+  while (const XrEventDataBaseHeader *event = tryReadNextEvent()) {
+    switch (event->type) {
+    case XR_TYPE_EVENT_DATA_INSTANCE_LOSS_PENDING: {
+      const auto &instanceLossPending =
+          *reinterpret_cast<const XrEventDataInstanceLossPending *>(event);
+      std::cout << "XrEventDataInstanceLossPending by "
+                << instanceLossPending.lossTime << std::endl;
+      mContext.exitRenderLoop = true;
+      mContext.requestRestart = true;
+      return;
+    }
+    case XR_TYPE_EVENT_DATA_SESSION_STATE_CHANGED: {
+      auto sessionStateChangedEvent =
+          reinterpret_cast<const XrEventDataSessionStateChanged *>(event);
+      handleSessionStateChangedEvent(*sessionStateChangedEvent);
+      break;
+    }
+    case XR_TYPE_EVENT_DATA_INTERACTION_PROFILE_CHANGED: {
+      break;
+    }
+    case XR_TYPE_EVENT_DATA_REFERENCE_SPACE_CHANGE_PENDING:
+    default: {
+      std::cout << "Ignoring event type "
+                << XrStructureTypeToString(event->type) << std::endl;
+      break;
+    }
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// RenderLoop::Actions
+////////////////////////////////////////////////////////////////////////////////
+
+bool ManagerXRImpl::pollActions() { return false; }
 
 TINYXR_NAMESPACE_CLOSE

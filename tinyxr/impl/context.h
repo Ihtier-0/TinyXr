@@ -34,6 +34,15 @@ struct Context {
   std::vector<XrSwapchain> swapchains;
   std::vector<XrSwapchainImage> imageBuffer;
   std::map<XrSwapchain, XrSwapchainImageBaseHeader *> swapchainImages;
+
+  bool exitRenderLoop = false;
+  bool requestRestart = false;
+
+  XrEventDataBuffer eventDataBuffer;
+
+  XrSessionState sessionState = XR_SESSION_STATE_UNKNOWN;
+
+  bool sessionRunning = false;
 };
 
 TINYXR_NAMESPACE_CLOSE
