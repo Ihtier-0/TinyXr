@@ -21,9 +21,13 @@ public:
   ManagerXr(const Config &confing);
   ~ManagerXr();
 
-  bool init();
+  bool startRender();
+
+  void requestExit();
 
 private:
+  Config mConfig;
+
   std::unique_ptr<ManagerXRImpl> mImpl;
 };
 

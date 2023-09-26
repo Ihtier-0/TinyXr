@@ -964,7 +964,7 @@ bool ManagerXRImpl::pollEvents() {
                 << instanceLossPending.lossTime << std::endl;
       mContext.exitRenderLoop = true;
       mContext.requestRestart = true;
-      return;
+      break;
     }
     case XR_TYPE_EVENT_DATA_SESSION_STATE_CHANGED: {
       auto sessionStateChangedEvent =
@@ -983,7 +983,21 @@ bool ManagerXRImpl::pollEvents() {
     }
     }
   }
+
+  return true;
 }
+
+bool ManagerXRImpl::exitRenderLoopRequested() const {
+  return mContext.exitRenderLoop;
+}
+
+bool ManagerXRImpl::restartRequested() const { return mContext.requestRestart; }
+
+bool ManagerXRImpl::exitRequested() const { return mContext.requestExit; }
+
+bool ManagerXRImpl::sessionRunning() const { return mContext.sessionRunning; }
+
+void ManagerXRImpl::requestExit() { mContext.requestExit = true; }
 
 ////////////////////////////////////////////////////////////////////////////////
 /// RenderLoop::Actions

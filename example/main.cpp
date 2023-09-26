@@ -11,10 +11,7 @@ int main(int argc, char *argv[]) {
     }
 
     TXR_NS::ManagerXr manager(config);
-    if (!manager.init()) {
-      std::cout << "Unable to init TXR_NS::ManagerXr" << std::endl;
-      return EXIT_FAILURE;
-    }
+    manager.startRender();
 
     return EXIT_SUCCESS;
   } catch (const std::exception &exception) {

@@ -24,7 +24,17 @@ public:
   bool init();
 
   // RenderLoop
+  // RenderLoop::Events
   bool pollEvents();
+
+  bool exitRenderLoopRequested() const;
+  bool restartRequested() const;
+  bool exitRequested() const;
+  bool sessionRunning() const;
+
+  void requestExit();
+
+  // RenderLoop::Actions
   bool pollActions();
 
 private:

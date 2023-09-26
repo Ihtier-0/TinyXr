@@ -37,6 +37,7 @@ struct Context {
 
   bool exitRenderLoop = false;
   bool requestRestart = false;
+  bool requestExit = false; // TODO! mb atomic
 
   XrEventDataBuffer eventDataBuffer;
 

@@ -4,12 +4,51 @@
 
 TINYXR_NAMESPACE_OPEN
 
-ManagerXr::ManagerXr(const Config &confing) {
-  mImpl = std::make_unique<ManagerXRImpl>(confing);
-}
+ManagerXr::ManagerXr(const Config &confing) : mConfig(confing) {}
 
 ManagerXr::~ManagerXr() {}
 
-bool ManagerXr::init() { return mImpl->init(); }
+bool ManagerXr::startRender() {
+  bool requestExit = false;
+  bool requestRestart = false;
+  bool requestExitRenderLoop = false;
+
+  do {
+    mImpl = std::make_unique<ManagerXRImpl>(mConfig);
+
+    if (!mImpl->init()) {
+      return false;
+    }
+
+    while (!requestExit) {
+      if (!mImpl->pollEvents()) {
+        continue;
+      }
+
+      requestExit = mImpl->exitRequested();
+      requestRestart = mImpl->restartRequested();
+      requestExitRenderLoop = mImpl->exitRenderLoopRequested();
+
+      if (requestExitRenderLoop) {
+        break;
+      }
+
+      if (mImpl->sessionRunning()) {
+
+      } else {
+      }
+    }
+
+    mImpl.reset(nullptr);
+  } while (requestRestart && !requestExit);
+
+  return false;
+}
+
+void ManagerXr::requestExit() {
+  if (mImpl) {
+    mImpl->requestExit();
+  }
+}
 
 TINYXR_NAMESPACE_CLOSE
