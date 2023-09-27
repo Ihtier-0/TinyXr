@@ -11,6 +11,7 @@
 #include <string>
 #include <typeindex>
 #include <unordered_map>
+#include <utility>
 
 TINYXR_NAMESPACE_OPEN
 
@@ -114,10 +115,28 @@ FROM_STRING_DECLARATION(XrActionType)
 /// valid
 ////////////////////////////////////////////////////////////////////////////////
 
-template <class T> inline void validFields(T &t) {}
+template <class T, class = void> inline void setType(T &t) {}
+
+template <class T, std::enable_if_t<std::is_same_v<
+                       decltype(std::declval<T>().type), XrStructureType>>>
+inline void setType(T &t) {
+#define TO_MAP_VALUE(xrStruct, type) {typeid(xrStruct), type},
+  static const std::unordered_map<std::type_index, XrStructureType> map = {
+      XR_LIST_STRUCTURE_TYPES(TO_MAP_VALUE)};
+#undef TO_MAP_VALUE
+
+  const auto find = map.find(typeid(T));
+  if (find == map.end()) {
+    return;
+  }
+
+  result.type = find->second;
+}
+
+template <class T> inline void setValidFields(T &t) {}
 
 template <>
-inline void validFields<XrReferenceSpaceCreateInfo>(
+inline void setValidFields<XrReferenceSpaceCreateInfo>(
     XrReferenceSpaceCreateInfo &createInfo) {
   createInfo.poseInReferenceSpace = XrPosefIdentity();
 }
@@ -126,20 +145,10 @@ inline void validFields<XrReferenceSpaceCreateInfo>(
  * @return XrStruct with the correct type and all other fields set to zero.
  */
 template <class T> T valid() {
-#define TO_MAP_VALUE(xrStruct, type) {typeid(xrStruct), type},
-  static const std::unordered_map<std::type_index, XrStructureType> map = {
-      XR_LIST_STRUCTURE_TYPES(TO_MAP_VALUE)};
-#undef TO_MAP_VALUE
-
-  if (map.find(typeid(T)) == map.end()) {
-    return {};
-  }
-
   T result;
   std::memset(&result, 0, sizeof(result));
-  result.type = map.at(typeid(T));
-  validFields(result);
-
+  setType(result);
+  setValidFields(result);
   return result;
 }
 
