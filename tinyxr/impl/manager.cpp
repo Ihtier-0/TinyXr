@@ -1003,6 +1003,80 @@ void ManagerXRImpl::requestExit() { mContext.requestExit = true; }
 /// RenderLoop::Actions
 ////////////////////////////////////////////////////////////////////////////////
 
-bool ManagerXRImpl::pollActions() { return false; }
+bool ManagerXRImpl::pollActions() {
+  const auto size = mContext.actionSets.size();
+  std::vector<XrActiveActionSet> activeSets;
+  activeSets.reserve(size);
+
+  for (const auto &set : mContext.actionSets) {
+    auto activeSet = valid<XrActiveActionSet>();
+    activeSet.actionSet = set.second.set;
+    activeSets.emplace_back(activeSet);
+  }
+
+  // TODO! test more then one action set
+  auto syncInfo = valid<XrActionsSyncInfo>();
+  syncInfo.countActiveActionSets = size;
+  syncInfo.activeActionSets = activeSets.data();
+  if (XR_FAILED(xrSyncActions(mContext.session, &syncInfo))) {
+    return false;
+  }
+
+  for (const auto &set : mContext.actionSets) {
+    for (const auto &action : set.second.actions) {
+      for (const auto &path : action.second.subactionPaths) {
+        auto info = valid<XrActionStateGetInfo>();
+        info.action = action.second.action;
+        info.subactionPath = path.second.path;
+
+        // TODO! save data and state in some data struct
+        switch (action.second.type) {
+        case XR_ACTION_TYPE_BOOLEAN_INPUT: {
+          auto state = valid<XrActionStateBoolean>();
+
+          if (XR_FAILED(
+                  xrGetActionStateBoolean(mContext.session, &info, &state))) {
+            continue;
+          }
+
+          break;
+        }
+        case XR_ACTION_TYPE_FLOAT_INPUT: {
+          auto state = valid<XrActionStateFloat>();
+
+          if (XR_FAILED(
+                  xrGetActionStateFloat(mContext.session, &info, &state))) {
+            continue;
+          }
+
+          break;
+        }
+        case XR_ACTION_TYPE_VECTOR2F_INPUT: {
+          auto state = valid<XrActionStateVector2f>();
+
+          if (XR_FAILED(
+                  xrGetActionStateVector2f(mContext.session, &info, &state))) {
+            continue;
+          }
+
+          break;
+        }
+        case XR_ACTION_TYPE_POSE_INPUT: {
+          auto state = valid<XrActionStatePose>();
+
+          if (XR_FAILED(
+                  xrGetActionStatePose(mContext.session, &info, &state))) {
+            continue;
+          }
+
+          break;
+        }
+        }
+      }
+    }
+  }
+
+  return true;
+}
 
 TINYXR_NAMESPACE_CLOSE

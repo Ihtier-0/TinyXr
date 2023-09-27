@@ -34,7 +34,7 @@ bool ManagerXr::startRender() {
       }
 
       if (mImpl->sessionRunning()) {
-
+        mImpl->pollActions();
       } else {
       }
     }
