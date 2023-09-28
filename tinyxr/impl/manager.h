@@ -37,7 +37,11 @@ public:
   // RenderLoop::Actions
   bool pollActions();
 
-  private:
+  // RenderLoop::Frames
+  bool beforeFrames();
+  bool afterFrames();
+
+private:
   // Instance
   bool logInstanceInfo();
   bool createInstanceImpl();

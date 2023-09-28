@@ -44,6 +44,12 @@ struct Context {
   XrSessionState sessionState = XR_SESSION_STATE_UNKNOWN;
 
   bool sessionRunning = false;
+
+  bool shouldRender = false;
+
+  XrTime predictedDisplayTime = 0;
+
+  std::vector<XrCompositionLayerBaseHeader *> layers;
 };
 
 TINYXR_NAMESPACE_CLOSE

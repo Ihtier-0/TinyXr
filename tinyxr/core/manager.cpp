@@ -35,6 +35,9 @@ bool ManagerXr::startRender() {
 
       if (mImpl->sessionRunning()) {
         mImpl->pollActions();
+        mImpl->beforeFrames();
+        // TODO!
+        mImpl->afterFrames();
       } else {
       }
     }

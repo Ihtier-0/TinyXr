@@ -26,7 +26,6 @@ set(impl_headers
   impl/utils.h)
 
 set(impl_sources
-  impl/action_set.cpp
   impl/action.cpp
   impl/manager.cpp
   impl/openxr_extensions.cpp

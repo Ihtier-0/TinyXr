@@ -1079,4 +1079,41 @@ bool ManagerXRImpl::pollActions() {
   return true;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+/// RenderLoop::Frames
+////////////////////////////////////////////////////////////////////////////////
+
+bool ManagerXRImpl::beforeFrames() {
+  auto wait = valid<XrFrameWaitInfo>();
+  auto state = valid<XrFrameState>();
+
+  if (XR_FAILED(xrWaitFrame(mContext.session, &wait, &state))) {
+    return false;
+  }
+
+  auto begin = valid<XrFrameBeginInfo>();
+  if (XR_FAILED(xrBeginFrame(mContext.session, &begin))) {
+    return false;
+  }
+
+  mContext.shouldRender = (state.shouldRender == XR_TRUE);
+  mContext.predictedDisplayTime = state.predictedDisplayTime;
+
+  return true;
+}
+
+bool ManagerXRImpl::afterFrames() {
+  auto end = valid<XrFrameEndInfo>();
+  end.displayTime = mContext.predictedDisplayTime;
+  end.environmentBlendMode = mContext.environmentBlendMode;
+  end.layerCount = mContext.layers.size();
+  end.layers = mContext.layers.data();
+
+  if (XR_FAILED(xrEndFrame(mContext.session, &end))) {
+    return false;
+  }
+
+  return true;
+}
+
 TINYXR_NAMESPACE_CLOSE
