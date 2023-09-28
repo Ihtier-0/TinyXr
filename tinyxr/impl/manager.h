@@ -37,7 +37,7 @@ public:
   // RenderLoop::Actions
   bool pollActions();
 
-private:
+  private:
   // Instance
   bool logInstanceInfo();
   bool createInstanceImpl();
@@ -79,8 +79,6 @@ private:
   void handleSessionStateChangedEvent(
       const XrEventDataSessionStateChanged &stateChangedEvent);
   const XrEventDataBaseHeader *tryReadNextEvent();
-
-  // Actions
 
   Config mConfig;
 
