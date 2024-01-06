@@ -1,6 +1,6 @@
 #
 # In:
-#   GLFW_ROOT 
+#   GLFW_ROOT
 #
 # Out:
 #   glfw_FOUND

@@ -1,6 +1,6 @@
 #
 # In:
-#   OPENXR_ROOT 
+#   OPENXR_ROOT
 #
 # Out:
 #   OpenXR_FOUND

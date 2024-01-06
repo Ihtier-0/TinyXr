@@ -1,6 +1,6 @@
 #
 # In:
-#   JSONCPP_ROOT 
+#   JSONCPP_ROOT
 #
 # Out:
 #   jsoncpp_FOUND

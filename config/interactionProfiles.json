@@ -1,14 +1,14 @@
 [
   {
     "__comment_godot_openxr": "configuration based on: https://github.com/GodotVR/godot_openxr/blob/master/src/openxr/OpenXRApi.cpp",
-    
+
     "__comment": "\"Name\" (\"set\" & \"action\") MUST be Well-Formed Path String (https://registry.khronos.org/OpenXR/specs/1.0/html/xrspec.html#well-formed-path-strings)",
 
     "__todo_1": "XR_EXT_palm_pose",
     "__todo_2": "XR_EXT_hand_interaction",
     "__todo_3": "other paths",
 
-    "path": "/interaction_profiles/khr/simple_controller",    
+    "path": "/interaction_profiles/khr/simple_controller",
     "bindings": [
       {
         "set": "tinyxr",

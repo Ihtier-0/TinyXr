@@ -1,7 +1,7 @@
 [
   {
     "__comment_godot_openxr": "configuration based on: https://github.com/GodotVR/godot_openxr/blob/master/src/openxr/OpenXRApi.cpp",
-    
+
     "__comment": "\"Name\" MUST be Well-Formed Path String (https://registry.khronos.org/OpenXR/specs/1.0/html/xrspec.html#well-formed-path-strings)",
 
     "name": "tinyxr",

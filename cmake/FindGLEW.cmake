@@ -1,6 +1,6 @@
 #
 # In:
-#   GLEW_ROOT 
+#   GLEW_ROOT
 #
 # Out:
 #   GLEW_FOUND

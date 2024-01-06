@@ -1,6 +1,6 @@
 #
 # In:
-#   CPPTOML_ROOT 
+#   CPPTOML_ROOT
 #
 # Out:
 #   cpptoml_FOUND
