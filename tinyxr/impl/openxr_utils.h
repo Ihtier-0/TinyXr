@@ -115,30 +115,35 @@ FROM_STRING_DECLARATION(XrActionType)
 /// valid
 ////////////////////////////////////////////////////////////////////////////////
 
-template <class T, class = void> inline void setType(T &t) {}
+template <class T, class = void>
+struct TypeSetter {
+  static void set(T& t) {}
+};
 
-template <class T, std::enable_if_t<std::is_same_v<
-                       decltype(std::declval<T>().type), XrStructureType>>>
-inline void setType(T &t) {
+template <class T>
+struct TypeSetter<T, std::enable_if_t<std::is_same_v<
+  decltype(std::declval<T>().type), XrStructureType>>> {
+  static void set(T& t) {
 #define TO_MAP_VALUE(xrStruct, type) {typeid(xrStruct), type},
-  static const std::unordered_map<std::type_index, XrStructureType> map = {
-      XR_LIST_STRUCTURE_TYPES(TO_MAP_VALUE)};
+    static const std::unordered_map<std::type_index, XrStructureType> map = {
+        XR_LIST_STRUCTURE_TYPES(TO_MAP_VALUE) };
 #undef TO_MAP_VALUE
 
-  const auto find = map.find(typeid(T));
-  if (find == map.end()) {
-    return;
+    const auto find = map.find(typeid(T));
+    if (find == map.end()) {
+      return;
+    }
+
+    t.type = find->second;
   }
+};
 
-  result.type = find->second;
-}
-
-template <class T> inline void setValidFields(T &t) {}
+template <class T> inline void setValidFields(T& t) {}
 
 template <>
 inline void setValidFields<XrReferenceSpaceCreateInfo>(
-    XrReferenceSpaceCreateInfo &createInfo) {
-  createInfo.poseInReferenceSpace = XrPosefIdentity();
+  XrReferenceSpaceCreateInfo& info) {
+  info.poseInReferenceSpace = XrPosefIdentity();
 }
 
 /**
@@ -147,7 +152,7 @@ inline void setValidFields<XrReferenceSpaceCreateInfo>(
 template <class T> T valid() {
   T result;
   std::memset(&result, 0, sizeof(result));
-  setType(result);
+  TypeSetter<T>::set(result);
   setValidFields(result);
   return result;
 }
@@ -158,11 +163,11 @@ template <class T> T valid() {
 
 template <class T>
 using XrFunction =
-    std::function<XrResult(uint32_t input, uint32_t *output, T *info)>;
+std::function<XrResult(uint32_t input, uint32_t* output, T* info)>;
 
 template <class T>
-bool twoCall(const XrFunction<T> &function, const std::string &functionName,
-             std::vector<T> &vector) {
+bool twoCall(const XrFunction<T>& function, const std::string& functionName,
+  std::vector<T>& vector) {
   XrResult result;
 
   uint32_t input;
@@ -171,8 +176,8 @@ bool twoCall(const XrFunction<T> &function, const std::string &functionName,
 
   if (XR_FAILED(result)) {
     std::cout << functionName +
-                     " first call failed: " + XrResultToString(result)
-              << std::endl;
+      " first call failed: " + XrResultToString(result)
+      << std::endl;
     return false;
   }
 
@@ -186,8 +191,8 @@ bool twoCall(const XrFunction<T> &function, const std::string &functionName,
 
   if (XR_FAILED(result)) {
     std::cout << functionName +
-                     " second call failed: " + XrResultToString(result)
-              << std::endl;
+      " second call failed: " + XrResultToString(result)
+      << std::endl;
     return false;
   }
 
