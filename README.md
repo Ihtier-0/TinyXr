@@ -16,6 +16,7 @@ Currently, TinyXr is only being tested on Oculus Quest 2.
 
 ## Dependencies
 
+- [CPM.cmake](https://github.com/cpm-cmake/CPM.cmake)
 - [cpptoml](https://github.com/skystrife/cpptoml)
 - [GLEW](https://github.com/nigels-com/glew)
 - [glfw](https://github.com/glfw/glfw)

@@ -55,24 +55,21 @@ target_compile_definitions(
 target_include_directories(
   tinyxr
   PUBLIC
-  ${PROJECT_SOURCE_DIR}
-  ${CPPTOML_INCLUDE_DIR})
+  ${PROJECT_SOURCE_DIR})
 
 target_include_directories(
   tinyxr
   PRIVATE
-  ${OPENXR_INCLUDE_DIR}
-  ${GLEW_INCLUDE_DIR}
-  ${GLFW_INCLUDE_DIR}
-  ${JSONCPP_INCLUDE_DIR})
+  ${GLEW_INCLUDE_DIR})
 
 target_link_libraries(
   tinyxr
   PRIVATE
-  ${OPENXR_LIBRARY}
-  ${GLFW_LIBRARY}
+  OpenXR::openxr_loader
+  cpptoml
+  jsoncpp_lib
+  glfw
   ${GLEW_LIBRARY}
-  ${JSONCPP_LIBRARY}
   OpenGL::GL)
 
 install(FILES ${core_headers} DESTINATION include/tinyxr/core)

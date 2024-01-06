@@ -18,7 +18,8 @@ target_include_directories(tinyxrexample
   ${PROJECT_SOURCE_DIR})
 
 target_link_libraries(tinyxrexample
-	tinyxr)
+  cpptoml # TODO! hide cpptoml
+  tinyxr)
 
 install(TARGETS tinyxrexample
   EXPORT tinyxrexample-targets
