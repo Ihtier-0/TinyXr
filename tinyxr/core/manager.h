@@ -1,11 +1,11 @@
 #ifndef TINYXR_CORE_MANAGER_H
 #define TINYXR_CORE_MANAGER_H
 
+#include <memory>
+
 #include "tinyxr/core/api.h"
 #include "tinyxr/core/config.h"
 #include "tinyxr/core/tinyxr.h"
-
-#include <memory>
 
 TINYXR_NAMESPACE_OPEN
 
@@ -33,4 +33,4 @@ private:
 
 TINYXR_NAMESPACE_CLOSE
 
-#endif // TINYXR_CORE_MANAGER_H
+#endif  // TINYXR_CORE_MANAGER_H

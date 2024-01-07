@@ -1,11 +1,11 @@
 #ifndef TINYXR_IMPL_ACTION_H
 #define TINYXR_IMPL_ACTION_H
 
-#include "tinyxr/core/tinyxr.h"
-#include "tinyxr/impl/openxr.h"
-
 #include <string>
 #include <unordered_map>
+
+#include "tinyxr/core/tinyxr.h"
+#include "tinyxr/impl/openxr.h"
 
 TINYXR_NAMESPACE_OPEN
 
@@ -34,4 +34,4 @@ using ActionsMap = std::unordered_map<ActionName, Action>;
 
 TINYXR_NAMESPACE_CLOSE
 
-#endif // TINYXR_IMPL_ACTION_H
+#endif  // TINYXR_IMPL_ACTION_H

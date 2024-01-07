@@ -48,4 +48,4 @@ private:
 
 TINYXR_NAMESPACE_CLOSE
 
-#endif // TINYXR_CORE_CONFIG_H
+#endif  // TINYXR_CORE_CONFIG_H

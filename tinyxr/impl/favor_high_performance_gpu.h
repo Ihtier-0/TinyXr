@@ -3,9 +3,8 @@
 
 #include "tinyxr/core/os.h"
 
-// clang-format off
-
-// based on: https://github.com/KhronosGroup/OpenXR-SDK-Source/blob/main/src/tests/hello_xr/main.cpp
+// based on:
+// https://github.com/KhronosGroup/OpenXR-SDK-Source/blob/main/src/tests/hello_xr/main.cpp
 #if defined(TINYXR_OS_WINDOWS)
 #include <windows.h>
 // Favor the high performance NVIDIA or AMD GPUs
@@ -17,6 +16,4 @@ __declspec(dllexport) DWORD AmdPowerXpressRequestHighPerformance = 0x00000001;
 }
 #endif  // TINYXR_OS_WINDOWS
 
-// clang-format on
-
-#endif // TINYXR_IMPL_FAVOR_HIGH_PERFORMANCE_GPU_H
+#endif  // TINYXR_IMPL_FAVOR_HIGH_PERFORMANCE_GPU_H

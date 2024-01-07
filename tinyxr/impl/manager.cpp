@@ -14,7 +14,6 @@
 #define GLFW_EXPOSE_NATIVE_WGL
 #define GLFW_NATIVE_INCLUDE_NONE
 #include <GLFW/glfw3native.h>
-
 #include <json/json.h>
 
 TINYXR_NAMESPACE_OPEN
@@ -24,8 +23,9 @@ TINYXR_NAMESPACE_OPEN
 ////////////////////////////////////////////////////////////////////////////////
 
 ManagerXRImpl::ManagerXRImpl(const Config &confing)
-    : mConfig(confing), mExtensionsInfo(mConfig.getVector<std::string>(
-                            "xr.userRequestExtensions")) {}
+    : mConfig(confing),
+      mExtensionsInfo(
+          mConfig.getVector<std::string>("xr.userRequestExtensions")) {}
 
 bool ManagerXRImpl::init() {
   if (!mConfig.isValid()) {
@@ -280,7 +280,7 @@ bool ManagerXRImpl::initGraphicsApi(
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minor);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // Offscreen contexts
+  glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);  // Offscreen contexts
   mGraphicsContext = glfwCreateWindow(10, 10, "TinyXrGlContext", NULL, NULL);
   glfwMakeContextCurrent(mGraphicsContext);
 
@@ -384,11 +384,11 @@ bool ManagerXRImpl::logViewConfigurations() {
               << std::endl;
 
     std::vector<XrViewConfigurationView> views;
-    if (!TWO_CALL(std::bind(xrEnumerateViewConfigurationViews,
-                            mContext.instance, mContext.systemId, type,
-                            std::placeholders::_1, std::placeholders::_2,
-                            std::placeholders::_3),
-                  views)) {
+    if (!TWO_CALL(
+            std::bind(xrEnumerateViewConfigurationViews, mContext.instance,
+                      mContext.systemId, type, std::placeholders::_1,
+                      std::placeholders::_2, std::placeholders::_3),
+            views)) {
       continue;
     }
 
@@ -748,8 +748,8 @@ bool ManagerXRImpl::createReferenceSpaces() {
 /// Swapchains
 ////////////////////////////////////////////////////////////////////////////////
 
-XrSwapchainImageBaseHeader *
-ManagerXRImpl::allocateSwapchainImages(uint32_t capacity) {
+XrSwapchainImageBaseHeader *ManagerXRImpl::allocateSwapchainImages(
+    uint32_t capacity) {
   const auto size = mContext.imageBuffer.size();
   const auto new_size = size + capacity;
   mContext.imageBuffer.resize(new_size, valid<XrSwapchainImage>());

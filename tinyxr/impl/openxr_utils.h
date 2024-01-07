@@ -1,10 +1,6 @@
 #ifndef TINYXR_IMPL_OPENXR_UTILS_H
 #define TINYXR_IMPL_OPENXR_UTILS_H
 
-#include "tinyxr/core/tinyxr.h"
-#include "tinyxr/impl/openxr.h"
-#include "tinyxr/impl/openxr_math.h"
-
 #include <cstring>
 #include <functional>
 #include <iostream>
@@ -13,13 +9,17 @@
 #include <unordered_map>
 #include <utility>
 
+#include "tinyxr/core/tinyxr.h"
+#include "tinyxr/impl/openxr.h"
+#include "tinyxr/impl/openxr_math.h"
+
 TINYXR_NAMESPACE_OPEN
 
 ////////////////////////////////////////////////////////////////////////////////
 /// ToString
 ////////////////////////////////////////////////////////////////////////////////
 
-#define TO_STRING_DECLARATION(type) std::string type##ToString(const type &var);
+#define TO_STRING_DECLARATION(type) std::string type##ToString(const type& var);
 
 TO_STRING_DECLARATION(XrVersion)
 
@@ -99,8 +99,8 @@ TO_STRING_DECLARATION(XrPlaneDetectionStateEXT)
 /// FromString
 ////////////////////////////////////////////////////////////////////////////////
 
-#define FROM_STRING_DECLARATION(type)                                          \
-  type type##FromString(const std::string &string);
+#define FROM_STRING_DECLARATION(type) \
+  type type##FromString(const std::string& string);
 
 FROM_STRING_DECLARATION(XrVersion)
 FROM_STRING_DECLARATION(XrFormFactor)
@@ -122,11 +122,11 @@ struct TypeSetter {
 
 template <class T>
 struct TypeSetter<T, std::enable_if_t<std::is_same_v<
-  decltype(std::declval<T>().type), XrStructureType>>> {
+                         decltype(std::declval<T>().type), XrStructureType>>> {
   static void set(T& t) {
 #define TO_MAP_VALUE(xrStruct, type) {typeid(xrStruct), type},
     static const std::unordered_map<std::type_index, XrStructureType> map = {
-        XR_LIST_STRUCTURE_TYPES(TO_MAP_VALUE) };
+        XR_LIST_STRUCTURE_TYPES(TO_MAP_VALUE)};
 #undef TO_MAP_VALUE
 
     const auto find = map.find(typeid(T));
@@ -138,18 +138,20 @@ struct TypeSetter<T, std::enable_if_t<std::is_same_v<
   }
 };
 
-template <class T> inline void setValidFields(T& t) {}
+template <class T>
+inline void setValidFields(T& t) {}
 
 template <>
 inline void setValidFields<XrReferenceSpaceCreateInfo>(
-  XrReferenceSpaceCreateInfo& info) {
+    XrReferenceSpaceCreateInfo& info) {
   info.poseInReferenceSpace = XrPosefIdentity();
 }
 
 /**
  * @return XrStruct with the correct type and all other fields set to zero.
  */
-template <class T> T valid() {
+template <class T>
+T valid() {
   T result;
   std::memset(&result, 0, sizeof(result));
   TypeSetter<T>::set(result);
@@ -163,11 +165,11 @@ template <class T> T valid() {
 
 template <class T>
 using XrFunction =
-std::function<XrResult(uint32_t input, uint32_t* output, T* info)>;
+    std::function<XrResult(uint32_t input, uint32_t* output, T* info)>;
 
 template <class T>
 bool twoCall(const XrFunction<T>& function, const std::string& functionName,
-  std::vector<T>& vector) {
+             std::vector<T>& vector) {
   XrResult result;
 
   uint32_t input;
@@ -176,8 +178,8 @@ bool twoCall(const XrFunction<T>& function, const std::string& functionName,
 
   if (XR_FAILED(result)) {
     std::cout << functionName +
-      " first call failed: " + XrResultToString(result)
-      << std::endl;
+                     " first call failed: " + XrResultToString(result)
+              << std::endl;
     return false;
   }
 
@@ -191,8 +193,8 @@ bool twoCall(const XrFunction<T>& function, const std::string& functionName,
 
   if (XR_FAILED(result)) {
     std::cout << functionName +
-      " second call failed: " + XrResultToString(result)
-      << std::endl;
+                     " second call failed: " + XrResultToString(result)
+              << std::endl;
     return false;
   }
 
@@ -202,9 +204,9 @@ bool twoCall(const XrFunction<T>& function, const std::string& functionName,
 /**
  * @brief simplify the OpenXR two-call idiom.
  */
-#define TWO_CALL(function, result)                                             \
+#define TWO_CALL(function, result) \
   (twoCall<decltype(result)::value_type>((function), (#function), (result)))
 
 TINYXR_NAMESPACE_CLOSE
 
-#endif // TINYXR_IMPL_OPENXR_UTILS_H
+#endif  // TINYXR_IMPL_OPENXR_UTILS_H

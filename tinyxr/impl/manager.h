@@ -3,7 +3,6 @@
 
 #include "tinyxr/core/config.h"
 #include "tinyxr/core/tinyxr.h"
-
 #include "tinyxr/impl/context.h"
 #include "tinyxr/impl/openxr_extensions.h"
 
@@ -54,7 +53,7 @@ private:
   // Session
   bool createSessionImpl();
   bool initGraphicsApi(const XrGraphicsRequirements
-                           &requirements); // TODO! support all graphics API
+                           &requirements);  // TODO! support all graphics API
   bool initializeGraphicsDevice();
   bool logEnvironmentBlendMode(const XrViewConfigurationType type);
   bool logViewConfigurations();
@@ -71,8 +70,8 @@ private:
 
   // Swapchains
   XrSwapchainImageBaseHeader *allocateSwapchainImages(uint32_t capacity);
-  int64_t
-  selectColorSwapchainFormat(const std::vector<int64_t> &swapchainFormats);
+  int64_t selectColorSwapchainFormat(
+      const std::vector<int64_t> &swapchainFormats);
   bool createSwapchainsImpl();
   bool logSystemProperties();
   bool createSwapchains();
@@ -97,4 +96,4 @@ private:
 
 TINYXR_NAMESPACE_CLOSE
 
-#endif // TINYXR_IMPL_MANAGER_H
+#endif  // TINYXR_IMPL_MANAGER_H

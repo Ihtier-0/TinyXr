@@ -1,7 +1,9 @@
 #ifndef TINYXR_IMPL_OPENXR_H
 #define TINYXR_IMPL_OPENXR_H
 
+// clang-format off
 #include "tinyxr/impl/openxr_definitions.h"
+// clang-format on
 
 #include <openxr/openxr.h>
 #include <openxr/openxr_platform.h>
@@ -12,4 +14,4 @@
 
 #define XR_MAX_ENUM 0x7FFFFFFF
 
-#endif // TINYXR_IMPL_OPENXR_H
+#endif  // TINYXR_IMPL_OPENXR_H

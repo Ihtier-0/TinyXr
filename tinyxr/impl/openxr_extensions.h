@@ -1,14 +1,12 @@
 #ifndef TINYXR_IMPL_OPENXR_EXTENSIONS_H
 #define TINYXR_IMPL_OPENXR_EXTENSIONS_H
 
-#include "tinyxr/core/os.h"
-#include "tinyxr/core/tinyxr.h"
-#include "tinyxr/impl/openxr.h"
-
 #include <string>
 #include <vector>
 
-// clang-format on
+#include "tinyxr/core/os.h"
+#include "tinyxr/core/tinyxr.h"
+#include "tinyxr/impl/openxr.h"
 
 // based on:
 // https://github.com/StereoKit/StereoKit/blob/master/StereoKitC/systems/platform/openxr_extensions.h
@@ -41,7 +39,7 @@
 #define XrGraphicsBinding XrGraphicsBindingOpenGLWin32KHR
 #define XR_TYPE_GRAPHICS_BINDING XR_TYPE_GRAPHICS_BINDING_OPENGL_WIN32_KHR
 
-#elif defined(TINYXR_USE_PLATFORM_XLIB) &&                                     \
+#elif defined(TINYXR_USE_PLATFORM_XLIB) && \
     defined(TINYXR_USE_GRAPHICS_API_OPENGL)
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -76,10 +74,10 @@
 #define XrSwapchainImage XrSwapchainImageOpenGLESKHR
 #define XR_TYPE_SWAPCHAIN_IMAGE XR_TYPE_SWAPCHAIN_IMAGE_OPENGL_ES_KHR
 #define XrGraphicsRequirements XrGraphicsRequirementsOpenGLESKHR
-#define XR_TYPE_GRAPHICS_REQUIREMENTS                                          \
+#define XR_TYPE_GRAPHICS_REQUIREMENTS \
   XR_TYPE_GRAPHICS_REQUIREMENTS_OPENGL_ES_KHR
 #define xrGetGraphicsRequirementsKHR xrGetOpenGLESGraphicsRequirementsKHR
-#define PFN_xrGetGraphicsRequirementsKHR                                       \
+#define PFN_xrGetGraphicsRequirementsKHR \
   PFN_xrGetOpenGLESGraphicsRequirementsKHR
 #define NAME_xrGetGraphicsRequirementsKHR "xrGetOpenGLESGraphicsRequirementsKHR"
 
@@ -124,28 +122,28 @@
 ///////////////////////////////////////////
 
 // Extensions that are available for all supported platforms
-#define FOR_EACH_EXT_ALL(_)                                                    \
-  _(KHR_composition_layer_depth, true)                                         \
-  _(EXT_hand_tracking, true)                                                   \
-  _(EXT_eye_gaze_interaction, true)                                            \
-  _(FB_color_space, true)                                                      \
-  _(OCULUS_audio_device_guid, true)                                            \
-  _(MSFT_unbounded_reference_space, true)                                      \
-  _(MSFT_hand_interaction, true)                                               \
-  _(MSFT_hand_tracking_mesh, true)                                             \
-  _(MSFT_spatial_anchor, true)                                                 \
-  _(MSFT_spatial_graph_bridge, true)                                           \
-  _(MSFT_secondary_view_configuration, true)                                   \
-  _(MSFT_first_person_observer, true)                                          \
-  _(MSFT_scene_understanding, true)                                            \
-  _(EXT_hp_mixed_reality_controller, true)                                     \
+#define FOR_EACH_EXT_ALL(_)                  \
+  _(KHR_composition_layer_depth, true)       \
+  _(EXT_hand_tracking, true)                 \
+  _(EXT_eye_gaze_interaction, true)          \
+  _(FB_color_space, true)                    \
+  _(OCULUS_audio_device_guid, true)          \
+  _(MSFT_unbounded_reference_space, true)    \
+  _(MSFT_hand_interaction, true)             \
+  _(MSFT_hand_tracking_mesh, true)           \
+  _(MSFT_spatial_anchor, true)               \
+  _(MSFT_spatial_graph_bridge, true)         \
+  _(MSFT_secondary_view_configuration, true) \
+  _(MSFT_first_person_observer, true)        \
+  _(MSFT_scene_understanding, true)          \
+  _(EXT_hp_mixed_reality_controller, true)   \
   _(EXTX_overlay, true)
 
 // UWP platform only
 #define FOR_EACH_EXT_UWP(_) _(MSFT_perception_anchor_interop, EXT_AVAILABLE_UWP)
 
 // Android platform only
-#define FOR_EACH_EXT_ANDROID(_)                                                \
+#define FOR_EACH_EXT_ANDROID(_) \
   _(KHR_android_create_instance, EXT_AVAILABLE_ANDROID)
 
 #if defined(SKG_LINUX_EGL)
@@ -162,42 +160,42 @@
 // Extension functions
 ///////////////////////////////////////////
 
-#define FOR_EACH_EXTENSION_FUNCTION(_)                                         \
-  _(xrCreateSpatialAnchorMSFT)                                                 \
-  _(xrCreateSpatialAnchorSpaceMSFT)                                            \
-  _(xrDestroySpatialAnchorMSFT)                                                \
-  _(xrCreateSceneObserverMSFT)                                                 \
-  _(xrDestroySceneObserverMSFT)                                                \
-  _(xrCreateSceneMSFT)                                                         \
-  _(xrDestroySceneMSFT)                                                        \
-  _(xrComputeNewSceneMSFT)                                                     \
-  _(xrGetSceneComputeStateMSFT)                                                \
-  _(xrGetSceneComponentsMSFT)                                                  \
-  _(xrLocateSceneComponentsMSFT)                                               \
-  _(xrEnumerateSceneComputeFeaturesMSFT)                                       \
-  _(xrGetSceneMeshBuffersMSFT)                                                 \
-  _(xrGetVisibilityMaskKHR)                                                    \
-  _(xrCreateHandTrackerEXT)                                                    \
-  _(xrDestroyHandTrackerEXT)                                                   \
-  _(xrLocateHandJointsEXT)                                                     \
-  _(xrCreateHandMeshSpaceMSFT)                                                 \
-  _(xrUpdateHandMeshMSFT)                                                      \
-  _(xrEnumerateColorSpacesFB)                                                  \
-  _(xrSetColorSpaceFB)                                                         \
-  _(xrCreateSpatialGraphNodeSpaceMSFT)                                         \
-  _(xrCreateDebugUtilsMessengerEXT)                                            \
+#define FOR_EACH_EXTENSION_FUNCTION(_)   \
+  _(xrCreateSpatialAnchorMSFT)           \
+  _(xrCreateSpatialAnchorSpaceMSFT)      \
+  _(xrDestroySpatialAnchorMSFT)          \
+  _(xrCreateSceneObserverMSFT)           \
+  _(xrDestroySceneObserverMSFT)          \
+  _(xrCreateSceneMSFT)                   \
+  _(xrDestroySceneMSFT)                  \
+  _(xrComputeNewSceneMSFT)               \
+  _(xrGetSceneComputeStateMSFT)          \
+  _(xrGetSceneComponentsMSFT)            \
+  _(xrLocateSceneComponentsMSFT)         \
+  _(xrEnumerateSceneComputeFeaturesMSFT) \
+  _(xrGetSceneMeshBuffersMSFT)           \
+  _(xrGetVisibilityMaskKHR)              \
+  _(xrCreateHandTrackerEXT)              \
+  _(xrDestroyHandTrackerEXT)             \
+  _(xrLocateHandJointsEXT)               \
+  _(xrCreateHandMeshSpaceMSFT)           \
+  _(xrUpdateHandMeshMSFT)                \
+  _(xrEnumerateColorSpacesFB)            \
+  _(xrSetColorSpaceFB)                   \
+  _(xrCreateSpatialGraphNodeSpaceMSFT)   \
+  _(xrCreateDebugUtilsMessengerEXT)      \
   _(xrDestroyDebugUtilsMessengerEXT)
 
 #if defined(TINYXR_OS_WINDOWS)
-#define FOR_EACH_PLATFORM_FUNCTION(_)                                          \
-  _(xrConvertWin32PerformanceCounterToTimeKHR)                                 \
-  _(xrConvertTimeToWin32PerformanceCounterKHR)                                 \
-  _(xrCreateSpatialAnchorFromPerceptionAnchorMSFT)                             \
-  _(xrGetAudioOutputDeviceGuidOculus)                                          \
+#define FOR_EACH_PLATFORM_FUNCTION(_)              \
+  _(xrConvertWin32PerformanceCounterToTimeKHR)     \
+  _(xrConvertTimeToWin32PerformanceCounterKHR)     \
+  _(xrCreateSpatialAnchorFromPerceptionAnchorMSFT) \
+  _(xrGetAudioOutputDeviceGuidOculus)              \
   _(xrGetAudioInputDeviceGuidOculus)
 #else
-#define FOR_EACH_PLATFORM_FUNCTION(_)                                          \
-  _(xrConvertTimespecTimeToTimeKHR)                                            \
+#define FOR_EACH_PLATFORM_FUNCTION(_) \
+  _(xrConvertTimespecTimeToTimeKHR)   \
   _(xrConvertTimeToTimespecTimeKHR)
 #endif
 
@@ -233,6 +231,4 @@ TINYXR_NAMESPACE_CLOSE
 
 #endif
 
-// clang-format off
-
-#endif // TINYXR_IMPL_OPENXR_EXTENSIONS_H
+#endif  // TINYXR_IMPL_OPENXR_EXTENSIONS_H

@@ -1,12 +1,12 @@
 #ifndef TINYXR_IMPL_ACTION_SET_H
 #define TINYXR_IMPL_ACTION_SET_H
 
+#include <string>
+#include <unordered_map>
+
 #include "tinyxr/core/tinyxr.h"
 #include "tinyxr/impl/action.h"
 #include "tinyxr/impl/openxr.h"
-
-#include <string>
-#include <unordered_map>
 
 TINYXR_NAMESPACE_OPEN
 
@@ -21,4 +21,4 @@ using ActionSetsMap = std::unordered_map<ActionSetName, ActionSet>;
 
 TINYXR_NAMESPACE_CLOSE
 
-#endif // TINYXR_IMPL_ACTION_SET_H
+#endif  // TINYXR_IMPL_ACTION_SET_H

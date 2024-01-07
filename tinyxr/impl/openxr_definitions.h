@@ -3,9 +3,8 @@
 
 #include "tinyxr/core/os.h"
 
-// clang-format off
-
-// based on: https://github.com/StereoKit/StereoKit/blob/master/StereoKitC/systems/platform/openxr.h
+// based on:
+// https://github.com/StereoKit/StereoKit/blob/master/StereoKitC/systems/platform/openxr.h
 #if defined(TINYXR_XR_OPENXR)
 
 #if defined(TINYXR_OS_ANDROID)
@@ -34,24 +33,22 @@
 #elif defined(TINYXR_OS_WINDOWS) || defined(TINYXR_OS_WINDOWS_UWP)
 #define XR_USE_GRAPHICS_API_OPENGL
 #define XR_USE_PLATFORM_WIN32
-#define XR_TIME_EXTENSION                                                      \
+#define XR_TIME_EXTENSION \
   XR_KHR_WIN32_CONVERT_PERFORMANCE_COUNTER_TIME_EXTENSION_NAME
 
 #ifndef WIN32_LEAN_AND_MEAN
-  #define WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
 #endif  // !WIN32_LEAN_AND_MEAN
 
 #ifndef NOMINMAX
-  #define NOMINMAX
+#define NOMINMAX
 #endif  // !NOMINMAX
 
-#include <windows.h> // for HDC in openxr/openxr_platform.h
-#include <unknwn.h> // for IUnknown in openxr/openxr_platform.h
+#include <unknwn.h>   // for IUnknown in openxr/openxr_platform.h
+#include <windows.h>  // for HDC in openxr/openxr_platform.h
 
 #endif
 
-#endif // TINYXR_XR_OPENXR
+#endif  // TINYXR_XR_OPENXR
 
-// clang-format on
-
-#endif // TINYXR_IMPL_OPENXR_PREDEFINITIONS_H
+#endif  // TINYXR_IMPL_OPENXR_PREDEFINITIONS_H

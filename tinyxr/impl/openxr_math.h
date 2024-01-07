@@ -10,4 +10,4 @@ XrPosef XrPosefIdentity();
 
 TINYXR_NAMESPACE_CLOSE
 
-#endif // TINYXR_IMPL_OPENXR_MATH_H
+#endif  // TINYXR_IMPL_OPENXR_MATH_H

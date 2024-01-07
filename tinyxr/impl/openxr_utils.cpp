@@ -1,4 +1,5 @@
 #include "tinyxr/impl/openxr_utils.h"
+
 #include "tinyxr/impl/utils.h"
 
 TINYXR_NAMESPACE_OPEN
@@ -15,16 +16,16 @@ std::string XrVersionToString(const XrVersion &version) {
 
 #define TO_STRING(name) #name
 
-#define TO_STRING_CASE(name, val)                                              \
-  case name:                                                                   \
+#define TO_STRING_CASE(name, val) \
+  case name:                      \
     return TO_STRING(name);
 
-#define TO_STRING_DEFINITION(type)                                             \
-  std::string type##ToString(const type &var) {                                \
-    switch (var) {                                                             \
-      XR_LIST_ENUM_##type(TO_STRING_CASE) default                              \
-          : return TO_STRING(Unknown##type);                                   \
-    }                                                                          \
+#define TO_STRING_DEFINITION(type)                \
+  std::string type##ToString(const type &var) {   \
+    switch (var) {                                \
+      XR_LIST_ENUM_##type(TO_STRING_CASE) default \
+          : return TO_STRING(Unknown##type);      \
+    }                                             \
   }
 
 TO_STRING_DEFINITION(XrResult)
@@ -119,9 +120,9 @@ XrVersion XrVersionFromString(const std::string &string) {
   }
 }
 
-#define FROM_STRING_IF(name, value)                                            \
-  if (#name == string) {                                                       \
-    return name;                                                               \
+#define FROM_STRING_IF(name, value) \
+  if (#name == string) {            \
+    return name;                    \
   }
 
 #define FROM_STRING_DEFINITION(type)                                           \

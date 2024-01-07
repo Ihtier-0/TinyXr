@@ -1,6 +1,6 @@
-#include "tinyxr/core/manager.h"
-
 #include <iostream>
+
+#include "tinyxr/core/manager.h"
 
 int main(int argc, char *argv[]) {
   try {

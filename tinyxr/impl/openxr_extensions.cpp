@@ -10,10 +10,10 @@ TINYXR_NAMESPACE_OPEN
 
 ExtensionsInfo::ExtensionsInfo(
     const std::vector<std::string> &userRequestExtensions) {
-#define CHECK_EXT(name, available)                                             \
-  else if (available && strcmp("XR_" #name, extension.extensionName) == 0) {   \
-    name = true;                                                               \
-    extensions.push_back("XR_" #name);                                         \
+#define CHECK_EXT(name, available)                                           \
+  else if (available && strcmp("XR_" #name, extension.extensionName) == 0) { \
+    name = true;                                                             \
+    extensions.push_back("XR_" #name);                                       \
   }
 
   std::vector<XrExtensionProperties> extensionProperties;
@@ -53,8 +53,8 @@ ExtensionsInfo::ExtensionsInfo(
 ////////////////////////////////////////////////////////////////////////////////
 
 ExtensionsFunction::ExtensionsFunction(const XrInstance &instance) {
-#define GET_INSTANCE_PROC_ADDRESS(name)                                        \
-  xrGetInstanceProcAddr(instance, #name,                                       \
+#define GET_INSTANCE_PROC_ADDRESS(name)  \
+  xrGetInstanceProcAddr(instance, #name, \
                         (PFN_xrVoidFunction *)((PFN_##name *)(&name)));
 
   if (instance == XR_NULL_HANDLE) {

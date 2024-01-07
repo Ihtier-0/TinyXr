@@ -2,7 +2,6 @@
 #define TINYXR_IMPL_CONTEXT_H
 
 #include "tinyxr/core/tinyxr.h"
-
 #include "tinyxr/impl/action_set.h"
 #include "tinyxr/impl/openxr.h"
 #include "tinyxr/impl/openxr_extensions.h"
@@ -37,7 +36,7 @@ struct Context {
 
   bool exitRenderLoop = false;
   bool requestRestart = false;
-  bool requestExit = false; // TODO! mb atomic
+  bool requestExit = false;  // TODO! mb atomic
 
   XrEventDataBuffer eventDataBuffer;
 
@@ -54,4 +53,4 @@ struct Context {
 
 TINYXR_NAMESPACE_CLOSE
 
-#endif // TINYXR_IMPL_CONTEXT_H
+#endif  // TINYXR_IMPL_CONTEXT_H
