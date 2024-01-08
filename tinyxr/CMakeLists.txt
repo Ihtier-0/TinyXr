@@ -2,11 +2,14 @@ set(core_headers
   core/api.h
   core/config.h
   core/export.h
+  core/irenderer.h
   core/manager.h
-  core/os.h)
+  core/os.h
+  core/render_context.h)
 
 set(core_sources
   core/config.cpp
+  core/irenderer.cpp
   core/manager.cpp)
 
 source_group("core/headers" FILES ${core_headers})
@@ -17,6 +20,7 @@ set(impl_headers
   impl/action.h
   impl/context.h
   impl/favor_high_performance_gpu.h
+  impl/internal_render_context.h
   impl/manager.h
   impl/openxr_extensions.h
   impl/openxr_definitions.h

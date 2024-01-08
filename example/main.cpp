@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "opengl_renderer.h"
 #include "tinyxr/core/manager.h"
 
 int main(int argc, char *argv[]) {
@@ -10,7 +11,8 @@ int main(int argc, char *argv[]) {
       return EXIT_FAILURE;
     }
 
-    TXR_NS::ManagerXr manager(config);
+    auto renderer = std::make_shared<OpenGlRenderer>();
+    TXR_NS::ManagerXr manager(config, renderer);
     manager.startRender();
 
     return EXIT_SUCCESS;

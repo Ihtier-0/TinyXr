@@ -2,6 +2,7 @@
 #define TINYXR_IMPL_MANAGER_H
 
 #include "tinyxr/core/config.h"
+#include "tinyxr/core/irenderer.h"
 #include "tinyxr/core/tinyxr.h"
 #include "tinyxr/impl/context.h"
 #include "tinyxr/impl/openxr_extensions.h"
@@ -17,7 +18,7 @@ class ManagerXRImpl {
   ManagerXRImpl &operator=(const ManagerXRImpl &&) = delete;
 
 public:
-  ManagerXRImpl(const Config &config);
+  ManagerXRImpl(const Config &config, IRendererPtr renderer);
   ~ManagerXRImpl() = default;
 
   bool init();
@@ -38,6 +39,7 @@ public:
 
   // RenderLoop::Frames
   bool beforeFrames();
+  bool renderFrames();
   bool afterFrames();
 
 private:
@@ -83,12 +85,17 @@ private:
       const XrEventDataSessionStateChanged &stateChangedEvent);
   const XrEventDataBaseHeader *tryReadNextEvent();
 
+  // locates
+  bool locateViews();
+  bool locateSpaces();
+
   Config mConfig;
 
   ExtensionsInfo mExtensionsInfo;
   std::unique_ptr<ExtensionsFunction> mExtensionsFunction;
 
   Context mContext;
+  IRendererPtr mRenderer;
 
   // TODO! support all graphics API
   GLFWwindow *mGraphicsContext;

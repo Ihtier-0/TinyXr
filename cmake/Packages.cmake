@@ -37,6 +37,6 @@ CPMAddPackage(
           "GLFW_BUILD_DOCS OFF"
 )
 
-find_package(GLEW REQUIRED)
+find_package(GLEW REQUIRED) # 2.2.0
 
 find_package(OpenGL REQUIRED)

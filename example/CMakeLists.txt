@@ -1,5 +1,7 @@
 set(source
-  main.cpp)
+  main.cpp
+  opengl_renderer.cpp
+  opengl_renderer.h)
 
 add_executable(tinyxrexample
   ${source})

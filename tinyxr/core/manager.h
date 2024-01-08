@@ -5,6 +5,7 @@
 
 #include "tinyxr/core/api.h"
 #include "tinyxr/core/config.h"
+#include "tinyxr/core/irenderer.h"
 #include "tinyxr/core/tinyxr.h"
 
 TINYXR_NAMESPACE_OPEN
@@ -18,7 +19,7 @@ class TINYXR_API ManagerXr {
   ManagerXr &operator=(const ManagerXr &&) = delete;
 
 public:
-  ManagerXr(const Config &confing);
+  ManagerXr(const Config &confing, IRendererPtr renderer);
   ~ManagerXr();
 
   bool startRender();
@@ -29,6 +30,7 @@ private:
   Config mConfig;
 
   std::unique_ptr<ManagerXRImpl> mImpl;
+  IRendererPtr mRenderer;
 };
 
 TINYXR_NAMESPACE_CLOSE

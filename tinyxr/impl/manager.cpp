@@ -22,10 +22,11 @@ TINYXR_NAMESPACE_OPEN
 /// ManagerXRImpl
 ////////////////////////////////////////////////////////////////////////////////
 
-ManagerXRImpl::ManagerXRImpl(const Config &confing)
+ManagerXRImpl::ManagerXRImpl(const Config &confing, IRendererPtr renderer)
     : mConfig(confing),
       mExtensionsInfo(
-          mConfig.getVector<std::string>("xr.userRequestExtensions")) {}
+          mConfig.getVector<std::string>("xr.userRequestExtensions")),
+      mRenderer(renderer) {}
 
 bool ManagerXRImpl::init() {
   if (!mConfig.isValid()) {
@@ -1100,6 +1101,27 @@ bool ManagerXRImpl::beforeFrames() {
   mContext.predictedDisplayTime = state.predictedDisplayTime;
 
   return true;
+}
+
+bool ManagerXRImpl::locateViews() { return false; }
+
+bool ManagerXRImpl::locateSpaces() { return false; }
+
+bool ManagerXRImpl::renderFrames() {
+  if (!mContext.shouldRender) {
+    return false;
+  }
+
+  if (!locateViews()) {
+    return false;
+  }
+
+  if (!locateSpaces()) {
+    return false;
+  }
+
+  RenderContext context;
+  return mRenderer->render(context);
 }
 
 bool ManagerXRImpl::afterFrames() {

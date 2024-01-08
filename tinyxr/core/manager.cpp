@@ -4,7 +4,8 @@
 
 TINYXR_NAMESPACE_OPEN
 
-ManagerXr::ManagerXr(const Config &confing) : mConfig(confing) {}
+ManagerXr::ManagerXr(const Config &confing, IRendererPtr renderer)
+    : mConfig(confing), mRenderer(renderer) {}
 
 ManagerXr::~ManagerXr() {}
 
@@ -14,7 +15,7 @@ bool ManagerXr::startRender() {
   bool requestExitRenderLoop = false;
 
   do {
-    mImpl = std::make_unique<ManagerXRImpl>(mConfig);
+    mImpl = std::make_unique<ManagerXRImpl>(mConfig, mRenderer);
 
     if (!mImpl->init()) {
       return false;
@@ -35,8 +36,9 @@ bool ManagerXr::startRender() {
 
       if (mImpl->sessionRunning()) {
         mImpl->pollActions();
+
         mImpl->beforeFrames();
-        // TODO!
+        mImpl->renderFrames();
         mImpl->afterFrames();
       } else {
       }
