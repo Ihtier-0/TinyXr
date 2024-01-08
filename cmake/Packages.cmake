@@ -37,6 +37,12 @@ CPMAddPackage(
           "GLFW_BUILD_DOCS OFF"
 )
 
-find_package(GLEW REQUIRED) # 2.2.0
+CPMAddPackage("https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0-win32.zip#SHA256=EA6B14A1C6C968D0034E61FF6CB242CFF2CE0EDE79267A0F2B47B1B0B652C164")
+set(GLEW_INCLUDE_DIR "${glew_SOURCE_DIR}/include")
+set(GLEW_LIBRARY "${glew_SOURCE_DIR}/lib/Release/x64/glew32.lib")
+# https://stackoverflow.com/questions/34799916/copy-file-from-source-directory-to-binary-directory-using-cmake
+configure_file("${glew_SOURCE_DIR}/bin/Release/x64/glew32.dll"
+               "${CMAKE_INSTALL_PREFIX}/bin/glew32.dll"
+               COPYONLY)
 
 find_package(OpenGL REQUIRED)
