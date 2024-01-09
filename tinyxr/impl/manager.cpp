@@ -5,6 +5,7 @@
 #include <string>
 
 #include "tinyxr/core/tinyxr.h"
+#include "tinyxr/impl/config.h"
 #include "tinyxr/impl/openxr_utils.h"
 
 // TODO! support all graphics API
@@ -22,34 +23,35 @@ TINYXR_NAMESPACE_OPEN
 /// ManagerXRImpl
 ////////////////////////////////////////////////////////////////////////////////
 
-ManagerXRImpl::ManagerXRImpl(const Config &confing, IRendererPtr renderer)
-    : mConfig(confing),
-      mExtensionsInfo(
-          mConfig.getVector<std::string>("xr.userRequestExtensions")),
-      mRenderer(renderer) {}
+ManagerXRImpl::ManagerXRImpl(const Config &config, IRendererPtr renderer)
+    : mConfig(config), mRenderer(renderer) {}
 
 bool ManagerXRImpl::init() {
-  if (!mConfig.isValid()) {
+  mExtensionsInfo = std::make_unique<ExtensionsInfo>(
+      mConfig.getImpl()->getVector<std::string>("xr.userRequestExtensions"));
+
+  if (!mConfig.getImpl()->isValid()) {
     std::cout << "Invalid config" << std::endl;
     return false;
   }
 
   mContext.formFactor = XrFormFactorFromString(
-      mConfig.getValue<std::string>("xr.system.formFactor"));
+      mConfig.getImpl()->getValue<std::string>("xr.system.formFactor"));
   if (mContext.formFactor == XR_FORM_FACTOR_MAX_ENUM) {
     std::cout << "Invalid xr.system.formFactor" << std::endl;
     return false;
   }
 
-  mContext.environmentBlendMode = XrEnvironmentBlendModeFromString(
-      mConfig.getValue<std::string>("xr.userRequestEnvironmentBlendMode"));
+  mContext.environmentBlendMode =
+      XrEnvironmentBlendModeFromString(mConfig.getImpl()->getValue<std::string>(
+          "xr.userRequestEnvironmentBlendMode"));
   if (mContext.environmentBlendMode == XR_ENVIRONMENT_BLEND_MODE_MAX_ENUM) {
     std::cout << "Invalid xr.userRequestEnvironmentBlendMode" << std::endl;
     return false;
   }
 
   mContext.viewConfigurationType = XrViewConfigurationTypeFromString(
-      mConfig.getValue<std::string>("xr.viewConfigType"));
+      mConfig.getImpl()->getValue<std::string>("xr.viewConfigType"));
   if (mContext.viewConfigurationType == XR_VIEW_CONFIGURATION_TYPE_MAX_ENUM) {
     std::cout << "Invalid xr.viewConfigType" << std::endl;
     return false;
@@ -119,8 +121,8 @@ bool ManagerXRImpl::createInstanceImpl() {
   }
 
   std::vector<const char *> extensions;
-  extensions.reserve(mExtensionsInfo.extensions.size());
-  for (const auto &extension : mExtensionsInfo.extensions) {
+  extensions.reserve(mExtensionsInfo->extensions.size());
+  for (const auto &extension : mExtensionsInfo->extensions) {
     extensions.push_back(extension.c_str());
   }
 
@@ -138,10 +140,11 @@ bool ManagerXRImpl::createInstanceImpl() {
   createInfo.applicationInfo.apiVersion = XR_CURRENT_API_VERSION;
 
   // application
-  const auto applicationName =
-      mConfig.getValue<std::string>("xr.applicationInfo.applicationName");
-  const auto applicationVersion = XrVersionFromString(
-      mConfig.getValue<std::string>("xr.applicationInfo.applicationVersion"));
+  const auto applicationName = mConfig.getImpl()->getValue<std::string>(
+      "xr.applicationInfo.applicationName");
+  const auto applicationVersion =
+      XrVersionFromString(mConfig.getImpl()->getValue<std::string>(
+          "xr.applicationInfo.applicationVersion"));
 
   std::memcpy(createInfo.applicationInfo.applicationName,
               applicationName.c_str(),
@@ -294,7 +297,7 @@ bool ManagerXRImpl::initGraphicsApi(
 }
 
 bool ManagerXRImpl::initializeGraphicsDevice() {
-  if (!mExtensionsInfo.graphicExtension ||
+  if (!mExtensionsInfo->graphicExtension ||
       mExtensionsFunction->xrGetGraphicsRequirementsKHR == nullptr) {
     return false;
   }
@@ -442,7 +445,7 @@ bool ManagerXRImpl::createSession() {
 
 bool ManagerXRImpl::suggestInteractionProfiles() {
   const auto interactionProfilesConfig =
-      mConfig.getValue<std::string>("xr.interactionProfilesConfig");
+      mConfig.getImpl()->getValue<std::string>("xr.interactionProfilesConfig");
 
   std::ifstream interactionProfilesFile(interactionProfilesConfig);
   if (interactionProfilesFile.bad()) {
@@ -548,7 +551,7 @@ bool ManagerXRImpl::suggestInteractionProfiles() {
 
 bool ManagerXRImpl::createActions() {
   const auto actionSetsConfig =
-      mConfig.getValue<std::string>("xr.actionSetsConfig");
+      mConfig.getImpl()->getValue<std::string>("xr.actionSetsConfig");
 
   std::ifstream actionSetsFile(actionSetsConfig);
   if (actionSetsFile.bad()) {

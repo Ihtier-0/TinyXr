@@ -91,7 +91,7 @@ private:
 
   Config mConfig;
 
-  ExtensionsInfo mExtensionsInfo;
+  std::unique_ptr<ExtensionsInfo> mExtensionsInfo;
   std::unique_ptr<ExtensionsFunction> mExtensionsFunction;
 
   Context mContext;

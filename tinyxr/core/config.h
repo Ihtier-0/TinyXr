@@ -1,49 +1,27 @@
 #ifndef TINYXR_CORE_CONFIG_H
 #define TINYXR_CORE_CONFIG_H
 
-#include <cpptoml.h>
-
 #include <memory>
-#include <vector>
+#include <string>
 
 #include "tinyxr/core/api.h"
 #include "tinyxr/core/tinyxr.h"
 
 TINYXR_NAMESPACE_OPEN
 
-class TINYXR_API Config {
+class ConfigImpl;
+
+class Config {
 public:
-  Config(const std::string &filename);
-  ~Config();
+  TINYXR_API Config(const std::string &filename);
+  TINYXR_API  ~Config();
 
-  template <class T>
-  T getValue(const std::string &key, const T &defaultValue = T()) const {
-    if (!isValid()) {
-      std::cout << "Attempt to get value '" << key
-                << "' from in invalid config." << std::endl;
-      return defaultValue;
-    }
+  TINYXR_API bool isValid() const;
 
-    return mTable->get_qualified_as<T>(key).value_or(defaultValue);
-  }
-
-  template <class T>
-  std::vector<T> getVector(const std::string &key,
-                           const std::vector<T> &defaultValue = {}) const {
-    if (!isValid()) {
-      std::cout << "Attempt to get value '" << key
-                << "' from in invalid config." << std::endl;
-      return defaultValue;
-    }
-
-    return mTable->get_qualified_array_of<T>(key).value_or(defaultValue);
-  }
-
-  bool isValid() const;
+  std::shared_ptr<ConfigImpl> getImpl();
 
 private:
-  using TomlTablePtr = std::shared_ptr<cpptoml::table>;
-  TomlTablePtr mTable;
+  std::shared_ptr<ConfigImpl> mImpl;
 };
 
 TINYXR_NAMESPACE_CLOSE

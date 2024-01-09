@@ -1,22 +1,17 @@
 #include "tinyxr/core/config.h"
 
-#include <iostream>
+#include "tinyxr/impl/config.h"
 
 TINYXR_NAMESPACE_OPEN
 
 Config::Config(const std::string &filename) {
-  try {
-    mTable = cpptoml::parse_file(filename);
-  } catch (cpptoml::parse_exception e) {
-    mTable.reset();
-
-    std::cout << "Exception " << e.what() << '\n'
-              << "While read toml config from: " << filename << std::endl;
-  }
+  mImpl = std::make_shared<ConfigImpl>(filename);
 }
 
 Config::~Config() {}
 
-bool Config::isValid() const { return !!mTable; }
+std::shared_ptr<ConfigImpl> Config::getImpl() { return mImpl; }
+
+bool Config::isValid() const { return mImpl->isValid(); }
 
 TINYXR_NAMESPACE_CLOSE

@@ -1,5 +1,5 @@
-#ifndef IRENDERER_H
-#define IRENDERER_H
+#ifndef TINYXR_CORE_IRENDERER_H
+#define TINYXR_CORE_IRENDERER_H
 
 #include <memory>
 
@@ -20,4 +20,4 @@ using IRendererPtr = std::shared_ptr<IRenderer>;
 
 TINYXR_NAMESPACE_CLOSE
 
-#endif  // IRENDERER_H
+#endif  // TINYXR_CORE_IRENDERER_H

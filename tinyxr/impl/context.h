@@ -1,6 +1,8 @@
 #ifndef TINYXR_IMPL_CONTEXT_H
 #define TINYXR_IMPL_CONTEXT_H
 
+#include <map>
+
 #include "tinyxr/core/tinyxr.h"
 #include "tinyxr/impl/action_set.h"
 #include "tinyxr/impl/openxr.h"
