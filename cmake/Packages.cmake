@@ -1,19 +1,23 @@
+Set(FETCHCONTENT_QUIET FALSE)
+
 CPMAddPackage(
-  NAME OpenXR-SDK-Source
-  VERSION 1.0.33
+  NAME OpenXR
+  VERSION 1.1.38
   GITHUB_REPOSITORY KhronosGroup/OpenXR-SDK-Source
-  GIT_TAG release-1.0.33
-  OPTIONS "BUILD_API_LAYERS OFF"
-          "BUILD_TESTS OFF"
+  GIT_TAG release-1.1.38
+  OPTIONS "BUILD_TESTS OFF"
           "BUILD_CONFORMANCE_TESTS OFF"
-)
+          "DYNAMIC_LOADER ON")
+find_targets(OpenXR_targets ${OpenXR_SOURCE_DIR})
+make_folder("OpenXR" ${OpenXR_targets})
 
 CPMAddPackage(
   NAME cpptoml
   VERSION 0.1.1
   GITHUB_REPOSITORY skystrife/cpptoml
-  OPTIONS "CPPTOML_BUILD_EXAMPLES OFF"
-)
+  OPTIONS "CPPTOML_BUILD_EXAMPLES OFF")
+find_targets(cpptoml_targets ${cpptoml_SOURCE_DIR})
+make_folder("cpptoml" ${cpptoml_targets})
 
 CPMAddPackage(
   NAME jsoncpp
@@ -23,26 +27,46 @@ CPMAddPackage(
   OPTIONS "JSONCPP_WITH_TESTS OFF"
           "JSONCPP_WITH_POST_BUILD_UNITTEST OFF"
           "JSONCPP_WITH_EXAMPLE OFF"
+          "JSONCPP_WITH_WARNING_AS_ERROR ON"
+          "JSONCPP_WITH_STRICT_ISO OFF"
+          "JSONCPP_WITH_PKGCONFIG_SUPPORT OFF"
+          "JSONCPP_WITH_CMAKE_PACKAGE OFF"
+          "BUILD_SHARED_LIBS ON"
           "BUILD_STATIC_LIBS OFF"
-          "BUILD_OBJECT_LIBS OFF"
-)
+          "BUILD_OBJECT_LIBS OFF")
+find_targets(jsoncpp_targets ${jsoncpp_SOURCE_DIR})
+make_folder("jsoncpp" ${jsoncpp_targets})
 
 CPMAddPackage(
   NAME glfw
-  VERSION 3.3.9
+  VERSION 3.4
   GITHUB_REPOSITORY glfw/glfw
-  GIT_TAG 3.3.9
-  OPTIONS "GLFW_BUILD_EXAMPLES OFF"
+  GIT_TAG 3.4
+  OPTIONS "BUILD_SHARED_LIBS ON"
+          "GLFW_BUILD_EXAMPLES OFF"
           "GLFW_BUILD_TESTS OFF"
-          "GLFW_BUILD_DOCS OFF"
-)
+          "GLFW_BUILD_DOCS OFF")
+find_targets(glfw_targets ${glfw_SOURCE_DIR})
+make_folder("glfw" ${glfw_targets})
 
-CPMAddPackage("https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0-win32.zip#SHA256=EA6B14A1C6C968D0034E61FF6CB242CFF2CE0EDE79267A0F2B47B1B0B652C164")
-set(GLEW_INCLUDE_DIR "${glew_SOURCE_DIR}/include")
-set(GLEW_LIBRARY "${glew_SOURCE_DIR}/lib/Release/x64/glew32.lib")
-# https://stackoverflow.com/questions/34799916/copy-file-from-source-directory-to-binary-directory-using-cmake
-configure_file("${glew_SOURCE_DIR}/bin/Release/x64/glew32.dll"
-               "${CMAKE_INSTALL_PREFIX}/bin/glew32.dll"
-               COPYONLY)
+CPMAddPackage(
+  NAME glad
+  GITHUB_REPOSITORY Dav1dde/glad
+  VERSION 2.0.6
+  DOWNLOAD_ONLY)
+set(CMAKE_MODULE_PATH
+  ${CMAKE_MODULE_PATH}
+  ${glad_SOURCE_DIR}/cmake)
+include(GladConfig)
+add_subdirectory("${glad_SOURCE_DIR}/cmake" glad_cmake)
+set(GLAD_LIBRARY glad_gl_core_46)
+# https://github.com/Dav1dde/glad/wiki/C#generating-during-build-process
+glad_add_library(${GLAD_LIBRARY} SHARED API gl:core=4.6)
+make_folder("glad" ${GLAD_LIBRARY})
+install(TARGETS ${GLAD_LIBRARY}
+  EXPORT ${GLAD_LIBRARY}-targets
+  RUNTIME DESTINATION bin
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib)
 
 find_package(OpenGL REQUIRED)

@@ -9,7 +9,7 @@
 #include "tinyxr/impl/openxr_utils.h"
 
 // TODO! support all graphics API
-#include <GL/glew.h>
+#include <glad/gl.h>
 #include <GLFW/glfw3.h>
 #define GLFW_EXPOSE_NATIVE_WIN32
 #define GLFW_EXPOSE_NATIVE_WGL
@@ -287,11 +287,6 @@ bool ManagerXRImpl::initGraphicsApi(
   glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);  // Offscreen contexts
   mGraphicsContext = glfwCreateWindow(10, 10, "TinyXrGlContext", NULL, NULL);
   glfwMakeContextCurrent(mGraphicsContext);
-
-  if (glewInit() != GLEW_OK) {
-    std::cout << "Failed to initialize GLEW" << std::endl;
-    return false;
-  }
 
   return true;
 }

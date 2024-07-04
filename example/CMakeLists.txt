@@ -6,10 +6,6 @@ set(source
 add_executable(tinyxrexample
   ${source})
 
-set_property(TARGET tinyxrexample PROPERTY CXX_STANDARD 17)
-set_property(TARGET tinyxrexample PROPERTY CXX_STANDARD_REQUIRED True)
-set_property(TARGET tinyxrexample PROPERTY CXX_EXTENSIONS OFF)
-
 if(MSVC)
   set_property(TARGET tinyxrexample PROPERTY VS_DEBUGGER_COMMAND ${CMAKE_INSTALL_PREFIX}/bin/$<TARGET_FILE_NAME:tinyxrexample>)
   set_property(TARGET tinyxrexample PROPERTY VS_DEBUGGER_WORKING_DIRECTORY ${CMAKE_INSTALL_PREFIX}/bin)

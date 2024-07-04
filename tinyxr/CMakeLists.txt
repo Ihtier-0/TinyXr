@@ -48,10 +48,6 @@ set(sources ${core_sources} ${impl_sources})
 
 add_library(tinyxr SHARED ${headers} ${sources})
 
-set_property(TARGET tinyxr PROPERTY CXX_STANDARD 17)
-set_property(TARGET tinyxr PROPERTY CXX_STANDARD_REQUIRED True)
-set_property(TARGET tinyxr PROPERTY CXX_EXTENSIONS OFF)
-
 target_compile_definitions(
   tinyxr
   PRIVATE
@@ -75,7 +71,7 @@ target_link_libraries(
   cpptoml
   jsoncpp_lib
   glfw
-  ${GLEW_LIBRARY}
+  ${GLAD_LIBRARY}
   OpenGL::GL)
 
 install(FILES ${core_headers} DESTINATION include/tinyxr/core)
