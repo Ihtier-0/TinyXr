@@ -1,17 +1,73 @@
 #include "tinyxr/core/config.h"
 
-#include "tinyxr/impl/config.h"
+#include <cpptoml.h>
+
+#include <iostream>
 
 TINYXR_NAMESPACE_OPEN
 
-Config::Config(const std::string &filename) {
-  mImpl = std::make_shared<ConfigImpl>(filename);
+////////////////////////////////////////////////////////////////////////////////
+/// ConfigImpl
+////////////////////////////////////////////////////////////////////////////////
+
+class ConfigImpl : public IConfig {
+public:
+  ConfigImpl(const std::string& filename) {
+    try {
+      mTable = cpptoml::parse_file(filename);
+    } catch (cpptoml::parse_exception e) {
+      mTable.reset();
+      std::cout << "Exception " << e.what() << '\n'
+                << "While read toml config from: " << filename << std::endl;
+    }
+  }
+
+  bool isValid() const { return !!mTable; }
+
+  template <class T>
+  T getValue(const std::string& key, const T& defaultValue = T()) const {
+    if (!isValid()) {
+      std::cout << "Attempt to get value '" << key
+                << "' from in invalid config." << std::endl;
+      return defaultValue;
+    }
+
+    return mTable->get_qualified_as<T>(key).value_or(defaultValue);
+  }
+
+  template <class T>
+  std::vector<T> getVector(const std::string& key,
+                           const std::vector<T>& defaultValue = {}) const {
+    if (!isValid()) {
+      std::cout << "Attempt to get value '" << key
+                << "' from in invalid config." << std::endl;
+      return defaultValue;
+    }
+
+    return mTable->get_qualified_array_of<T>(key).value_or(defaultValue);
+  }
+
+  std::string getString(const std::string& key,
+                        const std::string& defaultValue = {}) const override {
+    return getValue(key, defaultValue);
+  }
+  std::vector<std::string> getStringVector(
+      const std::string& key,
+      const std::vector<std::string>& defaultValue = {}) const override {
+    return getVector(key, defaultValue);
+  }
+
+private:
+  std::shared_ptr<cpptoml::table> mTable;
+};
+
+////////////////////////////////////////////////////////////////////////////////
+/// Config
+////////////////////////////////////////////////////////////////////////////////
+
+IConfigPtr IConfig::create(const std::string& filename) {
+  auto config = std::make_unique<ConfigImpl>(filename);
+  return config->isValid() ? std::move(config) : nullptr;
 }
-
-Config::~Config() {}
-
-std::shared_ptr<ConfigImpl> Config::getImpl() { return mImpl; }
-
-bool Config::isValid() const { return mImpl->isValid(); }
 
 TINYXR_NAMESPACE_CLOSE

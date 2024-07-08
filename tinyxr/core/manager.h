@@ -19,7 +19,7 @@ class TINYXR_API ManagerXr {
   ManagerXr &operator=(const ManagerXr &&) = delete;
 
 public:
-  ManagerXr(const Config &confing, IRendererPtr renderer);
+  ManagerXr(IConfigPtr confing, IRendererPtr renderer);
   ~ManagerXr();
 
   bool startRender();
@@ -27,7 +27,7 @@ public:
   void requestExit();
 
 private:
-  Config mConfig;
+  IConfigPtr mConfig;
 
   std::unique_ptr<ManagerXRImpl> mImpl;
   IRendererPtr mRenderer;

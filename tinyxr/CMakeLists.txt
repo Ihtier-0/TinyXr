@@ -18,7 +18,6 @@ source_group("core/sources" FILES ${core_sources})
 set(impl_headers
   impl/action_set.h
   impl/action.h
-  impl/config.h
   impl/context.h
   impl/favor_high_performance_gpu.h
   impl/internal_render_context.h
@@ -32,7 +31,6 @@ set(impl_headers
 
 set(impl_sources
   impl/action.cpp
-  impl/config.cpp
   impl/manager.cpp
   impl/openxr_extensions.cpp
   impl/openxr_math.cpp

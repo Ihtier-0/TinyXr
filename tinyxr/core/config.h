@@ -3,25 +3,25 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "tinyxr/core/api.h"
 #include "tinyxr/core/tinyxr.h"
 
 TINYXR_NAMESPACE_OPEN
 
-class ConfigImpl;
+class IConfig;
+using IConfigPtr = std::unique_ptr<IConfig>;
 
-class Config {
+class IConfig {
 public:
-  TINYXR_API Config(const std::string &filename);
-  TINYXR_API  ~Config();
+  TINYXR_API static IConfigPtr create(const std::string &filename);
 
-  TINYXR_API bool isValid() const;
-
-  std::shared_ptr<ConfigImpl> getImpl();
-
-private:
-  std::shared_ptr<ConfigImpl> mImpl;
+  virtual std::string getString(const std::string &key,
+                                const std::string &defaultValue = {}) const = 0;
+  virtual std::vector<std::string> getStringVector(
+      const std::string &key,
+      const std::vector<std::string> &defaultValue = {}) const = 0;
 };
 
 TINYXR_NAMESPACE_CLOSE

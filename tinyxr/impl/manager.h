@@ -18,7 +18,7 @@ class ManagerXRImpl {
   ManagerXRImpl &operator=(const ManagerXRImpl &&) = delete;
 
 public:
-  ManagerXRImpl(const Config &config, IRendererPtr renderer);
+  ManagerXRImpl(IConfig *config, IRendererPtr renderer);
   ~ManagerXRImpl() = default;
 
   bool init();
@@ -89,7 +89,7 @@ private:
   bool locateViews();
   bool locateSpaces();
 
-  Config mConfig;
+  IConfig *mConfig;
 
   std::unique_ptr<ExtensionsInfo> mExtensionsInfo;
   std::unique_ptr<ExtensionsFunction> mExtensionsFunction;

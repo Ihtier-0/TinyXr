@@ -5,14 +5,14 @@
 
 int main(int argc, char *argv[]) {
   try {
-    TXR_NS::Config config("default.toml");
-    if (!config.isValid()) {
-      std::cout << "invalid config" << std::endl;
+    auto config = TXR_NS::IConfig::create("default.toml");
+    if (!config) {
+      std::cout << "Unable to create toml config" << std::endl;
       return EXIT_FAILURE;
     }
 
     auto renderer = std::make_shared<OpenGlRenderer>();
-    TXR_NS::ManagerXr manager(config, renderer);
+    TXR_NS::ManagerXr manager(std::move(config), renderer);
     manager.startRender();
 
     return EXIT_SUCCESS;

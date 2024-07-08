@@ -1,21 +1,18 @@
+// TODO! support all graphics API
+#include <glad/gl.h>
+#include <GLFW/glfw3.h>
+
+#include <json/json.h>
+
 #include "tinyxr/impl/manager.h"
 
 #include <algorithm>
+#include <fstream>
 #include <iomanip>
 #include <string>
 
 #include "tinyxr/core/tinyxr.h"
-#include "tinyxr/impl/config.h"
 #include "tinyxr/impl/openxr_utils.h"
-
-// TODO! support all graphics API
-#include <glad/gl.h>
-#include <GLFW/glfw3.h>
-#define GLFW_EXPOSE_NATIVE_WIN32
-#define GLFW_EXPOSE_NATIVE_WGL
-#define GLFW_NATIVE_INCLUDE_NONE
-#include <GLFW/glfw3native.h>
-#include <json/json.h>
 
 TINYXR_NAMESPACE_OPEN
 
@@ -23,35 +20,29 @@ TINYXR_NAMESPACE_OPEN
 /// ManagerXRImpl
 ////////////////////////////////////////////////////////////////////////////////
 
-ManagerXRImpl::ManagerXRImpl(const Config &config, IRendererPtr renderer)
+ManagerXRImpl::ManagerXRImpl(IConfig *config, IRendererPtr renderer)
     : mConfig(config), mRenderer(renderer) {}
 
 bool ManagerXRImpl::init() {
   mExtensionsInfo = std::make_unique<ExtensionsInfo>(
-      mConfig.getImpl()->getVector<std::string>("xr.userRequestExtensions"));
+      mConfig->getStringVector("xr.userRequestExtensions"));
 
-  if (!mConfig.getImpl()->isValid()) {
-    std::cout << "Invalid config" << std::endl;
-    return false;
-  }
-
-  mContext.formFactor = XrFormFactorFromString(
-      mConfig.getImpl()->getValue<std::string>("xr.system.formFactor"));
+  mContext.formFactor =
+      XrFormFactorFromString(mConfig->getString("xr.system.formFactor"));
   if (mContext.formFactor == XR_FORM_FACTOR_MAX_ENUM) {
     std::cout << "Invalid xr.system.formFactor" << std::endl;
     return false;
   }
 
-  mContext.environmentBlendMode =
-      XrEnvironmentBlendModeFromString(mConfig.getImpl()->getValue<std::string>(
-          "xr.userRequestEnvironmentBlendMode"));
+  mContext.environmentBlendMode = XrEnvironmentBlendModeFromString(
+      mConfig->getString("xr.userRequestEnvironmentBlendMode"));
   if (mContext.environmentBlendMode == XR_ENVIRONMENT_BLEND_MODE_MAX_ENUM) {
     std::cout << "Invalid xr.userRequestEnvironmentBlendMode" << std::endl;
     return false;
   }
 
   mContext.viewConfigurationType = XrViewConfigurationTypeFromString(
-      mConfig.getImpl()->getValue<std::string>("xr.viewConfigType"));
+      mConfig->getString("xr.viewConfigType"));
   if (mContext.viewConfigurationType == XR_VIEW_CONFIGURATION_TYPE_MAX_ENUM) {
     std::cout << "Invalid xr.viewConfigType" << std::endl;
     return false;
@@ -140,11 +131,10 @@ bool ManagerXRImpl::createInstanceImpl() {
   createInfo.applicationInfo.apiVersion = XR_CURRENT_API_VERSION;
 
   // application
-  const auto applicationName = mConfig.getImpl()->getValue<std::string>(
-      "xr.applicationInfo.applicationName");
-  const auto applicationVersion =
-      XrVersionFromString(mConfig.getImpl()->getValue<std::string>(
-          "xr.applicationInfo.applicationVersion"));
+  const auto applicationName =
+      mConfig->getString("xr.applicationInfo.applicationName");
+  const auto applicationVersion = XrVersionFromString(
+      mConfig->getString("xr.applicationInfo.applicationVersion"));
 
   std::memcpy(createInfo.applicationInfo.applicationName,
               applicationName.c_str(),
@@ -263,8 +253,8 @@ bool ManagerXRImpl::getSystem() {
 
 bool ManagerXRImpl::createSessionImpl() {
   auto binding = valid<XrGraphicsBinding>();
-  binding.hDC = GetDC(glfwGetWin32Window(mGraphicsContext));
-  binding.hGLRC = glfwGetWGLContext(mGraphicsContext);
+  // binding.hDC = GetDC(glfwGetWin32Window(mGraphicsContext));
+  // binding.hGLRC = glfwGetWGLContext(mGraphicsContext);
 
   auto createInfo = valid<XrSessionCreateInfo>();
   createInfo.next = &binding;
@@ -440,7 +430,7 @@ bool ManagerXRImpl::createSession() {
 
 bool ManagerXRImpl::suggestInteractionProfiles() {
   const auto interactionProfilesConfig =
-      mConfig.getImpl()->getValue<std::string>("xr.interactionProfilesConfig");
+      mConfig->getString("xr.interactionProfilesConfig");
 
   std::ifstream interactionProfilesFile(interactionProfilesConfig);
   if (interactionProfilesFile.bad()) {
@@ -545,8 +535,7 @@ bool ManagerXRImpl::suggestInteractionProfiles() {
 }
 
 bool ManagerXRImpl::createActions() {
-  const auto actionSetsConfig =
-      mConfig.getImpl()->getValue<std::string>("xr.actionSetsConfig");
+  const auto actionSetsConfig = mConfig->getString("xr.actionSetsConfig");
 
   std::ifstream actionSetsFile(actionSetsConfig);
   if (actionSetsFile.bad()) {
