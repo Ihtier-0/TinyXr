@@ -1,41 +1,49 @@
 set(core_headers
   core/api.h
-  core/config.h
-  core/export.h
-  core/irenderer.h
-  core/manager.h
+  core/configxr.h
+#  core/export.h
+#  core/irenderer.h
+#  core/manager.h
+  core/object_factory.h
   core/os.h
-  core/render_context.h)
+#  core/render_context.h
+  core/utils.h
+)
 
 set(core_sources
-  core/config.cpp
-  core/irenderer.cpp
-  core/manager.cpp)
+#  core/irenderer.cpp
+#  core/manager.cpp
+  core/object_factory.cpp
+)
 
 source_group("core/headers" FILES ${core_headers})
 source_group("core/sources" FILES ${core_sources})
 
 set(impl_headers
-  impl/action_set.h
-  impl/action.h
-  impl/context.h
-  impl/favor_high_performance_gpu.h
-  impl/internal_render_context.h
-  impl/manager.h
-  impl/openxr_extensions.h
-  impl/openxr_definitions.h
-  impl/openxr_math.h
-  impl/openxr_utils.h
-  impl/openxr.h
-  impl/utils.h)
+#  impl/action_set.h
+#  impl/action.h
+  impl/configxr_impl.h
+#  impl/context.h
+#  impl/favor_high_performance_gpu.h
+#  impl/internal_render_context.h
+#  impl/manager.h
+#  impl/openxr_extensions.h
+#  impl/openxr_definitions.h
+#  impl/openxr_math.h
+#  impl/openxr_utils.h
+#  impl/openxr.h
+#  impl/utils.h
+)
 
 set(impl_sources
-  impl/action.cpp
-  impl/manager.cpp
-  impl/openxr_extensions.cpp
-  impl/openxr_math.cpp
-  impl/openxr_utils.cpp
-  impl/utils.cpp)
+#  impl/action.cpp
+  impl/configxr_impl.cpp
+#  impl/manager.cpp
+#  impl/openxr_extensions.cpp
+#  impl/openxr_math.cpp
+#  impl/openxr_utils.cpp
+#  impl/utils.cpp
+)
 
 source_group("impl/headers" FILES ${impl_headers})
 source_group("impl/sources" FILES ${impl_sources})

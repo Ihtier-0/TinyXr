@@ -1,19 +1,28 @@
 #include <iostream>
 
-#include "opengl_renderer.h"
-#include "tinyxr/core/manager.h"
+#include "tinyxr/core/configxr.h"
+#include "tinyxr/core/object_factory.h"
+#include "tinyxr/core/utils.h"
 
 int main(int argc, char *argv[]) {
   try {
-    auto config = TXR_NS::IConfig::create("default.toml");
-    if (!config) {
-      std::cout << "Unable to create toml config" << std::endl;
+    auto *factory = TXR_NS::getObjectFactory();
+    if (!factory) {
       return EXIT_FAILURE;
     }
 
-    auto renderer = std::make_shared<OpenGlRenderer>();
-    TXR_NS::ManagerXr manager(std::move(config), renderer);
-    manager.startRender();
+    auto configFactoryCastResult =
+        TXR_NS::unique_pointer_cast<TXR_NS::IConfigXrFactory>(
+            factory->create(TXR_NS::ObjectType::ConfigXrFactory));
+    if (!configFactoryCastResult.first) {
+      return EXIT_FAILURE;
+    }
+    auto configFactory = std::move(configFactoryCastResult.first);
+
+    auto config = configFactory->create("default.toml");
+    if (!config) {
+      return EXIT_FAILURE;
+    }
 
     return EXIT_SUCCESS;
   } catch (const std::exception &exception) {

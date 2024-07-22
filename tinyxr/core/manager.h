@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "tinyxr/core/api.h"
-#include "tinyxr/core/config.h"
 #include "tinyxr/core/irenderer.h"
 #include "tinyxr/core/tinyxr.h"
 
