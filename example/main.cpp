@@ -1,19 +1,20 @@
 #include <iostream>
 
 #include "tinyxr/core/configxr.h"
+#include "tinyxr/core/managerxr.h"
 #include "tinyxr/core/object_factory.h"
 #include "tinyxr/core/utils.h"
 
 int main(int argc, char *argv[]) {
   try {
-    auto *factory = TXR_NS::getObjectFactory();
-    if (!factory) {
+    auto *objectFactory = TXR_NS::getObjectFactory();
+    if (!objectFactory) {
       return EXIT_FAILURE;
     }
 
     auto configFactoryCastResult =
         TXR_NS::unique_pointer_cast<TXR_NS::IConfigXrFactory>(
-            factory->create(TXR_NS::ObjectType::ConfigXrFactory));
+            objectFactory->create(TXR_NS::ObjectType::ConfigXrFactory));
     if (!configFactoryCastResult.first) {
       return EXIT_FAILURE;
     }
@@ -21,6 +22,19 @@ int main(int argc, char *argv[]) {
 
     auto config = configFactory->create("default.toml");
     if (!config) {
+      return EXIT_FAILURE;
+    }
+
+    auto managerFactoryCastResult =
+        TXR_NS::unique_pointer_cast<TXR_NS::IManagerXrFactory>(
+            objectFactory->create(TXR_NS::ObjectType::ManagerXrFactory));
+    if (!managerFactoryCastResult.first) {
+      return EXIT_FAILURE;
+    }
+    auto managerFactory = std::move(managerFactoryCastResult.first);
+
+    auto manager = managerFactory->create(std::move(config));
+    if (!manager) {
       return EXIT_FAILURE;
     }
 

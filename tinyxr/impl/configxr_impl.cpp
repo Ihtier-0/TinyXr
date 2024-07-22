@@ -10,7 +10,7 @@ TINYXR_NAMESPACE_OPEN
 /// ConfigXrImpl
 ////////////////////////////////////////////////////////////////////////////////
 
-class ConfigXrImpl : public IConfigXr {
+class ConfigXrImpl final : public IConfigXr {
 public:
   ConfigXrImpl(const std::string& filename) {
     try {

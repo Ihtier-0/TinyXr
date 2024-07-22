@@ -1,9 +1,11 @@
 set(core_headers
+  ${PROJECT_BINARY_DIR}/tinyxr/core/tinyxr.h
+
   core/api.h
   core/configxr.h
-#  core/export.h
+  core/export.h
 #  core/irenderer.h
-#  core/manager.h
+  core/managerxr.h
   core/object_factory.h
   core/os.h
 #  core/render_context.h
@@ -12,7 +14,6 @@ set(core_headers
 
 set(core_sources
 #  core/irenderer.cpp
-#  core/manager.cpp
   core/object_factory.cpp
 )
 
@@ -26,7 +27,7 @@ set(impl_headers
 #  impl/context.h
 #  impl/favor_high_performance_gpu.h
 #  impl/internal_render_context.h
-#  impl/manager.h
+  impl/managerxr_impl.h
 #  impl/openxr_extensions.h
 #  impl/openxr_definitions.h
 #  impl/openxr_math.h
@@ -38,7 +39,7 @@ set(impl_headers
 set(impl_sources
 #  impl/action.cpp
   impl/configxr_impl.cpp
-#  impl/manager.cpp
+  impl/managerxr_impl.cpp
 #  impl/openxr_extensions.cpp
 #  impl/openxr_math.cpp
 #  impl/openxr_utils.cpp

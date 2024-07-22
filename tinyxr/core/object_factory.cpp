@@ -1,6 +1,7 @@
 #include "tinyxr/core/object_factory.h"
 
 #include "tinyxr/impl/configxr_impl.h"
+#include "tinyxr/impl/managerxr_impl.h"
 
 TINYXR_NAMESPACE_OPEN
 
@@ -13,7 +14,8 @@ class ObjectFactoryImpl : public IObjectFactory {
       out.reset(new ConfigXrFactoryImpl);
       break;
     case D::ObjectType::ManagerXrFactory:
-      return nullptr;
+      out.reset(new ManagerXrFactoryImpl);
+      break;
     default:
       return nullptr;
     }
