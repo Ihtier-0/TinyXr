@@ -1,6 +1,7 @@
 #ifndef TINYXR_IMPL_OPENXR_EXTENSIONS_H
 #define TINYXR_IMPL_OPENXR_EXTENSIONS_H
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -215,6 +216,7 @@ struct ExtensionsInfo {
 
   std::vector<std::string> extensions;
 };
+using ExtensionsInfoPtr = std::unique_ptr<ExtensionsInfo>;
 #undef DEFINE_EXT_INFO
 
 struct ExtensionsFunction {

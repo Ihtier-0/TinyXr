@@ -1,6 +1,6 @@
 #include "tinyxr/impl/openxr_utils.h"
 
-#include "tinyxr/impl/utils.h"
+#include "tinyxr/impl/string_utils.h"
 
 TINYXR_NAMESPACE_OPEN
 

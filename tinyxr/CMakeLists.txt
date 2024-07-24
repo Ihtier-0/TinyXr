@@ -4,6 +4,7 @@ set(core_headers
   core/api.h
   core/configxr.h
   core/export.h
+  core/favor_high_performance_gpu.h
 #  core/irenderer.h
   core/managerxr.h
   core/object_factory.h
@@ -24,26 +25,25 @@ set(impl_headers
 #  impl/action_set.h
 #  impl/action.h
   impl/configxr_impl.h
-#  impl/context.h
-#  impl/favor_high_performance_gpu.h
+  impl/contextxr.h
 #  impl/internal_render_context.h
   impl/managerxr_impl.h
-#  impl/openxr_extensions.h
-#  impl/openxr_definitions.h
-#  impl/openxr_math.h
-#  impl/openxr_utils.h
-#  impl/openxr.h
-#  impl/utils.h
+  impl/openxr_extensions.h
+  impl/openxr_definitions.h
+  impl/openxr_math.h
+  impl/openxr_utils.h
+  impl/openxr.h
+  impl/string_utils.h
 )
 
 set(impl_sources
 #  impl/action.cpp
   impl/configxr_impl.cpp
   impl/managerxr_impl.cpp
-#  impl/openxr_extensions.cpp
-#  impl/openxr_math.cpp
-#  impl/openxr_utils.cpp
-#  impl/utils.cpp
+  impl/openxr_extensions.cpp
+  impl/openxr_math.cpp
+  impl/openxr_utils.cpp
+  impl/string_utils.cpp
 )
 
 source_group("impl/headers" FILES ${impl_headers})

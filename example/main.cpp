@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "tinyxr/core/configxr.h"
+#include "tinyxr/core/favor_high_performance_gpu.h"
 #include "tinyxr/core/managerxr.h"
 #include "tinyxr/core/object_factory.h"
 #include "tinyxr/core/utils.h"

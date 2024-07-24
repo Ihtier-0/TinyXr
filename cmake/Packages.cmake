@@ -7,7 +7,10 @@ CPMAddPackage(
   GIT_TAG release-1.1.38
   OPTIONS "BUILD_TESTS OFF"
           "BUILD_CONFORMANCE_TESTS OFF"
-          "DYNAMIC_LOADER ON")
+          "DYNAMIC_LOADER ON"
+          # workaround for dynamic CRT linkage
+          "JSONCPP_STATIC_WINDOWS_RUNTIME OFF"
+          "CMAKE_SYSTEM_NAME WindowsStore")
 find_targets(OpenXR_targets ${OpenXR_SOURCE_DIR})
 make_folder("OpenXR" ${OpenXR_targets})
 
